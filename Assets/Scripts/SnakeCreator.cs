@@ -13,10 +13,11 @@ public class SnakeCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MakeEntity();
+        MakeEntity(2);
+        MakeEntity(-20);
     }
 
-    private void MakeEntity()
+    private void MakeEntity(float x)
     {
         EntityManager entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         EntityArchetype archetype = entityManager.CreateArchetype(
@@ -30,7 +31,7 @@ public class SnakeCreator : MonoBehaviour
 
         entityManager.AddComponentData(myEntity, new Translation
         {
-            Value = new float3(2f, 0f, 0f)
+            Value = new float3(x, 0f, 0f)
         });
 
         entityManager.AddSharedComponentData(myEntity, new RenderMesh
