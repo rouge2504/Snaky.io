@@ -85,6 +85,12 @@ public class SnakeHeadMove : MonoBehaviour
 
             }
         }
+
+        if (GamePlayManager.instance.SnakeOutField(this.transform))
+        {
+            Debug.Log("Snake Out!");
+            transform.Rotate(0, 30, 0);
+        }
     }
 
     private void OnRangeVision()
