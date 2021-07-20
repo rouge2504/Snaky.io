@@ -5,32 +5,51 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager instance;
+    public Transform bodyContent;
+    public Transform headContent;
     public List<GameObject> bodySnake = new List<GameObject>();
-    public int it_snake;
+    public List<GameObject> headSnake = new List<GameObject>();
+    public int it_snakeBody;
+    public int it_snakeHead;
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
         
-        for (int i = 0; i < this.transform.childCount; i++)
+        for (int i = 0; i < bodyContent.childCount; i++)
         {
-            GameObject body = this.transform.GetChild(i).gameObject;
-            bodySnake.Add(this.transform.GetChild(i).gameObject);
+            GameObject body = bodyContent.GetChild(i).gameObject;
+            bodySnake.Add(bodyContent.GetChild(i).gameObject);
             body.SetActive(false);
             
+        }
+
+        for (int i = 0; i < headContent.childCount; i++)
+        {
+            GameObject head = headContent.GetChild(i).gameObject;
+            headSnake.Add(headContent.GetChild(i).gameObject);
+            head.SetActive(false);
+
         }
     }
 
     public GameObject GetSnake()
     {
-        GameObject snake = bodySnake[NextSnake()];
+        GameObject snake = bodySnake[NextSnakeBody()];
         snake.SetActive(true);
         return snake;
     }
 
-    public int NextSnake()
+    public GameObject GetHead()
     {
-        int temp = it_snake + 1;
+        GameObject snake = headSnake[NextSnakeHead()];
+        snake.SetActive(true);
+        return snake;
+    }
+
+    public int NextSnakeBody()
+    {
+        int temp = it_snakeBody + 1;
         int limit = temp;
         if (temp > bodySnake.Count - 1)
         {
@@ -46,8 +65,8 @@ public class PoolManager : MonoBehaviour
                 break;
             }
         }
-        it_snake = temp;
-        return it_snake;
+        it_snakeBody = temp;
+        return it_snakeBody;
 
 
     }
@@ -57,6 +76,42 @@ public class PoolManager : MonoBehaviour
     {
         temp++;
         if (temp > bodySnake.Count - 1)
+        {
+            temp = 0;
+        }
+        return temp;
+    }
+
+
+    public int NextSnakeHead()
+    {
+        int temp = it_snakeHead + 1;
+        int limit = temp;
+        if (temp > headSnake.Count - 1)
+        {
+            temp = 0;
+        }
+
+        while (headSnake[temp].activeSelf)
+        {
+            temp = NextIteratorHead(temp);
+            if (limit == temp)
+            {
+                Debug.LogError("All heads are on uses");
+                break;
+            }
+        }
+        it_snakeHead = temp;
+        return it_snakeHead;
+
+
+    }
+
+
+    public int NextIteratorHead(int temp)
+    {
+        temp++;
+        if (temp > headSnake.Count - 1)
         {
             temp = 0;
         }

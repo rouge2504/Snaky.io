@@ -31,8 +31,9 @@ public sealed class SnakeEnvironment
         snakes.Add(snakeObject);
     }
 
-    public void GetCollisionWithAnotherSnake(GameObject requestSnake)
+    public SnakeVision GetCollisionWithAnotherSnake(GameObject requestSnake)
     {
+        SnakeVision snakeVision = new SnakeVision();
         SnakeObject snake = snakes.Find(x => x.head.name == requestSnake.name);
         //Debug.Log(snake.head.name);
         Vector2 headPosition = new Vector2(snake.head.transform.position.x, snake.head.transform.position.z);
@@ -43,13 +44,43 @@ public sealed class SnakeEnvironment
                 foreach (GameObject part in temp_snake.parts)
                 {
                     Vector2 partPosition = new Vector2(part.transform.position.x, part.transform.position.z);
+                    Vector2 direction = headPosition - partPosition;
+                    float angle = Vector2.Angle(direction, part.transform.forward);
+                    if (direction.magnitude < GameConstants.VIS_DIST && angle < GameConstants.VIS_ANGLE)
+                    {
+                        //Debug.Log("Part: " + part.name + " near to me: " + snake.head.name);
+                        snakeVision.seeAnotherSnake = true;
+
+                    }
                     if (Vector2.Distance(headPosition, partPosition) < GameConstants.VISION_SNAKE)
                     {
-                        Debug.Log("Part: " + part.name + " near to: " + snake.head.name);
+                        //Debug.Log("Part: " + part.name + " near to: " + snake.head.name);
+                        snakeVision.onCollision = true;
                     }
                 }
             }
         }
+
+        return snakeVision;
+    }
+}
+
+public class SnakeVision
+{
+    public bool onCollision;
+    public bool seeAnotherSnake;
+    public bool seeFood;
+
+    public SnakeVision()
+    {
+        onCollision = false;
+        seeAnotherSnake = false;
+        seeFood = false;
+    }
+
+    public void Log()
+    {
+        Debug.Log("onCollision: " + onCollision +",  seeAnotherSnakes: "+seeAnotherSnake +", seeFood: " + seeFood );
     }
 }
 

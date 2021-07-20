@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class SnakeHeadMove : MonoBehaviour
@@ -23,11 +22,17 @@ public class SnakeHeadMove : MonoBehaviour
 
     private float tempDiff;
 
+    [HideInInspector] public SnakeVision snakeVision;
+
     public void Init()
     {
         bodyList = new List<GameObject>();
         bodyList.Add(this.gameObject);
         it_position = GameConstants.OFFSET_BODY_Y_POSITION;
+        if (!isPlayer)
+        {
+            this.gameObject.AddComponent<AI>();
+        }
     }
 
     public void AddBody(GameObject body)
@@ -49,7 +54,7 @@ public class SnakeHeadMove : MonoBehaviour
     private void LateUpdate()
     {
         Move();
-        OnRangeVision();
+        OnRangeCollision();
     }
     void OnDrawGizmosSelected()
     {
@@ -68,9 +73,13 @@ public class SnakeHeadMove : MonoBehaviour
             boost = 0;
         }
 
-        transform.Translate(0, 0, moveSpeed * Time.deltaTime + boost);
 
-        transform.Rotate(0, axis.x * rotSpeed * Time.deltaTime, 0);
+        if (isPlayer)
+        {
+            transform.Translate(0, 0, moveSpeed * Time.deltaTime + boost);
+
+            transform.Rotate(0, axis.x * rotSpeed * Time.deltaTime, 0);
+        }
 
         timingToDelay += Time.deltaTime;
 
@@ -93,9 +102,9 @@ public class SnakeHeadMove : MonoBehaviour
         }
     }
 
-    private void OnRangeVision()
+    private void OnRangeCollision()
     {
-        SnakeEnvironment.Singleton.GetCollisionWithAnotherSnake(this.gameObject);
+        snakeVision = SnakeEnvironment.Singleton.GetCollisionWithAnotherSnake(this.gameObject);
     }
 
 }

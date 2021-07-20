@@ -7,6 +7,8 @@ public class GamePlayManager : MonoBehaviour
     public static GamePlayManager instance;
 
     [SerializeField] private GameObject field;
+
+    [HideInInspector] public GameObject player;
     // Start is called before the first frame update
     void Awake()
     {

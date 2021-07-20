@@ -208,9 +208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
+  boost: 0
   rotSpeed: 160
-  diff: 0.1
+  diff: 0.08
   bodyList: []
   timeToDelay: 0.5
   isPlayer: 0
-  checkAround: 0
