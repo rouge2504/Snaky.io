@@ -14,11 +14,11 @@ public class SnakeManager : MonoBehaviour
         GameObject clone = PoolManager.instance.GetHead();
         clone.name = "Player";
         GamePlayManager.instance.player = clone;
-        SnakeEnvironment.Singleton.CreateSnake(clone, 5, true);
+        SnakeEnvironment.Singleton.CreateSnake(clone, 15, true);
         vcam.Follow = clone.transform;
 
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < GameConstants.TOTAL_SNAKES; i++)
         {
             StartCoroutine(NewSnake(i));
         }
