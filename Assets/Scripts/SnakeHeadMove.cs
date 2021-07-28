@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-
 public class SnakeHeadMove : MonoBehaviour
 {
     public float moveSpeed;
@@ -79,7 +78,12 @@ public class SnakeHeadMove : MonoBehaviour
         {
             transform.Translate(0, 0, moveSpeed * Time.deltaTime + boost);
 
-            transform.Rotate(0, axis.x * rotSpeed * Time.deltaTime, 0);
+            //transform.Rotate(0, axis.x * rotSpeed * Time.deltaTime, 0);
+            if (axis.x > 0 || axis.z > 0)
+            {
+                Quaternion targetDirection = Quaternion.LookRotation(axis, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetDirection, Time.deltaTime * rotSpeed);
+            }
         }
 
         timingToDelay += Time.deltaTime;

@@ -20,7 +20,7 @@ public class StateAI
     protected SnakeVision snakeVision;
     protected float timeToDelayRotate = 1.5f;
     protected float timingToDelayRotate = 0;
-    protected float timeToDelayEscape = 0.5f;
+    protected float timeToDelayEscape = 0.2f;
     protected float timingToDelayEscape = 0f;
     protected float axisRot;
     protected float speedRot;
@@ -177,7 +177,7 @@ public class Escape : StateAI
     {
         float rnd = Random.Range(0, 100);
 
-        state_escape = (rnd < 30) ? STATE_ESCAPE.FLIP_180 : STATE_ESCAPE.DRIFF;
+        state_escape = (rnd < 60) ? STATE_ESCAPE.FLIP_180 : STATE_ESCAPE.DRIFF;
         SetRotate();
         base.Enter();
     }
