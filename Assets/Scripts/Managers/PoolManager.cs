@@ -7,10 +7,14 @@ public class PoolManager : MonoBehaviour
     public static PoolManager instance;
     public Transform bodyContent;
     public Transform headContent;
+    public Transform foodContent;
     public List<GameObject> bodySnake = new List<GameObject>();
     public List<GameObject> headSnake = new List<GameObject>();
+    public List<GameObject> food = new List<GameObject>();
     public int it_snakeBody;
     public int it_snakeHead;
+    private int it_food;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -47,6 +51,13 @@ public class PoolManager : MonoBehaviour
         return snake;
     }
 
+    public GameObject GetFood()
+    {
+        GameObject foodObject = food[NextFood()];
+        foodObject.SetActive(true);
+        return foodObject;
+    }
+
     public int NextSnakeBody()
     {
         int temp = it_snakeBody + 1;
@@ -69,6 +80,24 @@ public class PoolManager : MonoBehaviour
         return it_snakeBody;
 
 
+    }
+
+    public void DestroyAll()
+    {
+        int counter = 0;
+        foreach(GameObject body in bodySnake)
+        {
+            body.SetActive(false);
+            body.name = "BodySnake " + counter;
+            counter++;
+        }
+        counter = 0;
+        foreach (GameObject head in headSnake)
+        {
+            head.SetActive(false);
+            head.name = "SnakeHead " + counter;
+            counter++;
+        }
     }
 
 
@@ -107,6 +136,38 @@ public class PoolManager : MonoBehaviour
 
     }
 
+    public int NextFood()
+    {
+        int temp = it_food + 1;
+        int limit = temp;
+        if (temp > food.Count - 1)
+        {
+            temp = 0;
+        }
+
+        while (food[temp].activeSelf)
+        {
+            temp = NextIteratorFood(temp);
+            if (limit == temp)
+            {
+                Debug.LogError("All heads are on uses");
+                break;
+            }
+        }
+        it_snakeHead = temp;
+        return it_snakeHead;
+
+
+    }
+    public int NextIteratorFood(int temp)
+    {
+        temp++;
+        if (temp > food.Count - 1)
+        {
+            temp = 0;
+        }
+        return temp;
+    }
 
     public int NextIteratorHead(int temp)
     {

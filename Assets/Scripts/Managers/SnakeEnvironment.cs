@@ -5,7 +5,14 @@ public sealed class SnakeEnvironment
 {
     private static SnakeEnvironment instance;
     private List<SnakeObject> snakes = new List<SnakeObject>();
-
+    
+    public int CounterSnake
+    {
+        get
+        {
+            return snakes.Count;
+        }
+    }
     public List<SnakeObject> Snakes {
         get
         {
@@ -63,6 +70,18 @@ public sealed class SnakeEnvironment
 
         return snakeVision;
     }
+
+    public void PopUpSnake(GameObject part)
+    {
+        part.SetActive(false);
+        SnakeObject snake = snakes.Find(x => x.head.name == part.name);
+        snakes.Remove(snake);
+    }
+
+    public void DestroyAll()
+    {
+        snakes.Clear();
+    }
 }
 
 public class SnakeVision
@@ -94,6 +113,7 @@ public class SnakeObject
         parts = new List<GameObject>();
         head = snakeHead;
         SnakeHeadMove snakeHeadMove = head.GetComponent<SnakeHeadMove>();
+        head.transform.position = SnakeManager.instance.SetPosition(SnakeEnvironment.Singleton.Snakes);
         snakeHeadMove.isPlayer = isPlayer;
         snakeHeadMove.Init();
         parts.Add(head);
@@ -102,6 +122,7 @@ public class SnakeObject
         {
             GameObject body = PoolManager.instance.GetSnake();
             body.transform.localScale = head.transform.localScale;
+            body.transform.position = head.transform.position;  
             snakeHeadMove.AddBody(body);
             parts.Add(body);
         }

@@ -31,6 +31,10 @@ public class SnakeHeadMove : MonoBehaviour
     public Vector2 speed;
     public Vector2 frequency;
     float timer;
+
+
+    float timingToFrameInvulnerability;
+    float timeToFrameInvulnerability = 0.5f;
     public void Init()
     {
         bodyList = new List<GameObject>();
@@ -53,7 +57,10 @@ public class SnakeHeadMove : MonoBehaviour
     void Update()
     {
         if (isPlayer)
-            axis = new Vector3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical"));
+        {
+            axis = (Application.platform == RuntimePlatform.Android) ?  new Vector3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical")) :
+                new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        }
 
 
     }
@@ -79,7 +86,7 @@ public class SnakeHeadMove : MonoBehaviour
             transform.Translate(0, 0, moveSpeed * Time.deltaTime + boost);
 
             //transform.Rotate(0, axis.x * rotSpeed * Time.deltaTime, 0);
-            if (axis.x > 0 || axis.z > 0)
+            if (axis.x != 0 || axis.z != 0)
             {
                 Quaternion targetDirection = Quaternion.LookRotation(axis, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetDirection, Time.deltaTime * rotSpeed);
@@ -102,7 +109,7 @@ public class SnakeHeadMove : MonoBehaviour
 
         if (GamePlayManager.instance.SnakeOutField(this.transform))
         {
-            Debug.Log("Snake Out!");
+            //Debug.Log("Snake Out!");
             transform.Rotate(0, 30, 0);
         }
     }
@@ -115,7 +122,7 @@ public class SnakeHeadMove : MonoBehaviour
             MeshRenderer mesh = Helper.FindComponentInChildWithTag<MeshRenderer>(skin, "Skin");
             mesh.material = normalSkin;
         }
-        if (isPlayer && /*Input.GetKey(KeyCode.Space)*/ CrossPlatformInputManager.GetButton("Boost"))
+        if (isPlayer && /*CrossPlatformInputManager.GetButton("Boost")*/ Input.GetKey(KeyCode.Space) )
         {
             boost = 0.1f;
             tempDiff = 0.3f;
@@ -147,7 +154,7 @@ public class SnakeHeadMove : MonoBehaviour
                 i++;
             }
         }
-        else if (isPlayer && /*Input.GetKeyUp(KeyCode.Space)*/ CrossPlatformInputManager.GetButtonUp("Boost"))        {
+        else if (isPlayer && Input.GetKeyUp(KeyCode.Space)/* CrossPlatformInputManager.GetButtonUp("Boost")*/)        {
             boost = 0;
             timer = 0;
             foreach (GameObject skin in bodyList)
@@ -161,6 +168,27 @@ public class SnakeHeadMove : MonoBehaviour
     private void OnRangeCollision()
     {
         snakeVision = SnakeEnvironment.Singleton.GetCollisionWithAnotherSnake(this.gameObject);
+        timingToFrameInvulnerability += Time.deltaTime;
+
+        if (timingToFrameInvulnerability > timeToFrameInvulnerability)
+        {
+            if (snakeVision.onCollision)
+            {
+                foreach (GameObject body in bodyList)
+                {
+                    //body.gameObject.SetActive(false);
+                    SnakeEnvironment.Singleton.PopUpSnake(body);
+                    if (isPlayer)
+                    {
+                        isPlayer = false;
+                        PoolManager.instance.DestroyAll();
+                        SnakeEnvironment.Singleton.DestroyAll();
+                        SnakeManager.instance.Init();
+                        return;
+                    }
+                }
+            }
+        }
     }
 
 }
