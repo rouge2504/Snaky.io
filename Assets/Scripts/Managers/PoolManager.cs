@@ -35,6 +35,15 @@ public class PoolManager : MonoBehaviour
             head.SetActive(false);
 
         }
+
+
+        for (int i = 0; i < foodContent.childCount; i++)
+        {
+            GameObject _food = foodContent.GetChild(i).gameObject;
+            food.Add(foodContent.GetChild(i).gameObject);
+            _food.SetActive(false);
+
+        }
     }
 
     public GameObject GetSnake()
@@ -97,6 +106,7 @@ public class PoolManager : MonoBehaviour
             head.SetActive(false);
             head.name = "SnakeHead " + counter;
             counter++;
+            Destroy(head.GetComponent<AI>());
         }
     }
 

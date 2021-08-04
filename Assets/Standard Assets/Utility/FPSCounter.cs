@@ -7,16 +7,25 @@ namespace UnityStandardAssets.Utility
     [RequireComponent(typeof (Text))]
     public class FPSCounter : MonoBehaviour
     {
+        public static FPSCounter instance;
         const float fpsMeasurePeriod = 0.5f;
         private int m_FpsAccumulator = 0;
         private float m_FpsNextPeriod = 0;
         private int m_CurrentFps;
+        public int CurrentFPS
+        {
+            get
+            {
+                return m_CurrentFps;
+            }
+        }
         const string display = "{0} FPS";
         private Text m_Text;
 
 
         private void Start()
         {
+            instance = this;
             m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
             m_Text = GetComponent<Text>();
         }
@@ -34,5 +43,6 @@ namespace UnityStandardAssets.Utility
                 m_Text.text = string.Format(display, m_CurrentFps);
             }
         }
+
     }
 }

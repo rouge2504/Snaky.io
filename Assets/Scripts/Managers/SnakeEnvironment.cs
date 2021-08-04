@@ -48,7 +48,8 @@ public sealed class SnakeEnvironment
         {
             if (snake.head.name != temp_snake.head.name)
             {
-                foreach (GameObject part in temp_snake.parts)
+
+                /*foreach (GameObject part in temp_snake.parts)
                 {
                     Vector2 partPosition = new Vector2(part.transform.position.x, part.transform.position.z);
                     Vector2 direction = headPosition - partPosition;
@@ -64,7 +65,42 @@ public sealed class SnakeEnvironment
                         //Debug.Log("Part: " + part.name + " near to: " + snake.head.name);
                         snakeVision.onCollision = true;
                     }
+                }*/
+
+                for (int i = 0; i < temp_snake.parts.Count; i++)
+                {
+                    Vector2 partPosition = new Vector2(temp_snake.parts[i].transform.position.x, temp_snake.parts[i].transform.position.z);
+                    float x = 0;
+                    float z = 0;
+                    if ((i + 1) < temp_snake.parts.Count) {
+                         x = (temp_snake.parts[i].transform.position.x + temp_snake.parts[i + 1].transform.position.x) / 2;
+                         z = (temp_snake.parts[i].transform.position.z + temp_snake.parts[i + 1].transform.position.z) / 2;
+                    }
+
+                    Vector2 midlePosition = new Vector2(x, z);
+                    Vector2 direction = headPosition - partPosition;
+                    float angle = Vector2.Angle(direction, temp_snake.parts[i].transform.forward);
+                    if (direction.magnitude < GameConstants.VIS_DIST && angle < GameConstants.VIS_ANGLE)
+                    {
+                        //Debug.Log("Part: " + part.name + " near to me: " + snake.head.name);
+                        snakeVision.seeAnotherSnake = true;
+
+                    }
+                    if (Vector2.Distance(headPosition, partPosition) < GameConstants.VISION_SNAKE || Vector2.Distance(headPosition, midlePosition) < GameConstants.VISION_SNAKE)
+                    {
+                        //Debug.Log("Part: " + part.name + " near to: " + snake.head.name);
+                        snakeVision.onCollision = true;
+                    }
                 }
+            }
+        }
+
+        foreach(Food food in FoodManager.instance.foodList)
+        {
+            if (Vector2.Distance(headPosition, food.foodPosition) < GameConstants.VISION_FOOD)
+            {
+                snakeVision.seeFood = true;
+                snakeVision.food = food;
             }
         }
 
@@ -89,12 +125,14 @@ public class SnakeVision
     public bool onCollision;
     public bool seeAnotherSnake;
     public bool seeFood;
+    public Food food;
 
     public SnakeVision()
     {
         onCollision = false;
         seeAnotherSnake = false;
         seeFood = false;
+        food = null;
     }
 
     public void Log()

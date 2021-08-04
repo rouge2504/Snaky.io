@@ -38,14 +38,14 @@ public class SnakeManager : MonoBehaviour
     IEnumerator NewSnake(int i)
     {
 
-        yield return new WaitForSeconds(UnityEngine.Random.Range(1, 10));
+        yield return new WaitForSeconds(GameConstants.TIME_TO_SPAWN_SNAKE);
         if (SnakeEnvironment.Singleton.CounterSnake >= GameConstants.TOTAL_SNAKES)
         {
             yield break;
         }
         GameObject clone2 = PoolManager.instance.GetHead();
         clone2.name = "CPU_" + i;
-        SnakeEnvironment.Singleton.CreateSnake(clone2, GameConstants.TIME_TO_SPAWN_SNAKE, false);
+        SnakeEnvironment.Singleton.CreateSnake(clone2, GameConstants.LENGTH_SNAKE, false);
     }
 
     public Vector3 SetPosition(List<SnakeObject> parts)

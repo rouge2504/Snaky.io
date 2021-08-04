@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using UnityStandardAssets.Utility;
+
 public class SnakeHeadMove : MonoBehaviour
 {
     public float moveSpeed;
@@ -75,9 +77,28 @@ public class SnakeHeadMove : MonoBehaviour
         //Gizmos.DrawSphere(transform.position, GameConstants.VISION_SNAKE);
     }
 
+    private float Diff()
+    {
+
+        if (FPSCounter.instance.CurrentFPS > 60)
+        {
+            diff = 0.08f;
+        }else if (FPSCounter.instance.CurrentFPS < 60 && FPSCounter.instance.CurrentFPS > 15)
+        {
+            diff = 0.15f;
+        }
+        else if (FPSCounter.instance.CurrentFPS < 15)
+        {
+            diff = 0.3f;
+        }
+        return diff;
+    }
+
     private void Move()
     {
-        tempDiff = diff;
+
+
+        tempDiff = Diff();
         Boost();
 
 
@@ -122,7 +143,7 @@ public class SnakeHeadMove : MonoBehaviour
             MeshRenderer mesh = Helper.FindComponentInChildWithTag<MeshRenderer>(skin, "Skin");
             mesh.material = normalSkin;
         }
-        if (isPlayer && /*CrossPlatformInputManager.GetButton("Boost")*/ Input.GetKey(KeyCode.Space) )
+        if (isPlayer && CrossPlatformInputManager.GetButton("Boost")/* Input.GetKey(KeyCode.Space) */)
         {
             boost = 0.1f;
             tempDiff = 0.3f;
@@ -154,7 +175,7 @@ public class SnakeHeadMove : MonoBehaviour
                 i++;
             }
         }
-        else if (isPlayer && Input.GetKeyUp(KeyCode.Space)/* CrossPlatformInputManager.GetButtonUp("Boost")*/)        {
+        else if (isPlayer && /*Input.GetKeyUp(KeyCode.Space)*/ CrossPlatformInputManager.GetButtonUp("Boost"))        {
             boost = 0;
             timer = 0;
             foreach (GameObject skin in bodyList)
@@ -172,6 +193,10 @@ public class SnakeHeadMove : MonoBehaviour
 
         if (timingToFrameInvulnerability > timeToFrameInvulnerability)
         {
+            if (snakeVision.seeFood)
+            {
+                FoodManager.instance.PickUpFood(snakeVision.food);
+            }
             if (snakeVision.onCollision)
             {
                 foreach (GameObject body in bodyList)
@@ -184,6 +209,7 @@ public class SnakeHeadMove : MonoBehaviour
                         PoolManager.instance.DestroyAll();
                         SnakeEnvironment.Singleton.DestroyAll();
                         SnakeManager.instance.Init();
+
                         return;
                     }
                 }
