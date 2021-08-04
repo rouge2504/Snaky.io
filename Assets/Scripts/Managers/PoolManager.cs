@@ -98,6 +98,7 @@ public class PoolManager : MonoBehaviour
         {
             body.SetActive(false);
             body.name = "BodySnake " + counter;
+            body.GetComponent<SnakeBody>().id = 0;
             counter++;
         }
         counter = 0;

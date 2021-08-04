@@ -32,9 +32,10 @@ public sealed class SnakeEnvironment
         }
     }
 
-    public void CreateSnake(GameObject snakeHead, int Length, bool isPlayer)
+    public void CreateSnake(GameObject snakeHead, int Length, bool isPlayer, int id)
     {
-        SnakeObject snakeObject = new SnakeObject(snakeHead, Length, isPlayer);
+        SnakeObject snakeObject = new SnakeObject(snakeHead, Length, isPlayer, id);
+        snakeHead.GetComponent<SnakeHeadMove>().snakeObject = snakeObject;
         snakes.Add(snakeObject);
     }
 
@@ -43,6 +44,10 @@ public sealed class SnakeEnvironment
         SnakeVision snakeVision = new SnakeVision();
         SnakeObject snake = snakes.Find(x => x.head.name == requestSnake.name);
         //Debug.Log(snake.head.name);
+        if (snake == null)
+        {
+            return null;
+        }
         Vector2 headPosition = new Vector2(snake.head.transform.position.x, snake.head.transform.position.z);
         foreach(SnakeObject temp_snake in snakes)
         {
@@ -145,24 +150,45 @@ public class SnakeObject
 {
     public GameObject head;
     public List<GameObject> parts;
+    public string name;
+    public int id;
+    public int bodyID;
 
-    public SnakeObject (GameObject snakeHead, int Length, bool isPlayer)
+    public SnakeObject(GameObject snakeHead, int Length, bool isPlayer, int id)
     {
         parts = new List<GameObject>();
+        float scale = isPlayer ? 30 : Random.Range(30, 55);
         head = snakeHead;
+        head.transform.localScale =  new Vector3(scale, scale, scale);
         SnakeHeadMove snakeHeadMove = head.GetComponent<SnakeHeadMove>();
         head.transform.position = SnakeManager.instance.SetPosition(SnakeEnvironment.Singleton.Snakes);
+        name = isPlayer ? "Player" : "CPU_" + parts.Count;
+        this.id = id;
         snakeHeadMove.isPlayer = isPlayer;
         snakeHeadMove.Init();
         parts.Add(head);
         
         for (int i = 0; i < Length; i++)
         {
-            GameObject body = PoolManager.instance.GetSnake();
+            /*GameObject body = PoolManager.instance.GetSnake();
+            body.name = name + "_" + i;
             body.transform.localScale = head.transform.localScale;
-            body.transform.position = head.transform.position;  
+            body.transform.position = head.transform.position;
+            body.GetComponent<SnakeBody>().id = id;
             snakeHeadMove.AddBody(body);
-            parts.Add(body);
+            parts.Add(body);*/
+            AddBody(name + "_" + i, head.transform.localScale, head.transform.position, id, snakeHeadMove);
         }
+    }
+
+    public void AddBody(string name, Vector3 scale, Vector3 position, int id, SnakeHeadMove snakeHeadMove)
+    {
+        GameObject body = PoolManager.instance.GetSnake();
+        body.name = name;
+        body.transform.localScale = scale;
+        body.transform.position = position;
+        body.GetComponent<SnakeBody>().id = id;
+        snakeHeadMove.AddBody(body);
+        parts.Add(body);
     }
 }

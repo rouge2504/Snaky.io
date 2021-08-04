@@ -6,6 +6,7 @@ using UnityStandardAssets.Utility;
 
 public class SnakeHeadMove : MonoBehaviour
 {
+    public int id;
     public float moveSpeed;
     public float boost;
     public float rotSpeed;
@@ -37,6 +38,8 @@ public class SnakeHeadMove : MonoBehaviour
 
     float timingToFrameInvulnerability;
     float timeToFrameInvulnerability = 0.5f;
+
+    [HideInInspector] public SnakeObject snakeObject;
     public void Init()
     {
         bodyList = new List<GameObject>();
@@ -58,6 +61,8 @@ public class SnakeHeadMove : MonoBehaviour
 
     void Update()
     {
+        id = snakeObject.id;
+
         if (isPlayer)
         {
             axis = (Application.platform == RuntimePlatform.Android) ?  new Vector3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical")) :
@@ -80,14 +85,14 @@ public class SnakeHeadMove : MonoBehaviour
     private float Diff()
     {
 
-        if (FPSCounter.instance.CurrentFPS > 60)
+        if (FPSCounter.instance.CurrentFPS >= 60)
         {
             diff = 0.08f;
-        }else if (FPSCounter.instance.CurrentFPS < 60 && FPSCounter.instance.CurrentFPS > 15)
+        }else if (FPSCounter.instance.CurrentFPS < 60 && FPSCounter.instance.CurrentFPS > 26)
         {
-            diff = 0.15f;
+            diff = 0.2f;
         }
-        else if (FPSCounter.instance.CurrentFPS < 15)
+        else if (FPSCounter.instance.CurrentFPS < 26)
         {
             diff = 0.3f;
         }
@@ -196,6 +201,7 @@ public class SnakeHeadMove : MonoBehaviour
             if (snakeVision.seeFood)
             {
                 FoodManager.instance.PickUpFood(snakeVision.food);
+                snakeObject.AddBody(name + "_" + snakeObject.parts.Count, this.transform.localScale, this.transform.position, id, this);
             }
             if (snakeVision.onCollision)
             {
@@ -205,16 +211,45 @@ public class SnakeHeadMove : MonoBehaviour
                     SnakeEnvironment.Singleton.PopUpSnake(body);
                     if (isPlayer)
                     {
-                        isPlayer = false;
-                        PoolManager.instance.DestroyAll();
-                        SnakeEnvironment.Singleton.DestroyAll();
-                        SnakeManager.instance.Init();
+                        Dead();
 
                         return;
                     }
                 }
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<SnakeBody>() == null)
+        {
+            return;
+        }
+        int other_id = other.GetComponent<SnakeBody>().id;
+        if (other_id != snakeObject.id)
+        {
+            //Debug.Log("Muerto");
+            foreach (GameObject body in bodyList)
+            {
+                //body.gameObject.SetActive(false);
+                SnakeEnvironment.Singleton.PopUpSnake(body);
+                if (isPlayer)
+                {
+                    Dead();
+
+                    return;
+                }
+            }
+        }
+    }
+    private void Dead()
+    {
+        isPlayer = false;
+        snakeObject.id = 0;
+        PoolManager.instance.DestroyAll();
+        SnakeEnvironment.Singleton.DestroyAll();
+        SnakeManager.instance.Init();
     }
 
 }

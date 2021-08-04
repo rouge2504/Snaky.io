@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SnakeBody : MonoBehaviour
 {
-    void OnBecameInvisible()
+    public int id;
+    public float frequency = 0.6f;
+    public float speed = 16f;
+    public float amplitude = 0.06f; 
+    private void Update()
     {
-        Debug.Log("Object is no longer visible");
-    }
-
-    private void OnBecameVisible()
-    {
-        Debug.Log("Object is visible");
+        //float scale = amplitude * Mathf.Sin(Time.deltaTime * speed) * frequency;
+        //this.transform.localScale = new Vector3(scale, this.transform.localScale.y, this.transform.localScale.z);
     }
 }

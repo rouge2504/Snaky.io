@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GameConstants
 {
-    public const int TOTAL_SNAKES = 30;
-    public const float VISION_SNAKE = 0.1f;
+    public const int TOTAL_SNAKES = 80;
+    public const float VISION_SNAKE = 0.2f;
     public const float VISION_FOOD = 0.5F;
     public const float VIS_DIST = 4;
     public const float VIS_ANGLE = 30;
@@ -29,7 +29,7 @@ public class GameConstants
     {
         get
         {
-            return Random.Range(8, 20);
+            return Random.Range(8, 40);
         }
     }
 }

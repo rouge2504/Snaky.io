@@ -16,7 +16,7 @@ public class SnakeManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        InvokeRepeating("CheckSpawnSnake", 30f, 5.0f);
+        InvokeRepeating("CheckSpawnSnake", 30f, 40);
         Init();
 
     }
@@ -26,7 +26,7 @@ public class SnakeManager : MonoBehaviour
         GameObject clone = PoolManager.instance.GetHead();
         clone.name = "Player";
         GamePlayManager.instance.player = clone;
-        SnakeEnvironment.Singleton.CreateSnake(clone, 15, true);
+        SnakeEnvironment.Singleton.CreateSnake(clone, 15, true, 0);
         vcam.Follow = clone.transform;
 
         for (int i = 0; i < GameConstants.TOTAL_SNAKES; i++)
@@ -45,7 +45,7 @@ public class SnakeManager : MonoBehaviour
         }
         GameObject clone2 = PoolManager.instance.GetHead();
         clone2.name = "CPU_" + i;
-        SnakeEnvironment.Singleton.CreateSnake(clone2, GameConstants.LENGTH_SNAKE, false);
+        SnakeEnvironment.Singleton.CreateSnake(clone2, GameConstants.LENGTH_SNAKE, false, i + 1);
     }
 
     public Vector3 SetPosition(List<SnakeObject> parts)
@@ -81,7 +81,7 @@ public class SnakeManager : MonoBehaviour
         if (SnakeEnvironment.Singleton.CounterSnake < GameConstants.TOTAL_SNAKES)
         {
             int length = GameConstants.TOTAL_SNAKES - SnakeEnvironment.Singleton.CounterSnake;
-            for (int i = 0; i < length; i++)
+            for (int i = length; i < GameConstants.TOTAL_SNAKES; i++)
             {
                 StartCoroutine(NewSnake(i));
             }
