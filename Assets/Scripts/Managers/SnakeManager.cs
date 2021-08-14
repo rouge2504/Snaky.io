@@ -65,6 +65,8 @@ public class SnakeManager : MonoBehaviour
     void Update()
     {
         counterText.text = SnakeEnvironment.Singleton.CounterSnake + "/" + GameConstants.TOTAL_SNAKES;
+
+        SnakeEnvironment.Singleton.UpdateBuffer();
     }
 
     void CheckSpawnSnake()

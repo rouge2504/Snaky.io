@@ -44,6 +44,7 @@ public class ECSSnake
         mask = null;
         originalSpeedMultiplier = speedMultiplier;
         snakeId = id;
+        
         points = snakePoints;
         snakeName = name;
         this.team = team;

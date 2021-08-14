@@ -7,7 +7,7 @@ public class PoolManager : MonoBehaviour
     public static PoolManager instance;
     public Transform bodyContent;
     public Transform headContent;
-    public Transform foodContent;
+    //public Transform foodContent;
     public List<GameObject> bodySnake = new List<GameObject>();
     public List<GameObject> headSnake = new List<GameObject>();
     public List<GameObject> food = new List<GameObject>();
@@ -37,13 +37,13 @@ public class PoolManager : MonoBehaviour
         }
 
 
-        for (int i = 0; i < foodContent.childCount; i++)
+        /*for (int i = 0; i < foodContent.childCount; i++)
         {
             GameObject _food = foodContent.GetChild(i).gameObject;
             food.Add(foodContent.GetChild(i).gameObject);
             _food.SetActive(false);
 
-        }
+        }*/
     }
 
     public GameObject GetSnake()

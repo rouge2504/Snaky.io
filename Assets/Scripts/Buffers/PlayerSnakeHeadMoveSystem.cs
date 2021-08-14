@@ -13,12 +13,14 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
                                 //   float trueDelta = Time.DeltaTime;
         float3 axis = new float3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float3 trackerNewPos = float3.zero;
+
+        int id = 0;
         //   Debug.Log("Axis : " + axis);
         Entities
             .WithoutBurst()
             .ForEach((ref Translation position, ref Rotation rotation, ref SnakeHeadData snakeHeadData, ref DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakePointsData pointsData, in PlayerData playerData) =>
             {
-
+                id = snakeHeadData.snakeId;
                 if (!snakeHeadData.isDead)
                 {
                     //float3 heading = new float3(axis.x, 0, axis.z);
@@ -79,7 +81,7 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
 
 
             }).Run();
-
+        //Debug.Log(id);
         SnakeSpawner.Instance.playerTracker.transform.position = new Vector3(trackerNewPos.x, trackerNewPos.y, trackerNewPos.z);
         return inputDeps;
     }

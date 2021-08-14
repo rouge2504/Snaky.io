@@ -64,7 +64,7 @@ public class SnakeSpawner : MonoBehaviour
         snakes = new ECSSnake[80];
 
 
-        //StartCoroutine(Create());
+        StartCoroutine(Create());
         //CreateNewSnake(100, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
 
     }
@@ -304,11 +304,12 @@ public class SnakeSpawner : MonoBehaviour
         //  manager.Instantiate(snakePieceEntity,pieces);
         snakeFirstAndLast[0] = snakeHead;
         Entity lastEntity = snakeHead;
+        List<GameObject> body = new List<GameObject>();
         for (int i = 0; i < numberOfPieces; i++)
         {
             // if (snake.isDestroyed)
             //    break;
-
+            body.Add(PoolManager.instance.GetSnake());
             Entity pieceEntity = manager.Instantiate(snakePieceEntity);
             manager.SetComponentData(pieceEntity, new Translation
             {
@@ -370,7 +371,7 @@ public class SnakeSpawner : MonoBehaviour
         snakeFirstAndLast[1] = lastEntity;
 
         // manager.RemoveComponent<SnakePartBuffer>(snakeHead);
-
+        SnakeEnvironment.Singleton.CreateSnake(snakeIndex, body);
         return snakeFirstAndLast;
     }
 

@@ -39,6 +39,49 @@ public sealed class SnakeEnvironment
         snakes.Add(snakeObject);
     }
 
+    public void CreateSnake (int id, List<GameObject> body)
+    {
+        SnakeObject snakeObject = new SnakeObject(id, body);
+        snakes.Add(snakeObject);
+    }
+
+    public void CheckHead(int id, Vector3 position)
+    {
+        SnakeObject snake = snakes.Find(x => x.id == id);
+        if (snake == null)
+        {
+            return;
+        }
+
+        snake.head.transform.position = position;
+
+    }
+
+    public void CheckBodyParts(int id, List<Vector3>buffer)
+    {
+        SnakeObject snake = snakes.Find(x => x.id == id);
+        if (snake == null)
+        {
+            return;
+        }
+        //it -= 1;
+        //snake.body[it].transform.position = position;
+        //snake.bufferPosition[it] = position;
+        snake.bufferPosition = buffer;
+        //snake.bufferPosition.Add(position);
+    }
+
+    public void UpdateBuffer()
+    {
+        foreach(SnakeObject snake in snakes)
+        {
+            for (int i = 0; i < snake.body.Count; i++)
+            {
+                snake.body[i].transform.position = snake.bufferPosition[i];
+            }
+        }
+    }
+
     public SnakeVision GetCollisionWithAnotherSnake(GameObject requestSnake)
     {
         SnakeVision snakeVision = new SnakeVision();
@@ -53,24 +96,6 @@ public sealed class SnakeEnvironment
         {
             if (snake.head.name != temp_snake.head.name)
             {
-
-                /*foreach (GameObject part in temp_snake.parts)
-                {
-                    Vector2 partPosition = new Vector2(part.transform.position.x, part.transform.position.z);
-                    Vector2 direction = headPosition - partPosition;
-                    float angle = Vector2.Angle(direction, part.transform.forward);
-                    if (direction.magnitude < GameConstants.VIS_DIST && angle < GameConstants.VIS_ANGLE)
-                    {
-                        //Debug.Log("Part: " + part.name + " near to me: " + snake.head.name);
-                        snakeVision.seeAnotherSnake = true;
-
-                    }
-                    if (Vector2.Distance(headPosition, partPosition) < GameConstants.VISION_SNAKE)
-                    {
-                        //Debug.Log("Part: " + part.name + " near to: " + snake.head.name);
-                        snakeVision.onCollision = true;
-                    }
-                }*/
 
                 for (int i = 0; i < temp_snake.parts.Count; i++)
                 {
@@ -150,9 +175,21 @@ public class SnakeObject
 {
     public GameObject head;
     public List<GameObject> parts;
+    public List<GameObject> body;
+    public List<Vector3> bufferPosition;
     public string name;
     public int id;
     public int bodyID;
+
+    public SnakeObject(int id, List<GameObject> body)
+    {
+        this.id = id;
+        head = PoolManager.instance.GetHead();
+        name = "Head_" + id;
+        head.name = name;
+        this.body = body;
+        bufferPosition = new List<Vector3>(body.Count);
+    }
 
     public SnakeObject(GameObject snakeHead, int Length, bool isPlayer, int id)
     {

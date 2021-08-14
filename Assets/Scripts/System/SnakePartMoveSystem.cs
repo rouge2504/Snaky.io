@@ -15,7 +15,7 @@ public class SnakePartMoveSystem : JobComponentSystem
         var jobHandle = Entities
             .ForEach((DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakeHeadData headData) =>
             {
-
+                System.Collections.Generic.List<Vector3> bufferPosition = new System.Collections.Generic.List<Vector3>();
                 for (int x = 1; x < snakeParts.Length; x++)
                 {
                     float diff = headData.headDiff;
@@ -24,7 +24,8 @@ public class SnakePartMoveSystem : JobComponentSystem
                     SnakePartBuffer buffer = snakeParts[x];
                     buffer.savedPosition = math.lerp(snakeParts[x].savedPosition, snakeParts[x - 1].savedPosition, diff);
                     snakeParts[x] = buffer;
-
+                    bufferPosition.Add(buffer.savedPosition);
+                    SnakeEnvironment.Singleton.CheckBodyParts(headData.snakeId, bufferPosition);
                 }
             
             }).Schedule(inputDeps);

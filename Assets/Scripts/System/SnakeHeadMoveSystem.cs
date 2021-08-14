@@ -11,11 +11,14 @@ public class SnakeHeadMoveSystem : JobComponentSystem
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         float deltaTime = 0.038f;// Time.DeltaTime;
-     //   float rotationSpeed = 3f;
-     //   float speed = 20f;
+                                 //   float rotationSpeed = 3f;
+                                 //   float speed = 20f;
+        int id = 0;
         Entities
             .WithoutBurst()
         .ForEach((ref Translation position,ref Rotation rotation,ref SnakeHeadData snakeHeadData, ref DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakeHeadTargetData targetData) =>{
+            id = snakeHeadData.snakeId;
+            SnakeEnvironment.Singleton.CheckHead(id, position.Value);
             if (!snakeHeadData.isBabySnake)
             {
                 if (!snakeHeadData.isDead)

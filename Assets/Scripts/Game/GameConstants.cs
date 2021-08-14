@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameConstants
 {
-    public const int TOTAL_SNAKES = 40;
+    public const int TOTAL_SNAKES = 10;
     public const float VISION_SNAKE = 0.2f;
     public const float VISION_FOOD = 0.5F;
     public const float VIS_DIST = 4;
