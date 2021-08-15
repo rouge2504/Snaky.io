@@ -61,7 +61,7 @@ public class SnakeSpawner : MonoBehaviour
         playerSnakeHeadEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerSnakeHeadPrefab, settings);
 
         
-        snakes = new ECSSnake[80];
+        snakes = new ECSSnake[GameConstants.TOTAL_SNAKES];
 
 
         StartCoroutine(Create());
@@ -73,7 +73,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(100, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
+        CreateNewSnake(1000, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
 
     }
 
@@ -309,8 +309,10 @@ public class SnakeSpawner : MonoBehaviour
         {
             // if (snake.isDestroyed)
             //    break;
-            body.Add(PoolManager.instance.GetSnake());
-            Entity pieceEntity = manager.Instantiate(snakePieceEntity);
+            /*GameObject temp = PoolManager.instance.GetSnake();
+            temp.name = "Body_" + snakeIndex + "_" + i;
+            body.Add(temp);*/
+        Entity pieceEntity = manager.Instantiate(snakePieceEntity);
             manager.SetComponentData(pieceEntity, new Translation
             {
                 Value = spawnPos

@@ -91,7 +91,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8087145332864739337}
   - component: {fileID: 4651307838988530133}
-  - component: {fileID: 130741232063392767}
   - component: {fileID: 1296109006242363882}
   - component: {fileID: 2648926355947874802}
   - component: {fileID: 858505418848354533}
@@ -154,25 +153,6 @@ MonoBehaviour:
   teamId: 0
   isDuelMode: 0
   isBabySnake: 0
---- !u!114 &130741232063392767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3378209479053320499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c8884e304ad8f438a98eecd6cc16d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snakeId: 0
-  pieceIndex: 0
-  positionToMove:
-    x: 0
-    y: 0
-    z: 0
-  teamId: 0
 --- !u!114 &1296109006242363882
 MonoBehaviour:
   m_ObjectHideFlags: 0

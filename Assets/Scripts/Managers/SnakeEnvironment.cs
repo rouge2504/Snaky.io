@@ -1,11 +1,26 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public sealed class SnakeEnvironment
 {
     private static SnakeEnvironment instance;
     private List<SnakeObject> snakes = new List<SnakeObject>();
+    private List<Vector3> bufferTemp = new List<Vector3>();
     
+    public List<Vector3> BufferTemp
+    {
+        get
+        {
+            return bufferTemp;
+        }
+
+        set
+        {
+            bufferTemp = value;
+        }
+    }
     public int CounterSnake
     {
         get
@@ -57,27 +72,64 @@ public sealed class SnakeEnvironment
 
     }
 
-    public void CheckBodyParts(int id, List<Vector3>buffer)
+    public void CheckBodyParts(int id, List<Vector3> buffer)
     {
         SnakeObject snake = snakes.Find(x => x.id == id);
+
         if (snake == null)
         {
             return;
         }
-        //it -= 1;
-        //snake.body[it].transform.position = position;
-        //snake.bufferPosition[it] = position;
         snake.bufferPosition = buffer;
-        //snake.bufferPosition.Add(position);
     }
 
     public void UpdateBuffer()
     {
         foreach(SnakeObject snake in snakes)
         {
-            for (int i = 0; i < snake.body.Count; i++)
+            /*for (int i = 0; i < snake.body.Count; i++)
             {
                 snake.body[i].transform.position = snake.bufferPosition[i];
+            }*/
+            SnakeObject snakeTemp = snakes.Find(x => x.head.name == snake.name);
+            SnakeVision snakeVision = new SnakeVision();
+            Vector2 headPosition = new Vector2(snakeTemp.head.transform.position.x, snakeTemp.head.transform.position.z);
+            if (snakeTemp == null)
+            {
+                return;
+            }
+            foreach (SnakeObject temp_snake in snakes)
+            {
+                if (snake.head.name != temp_snake.head.name)
+                {
+
+                    for (int i = 0; i < snake.bufferPosition.Count; i++)
+                    {
+                        Vector2 partPosition = new Vector2(snake.bufferPosition[i].x, snake.bufferPosition[i].z);
+                        float x = 0;
+                        float z = 0;
+                        if ((i + 1) < snake.bufferPosition.Count)
+                        {
+                            x = (snake.bufferPosition[i].x + snake.bufferPosition[i].x) / 2;
+                            z = (snake.bufferPosition[i].z + snake.bufferPosition[i].z) / 2;
+                        }
+
+                        Vector2 midlePosition = new Vector2(x, z);
+                        Vector2 direction = headPosition - partPosition;
+                        float angle = Vector2.Angle(direction, snake.head.transform.forward/* snake.bufferPosition[i].normalized*/);
+                        if (direction.magnitude < GameConstants.VIS_DIST && angle < GameConstants.VIS_ANGLE)
+                        {
+                            //Debug.Log("Part: " + temp_snake.head.name + " near to me: " + snake.head.name);
+                            //snakeVision.seeAnotherSnake = true;
+
+                        }
+                        if (Vector2.Distance(headPosition, partPosition) < GameConstants.VISION_SNAKE || Vector2.Distance(headPosition, midlePosition) < GameConstants.VISION_SNAKE)
+                        {
+                            Debug.Log("Part: " + temp_snake.head.name + " near to die: " + snake.head.name);
+                            //snakeVision.onCollision = true;
+                        }
+                    }
+                }
             }
         }
     }

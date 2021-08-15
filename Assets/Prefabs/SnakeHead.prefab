@@ -496,7 +496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1482361556844184716}
   - component: {fileID: 2604747425992039760}
-  - component: {fileID: 7311968221754181498}
   - component: {fileID: 8454835847818794351}
   - component: {fileID: 4642024096359089527}
   - component: {fileID: 8017302403676941408}
@@ -560,25 +559,6 @@ MonoBehaviour:
   teamId: 0
   isDuelMode: 0
   isBabySnake: 0
---- !u!114 &7311968221754181498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5352782905127751094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c8884e304ad8f438a98eecd6cc16d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snakeId: 0
-  pieceIndex: 0
-  positionToMove:
-    x: 0
-    y: 0
-    z: 0
-  teamId: 0
 --- !u!114 &8454835847818794351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccea9ea98e38942e0b0938c27ed1903e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MotionType: 2
+  m_MotionType: 1
   m_Smoothing: 0
   m_Mass: 1
   m_LinearDamping: 0.01
@@ -745,9 +725,9 @@ MonoBehaviour:
       m_Override: 0
       m_Value:
         Category00: 0
-        Category01: 0
+        Category01: 1
         Category02: 0
-        Category03: 1
+        Category03: 0
         Category04: 0
         Category05: 0
         Category06: 0
@@ -779,10 +759,10 @@ MonoBehaviour:
     m_CollidesWithCategories:
       m_Override: 0
       m_Value:
-        Category00: 0
-        Category01: 1
-        Category02: 1
-        Category03: 0
+        Category00: 1
+        Category01: 0
+        Category02: 0
+        Category03: 1
         Category04: 0
         Category05: 0
         Category06: 0
