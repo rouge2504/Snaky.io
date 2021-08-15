@@ -35,8 +35,8 @@ public class SnakeManager : MonoBehaviour
         {
             yield break;
         }
-     
-        SnakeSpawner.Instance.CreateNewSnake(100, "CPU_" + i, Vector3.zero, SnakeSpawner.Instance.selectedColorTemplate, null, false, "");
+        SnakeSpawner.Instance.CreateNewSnake(Random.Range(50, 1000), "CPU_" + i, Vector3.zero, SnakeSpawner.Instance.selectedColorTemplate, null, false, "");
+        //SnakeSpawner.Instance.CreateNewSnake(100, "CPU_" + i, Vector3.zero, SnakeSpawner.Instance.selectedColorTemplate, null, false, "");
     }
 
     public Vector3 SetPosition(List<SnakeObject> parts)

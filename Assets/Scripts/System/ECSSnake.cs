@@ -159,10 +159,11 @@ public class ECSSnake
 
     public Material GetNextColor()
     {
-        int colorLength = colorTempMats.Length;
+        /*int colorLength = colorTempMats.Length;
         nextColor++;
         int colorToChoose = nextColor % colorLength;
-        return colorTempMats[colorToChoose];
+        return colorTempMats[colorToChoose];*/
+        return SnakeSpawner.Instance.testMaterial;
     }
 
     public void DecreaseNextColor(int num)
@@ -336,20 +337,6 @@ public class ECSSnake
         }
 
        
-      //  referenceScale = scale;// Mathf.Lerp(referenceScale, scale, Time.deltaTime * 1);
-      /*  if (1 + scalechange * scaleOffset < SnakeSpawner.Instance.maxSnakeScale)
-        {
-            scale = (float)points / pointsForScale;
-            scale *= 0.1f;
-          //  float newdistance = 1 + scale;
-           // pieceDistanceOffset = newdistance;  // Mathf.Lerp(pieceDistanceOffset, newdistance,Time.deltaTime*1);
-        }
-        else
-        {
-            scale = (SnakeSpawner.Instance.maxSnakeScale - 1) / scaleOffset;
-            scale *= 0.1f;
-          //  pieceDistanceOffset = 1 + scale;
-        }*/
         return scale;
     }
 

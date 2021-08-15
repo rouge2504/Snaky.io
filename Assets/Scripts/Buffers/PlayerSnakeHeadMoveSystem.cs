@@ -39,7 +39,7 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
 
                     if (!snakeHeadData.isDuelMode)
                     {
-                        if (math.distance(position.Value, float3.zero) > 350f)
+                        if (math.distance(position.Value, float3.zero) > GameConstants.FIELD_SCALE)
                         {
                             heading = float3.zero - position.Value;
 

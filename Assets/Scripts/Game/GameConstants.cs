@@ -11,6 +11,7 @@ public class GameConstants
     public const float OFFSET_BODY_Y_POSITION = 0.02f;
     public const float ROTATION_IA = 1F;
     public const float OFFSET_FIELD = 10F;
+    public const float FIELD_SCALE = 1000F;
     public static float ROTATION_SPEED_IA {
         get {
             return Random.Range(40, 350);
@@ -33,7 +34,7 @@ public class GameConstants
         }
     }
 
-    public static float MAXSNAKESCALE = 100F;
+    public static float MAXSNAKESCALE = 100000;
 
     public static float SNAKE_HEAD_SCALE = 10;
 

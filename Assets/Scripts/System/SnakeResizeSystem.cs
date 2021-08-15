@@ -84,7 +84,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 EntityManager.SetComponentData(newEntity, new Translation { Value = lastEntityPos });
                                 EntityManager.AddComponentData(newEntity, new NonUniformScale
                                 {
-                                    Value = new float3(1, 1, 1)
+                                    Value = new float3(GameConstants.SNAKE_HEAD_SCALE, GameConstants.SNAKE_HEAD_SCALE, GameConstants.SNAKE_HEAD_SCALE)
                                 });
                                 EntityManager.SetComponentData(newEntity, new PieceData
                                 {
@@ -96,7 +96,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 EntityManager.SetComponentData(newEntity, new PieceScaleData
                                 {
                                     pieceIndex = (lastPieceIndex + x),
-                                    scaleData = 1f
+                                    scaleData = GameConstants.SNAKE_HEAD_SCALE
                                 });
                                 EntityManager.SetComponentData(newEntity, new PieceNodeData
                                 {
