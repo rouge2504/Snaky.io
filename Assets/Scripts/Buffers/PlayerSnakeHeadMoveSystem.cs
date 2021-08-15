@@ -3,7 +3,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerSnakeHeadMoveSystem : JobComponentSystem
 {
@@ -11,7 +11,7 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
     {
         float deltaTime = 0.04f;// UnityEngine.Time.deltaTime;
                                 //   float trueDelta = Time.DeltaTime;
-        float3 axis = new float3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        float3 axis = new float3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical"));
         float3 trackerNewPos = float3.zero;
 
         int id = 0;

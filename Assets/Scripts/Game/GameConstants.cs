@@ -11,7 +11,7 @@ public class GameConstants
     public const float OFFSET_BODY_Y_POSITION = 0.02f;
     public const float ROTATION_IA = 1F;
     public const float OFFSET_FIELD = 10F;
-    public const float FIELD_SCALE = 1000F;
+    public const float FIELD_SCALE = 500;
     public static float ROTATION_SPEED_IA {
         get {
             return Random.Range(40, 350);

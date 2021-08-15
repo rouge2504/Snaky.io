@@ -120,7 +120,7 @@ public class FoodSpawner : MonoBehaviour
             });
             manager.SetComponentData(food, new FoodData
             {
-                foodValue = (int)(5 * scale),
+                foodValue = (int)(5 * (scale / 1000)),
                 shouldDestroy = false,
                 isNewSpawn = true,
                 absorbed = false,

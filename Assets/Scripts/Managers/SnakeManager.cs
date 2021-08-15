@@ -7,12 +7,13 @@ using UnityEngine.UI;
 public class SnakeManager : MonoBehaviour
 {
     public static SnakeManager instance;
+    public bool isLoaded = false;
     public Text counterText;
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        InvokeRepeating("CheckSpawnSnake", 30f, 40);
+        //InvokeRepeating("CheckSpawnSnake", 30f, 40);
         Init();
 
     }
@@ -20,7 +21,7 @@ public class SnakeManager : MonoBehaviour
     public void Init()
     {
 
-
+        //Population.instance.Initialize();
         for (int i = 0; i < GameConstants.TOTAL_SNAKES; i++)
         {
             StartCoroutine(NewSnake(i));

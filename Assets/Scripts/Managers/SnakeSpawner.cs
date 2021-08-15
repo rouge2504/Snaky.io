@@ -73,7 +73,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(1000, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
+        CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
 
     }
 
@@ -82,13 +82,22 @@ public class SnakeSpawner : MonoBehaviour
         int snakeNum = GetEmptySnakeArrayPos();
         ECSSnake newSnake = new ECSSnake(snakeNum, name, snakeSize, position, colortemp, maskSelected, isPlayer, team, isBabySnake);
         //  numOfSnake++;
-        Debug.Log("Snake num index chosen : " + snakeNum);
+        //Debug.Log("Snake num index chosen : " + snakeNum);
         snakes[snakeNum] = newSnake;
 
         if (isPlayer)
         {
             playerSnake = newSnake;
             camerManager.playerSnake = playerSnake;
+        }
+    }
+
+    public void GetPlayerDead(int id)
+    {
+        if (id == playerID)
+        {
+            print("muerto player");
+            CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
         }
     }
 
@@ -470,4 +479,9 @@ public class SnakeSpawner : MonoBehaviour
 
         // snakes.Remove(snake);
     }
+
+    public void FixedUpdate()
+    {
+    }
+    
 }

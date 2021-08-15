@@ -61,7 +61,7 @@ public class SnakeCollisionSystem : JobComponentSystem
                                             component.isDead = true;
                                             component.shouldDestroy = true;// foodComponent.foodValue;
                                             snakeHeadDataGroup[dynamicEntity] = component;
-                                    Debug.Log("muerto");
+                                   // Debug.Log("muerto");
                                 }
                             }
                                 }

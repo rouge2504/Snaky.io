@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public sealed class SnakeEnvironment
 {
+    public enum snakeType { small, medium, big, reallybig, superbig };
     private static SnakeEnvironment instance;
     private List<SnakeObject> snakes = new List<SnakeObject>();
     private List<Vector3> bufferTemp = new List<Vector3>();

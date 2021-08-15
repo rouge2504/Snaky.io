@@ -54,7 +54,7 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
                        headData.shouldDestroy = false;
                        SnakeSpawner.Instance.snakes[headData.snakeId].sprinting = false;
                       SnakeSpawner.Instance.snakes[headData.snakeId].isDuelModeDestroyed = true;
-
+                   SnakeSpawner.Instance.GetPlayerDead(headData.snakeId);
 
 
                }

@@ -273,9 +273,9 @@ MonoBehaviour:
     y: 0
     z: 0
   m_PrimitiveSize:
-    x: 0.24
-    y: 0.24
-    z: 0.24
+    x: 0.4
+    y: 0.4
+    z: 0.4
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -283,15 +283,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 0.24
-    Radius: 0.12
+    Height: 0.4
+    Radius: 0.2
     Axis: 2
   m_Cylinder:
-    Height: 0.24
-    Radius: 0.12
+    Height: 0.4
+    Radius: 0.2
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 0.12
+  m_SphereRadius: 0.2
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015
