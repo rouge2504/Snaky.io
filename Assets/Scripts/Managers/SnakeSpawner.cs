@@ -186,7 +186,7 @@ public class SnakeSpawner : MonoBehaviour
                 teamid = -1;
                 break;
         }
-        Debug.Log("Team id : " + teamid);
+        //Debug.Log("Team id : " + teamid);
 
         /*if (isBaby)
         {

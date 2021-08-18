@@ -65,7 +65,7 @@ public class ECSSnake
         }
         
         snakePieces = GetSnakeParts();
-        Debug.Log(snakePieces);
+        //Debug.Log(snakePieces);
         if (SnakeSpawner.Instance.playerSnake != null)
         {
             if (spawnPos == Vector3.zero)
