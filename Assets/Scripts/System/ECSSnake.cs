@@ -18,7 +18,7 @@ public class ECSSnake
     int startingPoints = 50; // You can't go lower than this value
     float pieceForPoints = 19f; // Each 50p gets 1 piece //18
     public float referenceScale = 1f;
-    int pointsForScale = 500; // Each 250p the scale increases 
+    int pointsForScale = 50; // Each 250p the scale increases 
     float scaleOffset = 0.04f;
     public float MOVlerpTime = 0.25f;
     public int snakePieces;
@@ -331,9 +331,9 @@ public class ECSSnake
         float scalechange = (float)points / pointsForScale;
 
         float scale = 1 + scalechange * scaleOffset;
-        if (scale > GameConstants.MAXSNAKESCALE)
+        if (scale > GameConstants.MAXSNAKESCALE/*10*/)
         {
-            scale = GameConstants.MAXSNAKESCALE;
+            scale = GameConstants.MAXSNAKESCALE /*10*/;
         }
 
        

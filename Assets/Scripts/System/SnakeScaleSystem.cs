@@ -24,6 +24,7 @@ public class SnakeScaleSystem : JobComponentSystem
                                           ForEach((ref PieceScaleData data) =>
                                           {
                                               data.scaleData = nscale;
+                                              //data.scaleData = 10000;
                                               
 
                                               //scale.Value = new float3(nscale, 1f, nscale);
