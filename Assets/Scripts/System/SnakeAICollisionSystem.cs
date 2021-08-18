@@ -80,7 +80,7 @@ public class SnakeAICollisionSystem : JobComponentSystem
                                 component2.isChase = true;
                                 component2.isEscape = false;
                             }
-                            else if (component2.counter % 4 == 0)
+                            else if (component2.counter % 2 == 0)
                             {
                                 component2.isEscape = true;
                                 component2.isChase = false;

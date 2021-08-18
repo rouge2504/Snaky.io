@@ -469,6 +469,7 @@ public class SnakeSpawner : MonoBehaviour
 
     public void RemoveSnake(ECSSnake snake)
     {
+        SnakeEnvironment.Singleton.PopUpSnake(snake.snakeId, snakes[snake.snakeId].snakePieces);
         if (!snake.defaultMask)
         {
             DestroyImmediate(snake.maskMat, true);
@@ -476,7 +477,6 @@ public class SnakeSpawner : MonoBehaviour
 
         DestroyImmediate(snake.sprintMat, true);
         snakes[snake.snakeId] = null;
-
         // snakes.Remove(snake);
     }
 

@@ -9,6 +9,8 @@ public sealed class SnakeEnvironment
     private static SnakeEnvironment instance;
     private List<SnakeObject> snakes = new List<SnakeObject>();
     private List<Vector3> bufferTemp = new List<Vector3>();
+
+    public int counterPiece;
     
     public List<Vector3> BufferTemp
     {
@@ -197,6 +199,13 @@ public sealed class SnakeEnvironment
         snakes.Remove(snake);
     }
 
+    public void PopUpSnake(int id, int pieces)
+    {
+        SnakeObject snake = snakes.Find(x => x.id == id);
+        counterPiece -= pieces;
+        snakes.Remove(snake);
+    }
+
     public void DestroyAll()
     {
         snakes.Clear();
@@ -237,10 +246,10 @@ public class SnakeObject
     public SnakeObject(int id, List<GameObject> body)
     {
         this.id = id;
-        head = PoolManager.instance.GetHead();
+        //head = PoolManager.instance.GetHead();
         name = "Head_" + id;
-        head.name = name;
-        this.body = body;
+        //head.name = name;
+        //this.body = body;
         bufferPosition = new List<Vector3>(body.Count);
     }
 

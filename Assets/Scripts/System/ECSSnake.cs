@@ -44,7 +44,7 @@ public class ECSSnake
         mask = null;
         originalSpeedMultiplier = speedMultiplier;
         snakeId = id;
-        
+        SnakeEnvironment.Singleton.counterPiece += snakePoints;
         points = snakePoints;
         snakeName = name;
         this.team = team;

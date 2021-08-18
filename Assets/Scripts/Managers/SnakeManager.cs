@@ -13,7 +13,7 @@ public class SnakeManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        //InvokeRepeating("CheckSpawnSnake", 30f, 40);
+        InvokeRepeating("CheckSpawnSnake", 5, 10);
         Init();
 
     }
@@ -65,7 +65,8 @@ public class SnakeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        counterText.text = SnakeEnvironment.Singleton.CounterSnake + "/" + GameConstants.TOTAL_SNAKES;
+        counterText.text = SnakeEnvironment.Singleton.CounterSnake + "/" + GameConstants.TOTAL_SNAKES + "\n" +
+            "Total Pieces: " + SnakeEnvironment.Singleton.counterPiece;
 
         //SnakeEnvironment.Singleton.UpdateBuffer();
     }
@@ -75,7 +76,7 @@ public class SnakeManager : MonoBehaviour
         if (SnakeEnvironment.Singleton.CounterSnake < GameConstants.TOTAL_SNAKES)
         {
             int length = GameConstants.TOTAL_SNAKES - SnakeEnvironment.Singleton.CounterSnake;
-            for (int i = length; i < GameConstants.TOTAL_SNAKES; i++)
+            for (int i = 0; i < length; i++)
             {
                 StartCoroutine(NewSnake(i));
             }

@@ -18,7 +18,7 @@ public class SnakeHeadMoveSystem : JobComponentSystem
             .WithoutBurst()
         .ForEach((ref Translation position,ref Rotation rotation,ref SnakeHeadData snakeHeadData, ref DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakeHeadTargetData targetData) =>{
             id = snakeHeadData.snakeId;
-            SnakeEnvironment.Singleton.CheckHead(id, position.Value);
+            //SnakeEnvironment.Singleton.CheckHead(id, position.Value);
             if (!snakeHeadData.isBabySnake)
             {
                 if (!snakeHeadData.isDead)
@@ -75,7 +75,7 @@ public class SnakeHeadMoveSystem : JobComponentSystem
                         }
                     }
 
-                        if (math.distance(position.Value, float3.zero) > 1000)
+                        if (math.distance(position.Value, float3.zero) > GameConstants.FIELD_SCALE)
                         {
                             targetData.foodTarget = float3.zero;
                             targetData.isReachedPosition = false;
