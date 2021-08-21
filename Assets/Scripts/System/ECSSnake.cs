@@ -44,7 +44,7 @@ public class ECSSnake
         mask = null;
         originalSpeedMultiplier = speedMultiplier;
         snakeId = id;
-        SnakeEnvironment.Singleton.counterPiece += snakePoints;
+        //SnakeEnvironment.Singleton.counterPiece += snakePoints;
         points = snakePoints;
         snakeName = name;
         this.team = team;
@@ -72,7 +72,7 @@ public class ECSSnake
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    var randomSpawnCircleVector2 = UnityEngine.Random.insideUnitCircle * 350;
+                    var randomSpawnCircleVector2 = UnityEngine.Random.insideUnitCircle * (GameConstants.FIELD_SCALE);
                     var playerHeadSpot = new Vector2(SnakeSpawner.Instance.playerTracker.transform.position.x, SnakeSpawner.Instance.playerTracker.transform.position.z);
                     if (Vector2.Distance(randomSpawnCircleVector2, playerHeadSpot) > 50f)
                     {
@@ -88,7 +88,7 @@ public class ECSSnake
         {
             if (spawnPos == Vector3.zero)
             {
-                var randomSpawnCircleVector2 = UnityEngine.Random.insideUnitCircle * 350;
+                var randomSpawnCircleVector2 = UnityEngine.Random.insideUnitCircle * (GameConstants.FIELD_SCALE);
                 spawnPos = new Vector3(randomSpawnCircleVector2.x, 0,
                     randomSpawnCircleVector2.y);
             }
@@ -247,7 +247,7 @@ public class ECSSnake
     bool isBoosted = false;
     public void SpeedBoost()
     {
-        speedMultiplier = 2;
+        speedMultiplier = 5;
         SetSnakePieceMoveLerp();
         SnakeSpawner.Instance.UpdateSnakeHead(this);
     }
@@ -267,7 +267,7 @@ public class ECSSnake
             if (speedMultiplier > 1f)
                 MOVlerpTime = .45f;
             else
-                MOVlerpTime = .35f;
+                MOVlerpTime = .15f;
         }
         else
         {

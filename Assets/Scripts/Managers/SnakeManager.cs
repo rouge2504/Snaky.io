@@ -13,9 +13,9 @@ public class SnakeManager : MonoBehaviour
     void Start()
     {
         instance = this;
-        InvokeRepeating("CheckSpawnSnake", 5, 10);
-        Init();
-
+        //InvokeRepeating("CheckSpawnSnake", 5, 10);
+        //Init();
+        Population.instance.Initialize();
     }
 
     public void Init()
@@ -83,4 +83,5 @@ public class SnakeManager : MonoBehaviour
         }
 
     }
+
 }

@@ -15,7 +15,8 @@ public class SnakeSpawner : MonoBehaviour
     public ECSSnake[] snakes;
     public ECSSnake playerSnake;
     public GameObject playerTracker;
-    public SpawnPoint[] aiSpawnPoints;
+    public Transform SpawnPointAIContent;
+    private SpawnPoint[] aiSpawnPoints;
     public UnityEngine.Material sprintMat;
     public UnityEngine.Material solidColor;
     public UnityEngine.Material transparentColor;
@@ -63,10 +64,54 @@ public class SnakeSpawner : MonoBehaviour
         
         snakes = new ECSSnake[GameConstants.TOTAL_SNAKES];
 
-
-        StartCoroutine(Create());
+        aiSpawnPoints = new SpawnPoint[SpawnPointAIContent.childCount];
+        for (int i = 0; i < SpawnPointAIContent.childCount; i++)
+        {
+            aiSpawnPoints[i] = SpawnPointAIContent.GetChild(i).GetComponent<SpawnPoint>();
+        }
+        //StartCoroutine(Create());
         //CreateNewSnake(100, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
 
+
+    }
+
+    public void DestroyAllSnakes()
+    {
+        StopAllCoroutines();
+        foreach (ECSSnake snake in snakes)
+        {
+            if (snake != null)
+            {
+                snake.dontSpawnFood = true;
+
+                DestroySnake(snake);
+            }
+        }
+        //SetupNewColorTemplatesAndMaterialsForBots();
+    }
+
+    public void DestroySnake(ECSSnake snake)
+    {
+        SnakeHeadData headData = manager.GetComponentData<SnakeHeadData>(snake.snakeHead);
+
+        headData.shouldDestroy = true;
+        headData.isDead = true;
+
+        manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
+
+    }
+
+    public void StartSprint(ECSSnake snake)
+    {
+        if (!snake.sprinting)
+        {
+            StartCoroutine(snake.sprint());
+        }
+    }
+
+    public void StartGameWithAI()
+    {
+        StartCoroutine(Create());
     }
 
     IEnumerator Create()
@@ -97,7 +142,8 @@ public class SnakeSpawner : MonoBehaviour
         if (id == playerID)
         {
             print("muerto player");
-            CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
+            //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
+            GameManager.instance.LooseWithAI();
         }
     }
 
@@ -148,8 +194,8 @@ public class SnakeSpawner : MonoBehaviour
     public Entity[] SpawnSnake(ECSSnake snake, int snakeIndex, int snakeSize, Vector3 spawnPos, bool isPlayer = false, string team = "", bool isBaby = false)
     {
         Entity[] snakeFirstAndLast = new Entity[2];
-        float x = Mathf.Sin(snakeIndex) * UnityEngine.Random.Range(0, 1000);
-        float z = Mathf.Cos(snakeIndex) * UnityEngine.Random.Range(0, 1000);
+        float x = Mathf.Sin(snakeIndex) * UnityEngine.Random.Range(0, GameConstants.FIELD_SCALE);
+        float z = Mathf.Cos(snakeIndex) * UnityEngine.Random.Range(0, GameConstants.FIELD_SCALE);
         int numberOfPieces = snakeSize;
         if (isPlayer)
         {
@@ -224,7 +270,7 @@ public class SnakeSpawner : MonoBehaviour
             speed = 25,
             snakeRotationSpeed = 8,
             speedMultiplier = 1,
-            headDiff = isPlayer ? GameConstants.SNAKE_DIFF : 0.25f,
+            headDiff = /*isPlayer ? GameConstants.SNAKE_DIFF : 0.25f*/ GameConstants.SNAKE_DIFF,
             shouldDestroy = false,
             isDead = false,
             isImmune = true,
@@ -304,6 +350,7 @@ public class SnakeSpawner : MonoBehaviour
         DynamicBuffer<SnakePartBuffer> snakePartBufferList = manager.AddBuffer<SnakePartBuffer>(snakeHead);
         snakePartBufferList.Add(new SnakePartBuffer { savedPosition = spawnPos });
 
+        SnakeEnvironment.Singleton.counterPiece += numberOfPieces;
         for (int u = 0; u < numberOfPieces; u++)
         {
             snakePartBufferList.Add(new SnakePartBuffer { savedPosition = spawnPos });
@@ -456,7 +503,7 @@ public class SnakeSpawner : MonoBehaviour
         headData.speedMultiplier = snake.speedMultiplier;
         headData.speed = snake.speed;
         headData.speedMultiplier = snake.speedMultiplier;
-        headData.headDiff = snake.MOVlerpTime;
+        headData.headDiff = snake.MOVlerpTime; /*GameConstants.SNAKE_DIFF;*/
         manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
         /* manager.SetComponentData(snake.snakeHead, new SnakeHeadData {
                  snakeId = snake.snakeId,

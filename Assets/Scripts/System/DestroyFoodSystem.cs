@@ -61,6 +61,7 @@ public class DestroyFoodSystem : JobComponentSystem
                     {
                         Entity ent= EntityManager.Instantiate(entity);
                         Vector2 rangeVectorRange = UnityEngine.Random.insideUnitCircle * GameConstants.FIELD_SCALE;
+                        SnakeEnvironment.Singleton.counterPiece += 1;
                         if (isDuelMode)
                         {
                             var width = UnityEngine.Random.Range(-screen.x, screen.x);
