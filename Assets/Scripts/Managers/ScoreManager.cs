@@ -22,9 +22,11 @@ public class ScoreManager : MonoBehaviour
         {
             CheckLeaderBoard();
             if (SnakeSpawner.Instance.playerSnake != null)
+            {
                 scoreGame.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
 
-            gameOverScore.points.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
+                gameOverScore.points.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
+            }
         }
     }
 

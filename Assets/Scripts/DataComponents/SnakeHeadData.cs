@@ -5,6 +5,7 @@ using Unity.Mathematics;
 public struct SnakeHeadData : IComponentData
 {
     public int snakeId;
+    public bool isPlayer;
     public float speed;
     public float snakeRotationSpeed;
     public int speedMultiplier;

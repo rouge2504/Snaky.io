@@ -5,7 +5,7 @@ using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Physics;
 
-[UpdateAfter(typeof(SnakeResizeSystem))]
+//[UpdateAfter(typeof(SnakeResizeSystem))]
 public class SnakeScaleSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps)

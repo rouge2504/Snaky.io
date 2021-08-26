@@ -203,12 +203,15 @@ public sealed class SnakeEnvironment
     {
         SnakeObject snake = snakes.Find(x => x.id == id);
         counterPiece -= pieces;
+        Population.instance.realCount--;
         snakes.Remove(snake);
     }
 
     public void DestroyAll()
     {
         snakes.Clear();
+        Population.instance.realCount = 0;
+
     }
 }
 

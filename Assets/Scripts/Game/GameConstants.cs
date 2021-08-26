@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameConstants
 {
-    public const int TOTAL_SNAKES = 80;
+    public static int TOTAL_SNAKES = 80;
     public const float VISION_SNAKE = 0.2f;
     public const float VISION_FOOD = 0.5F;
     public const float VIS_DIST = 4;
@@ -22,7 +22,7 @@ public class GameConstants
     {
         get
         {
-            return Random.Range(2, 20);
+            return Random.Range(2, 5);
         }
     }
 
@@ -38,5 +38,6 @@ public class GameConstants
 
     public readonly static float SNAKE_HEAD_SCALE = 10;
 
-    public static float SNAKE_DIFF = 0.15F;
+    public static float SNAKE_DIFF = 0.20F; //0.20
+
 }

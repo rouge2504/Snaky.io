@@ -35,7 +35,7 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
                     headData.shouldDestroy = false;
                     //headData.isDead = true;
                     SnakeSpawner.Instance.snakes[headData.snakeId].isDestroyed = true;
-
+                    SnakeSpawner.Instance.snakes[headData.snakeId].isPlayerSnake = false;
                     //   ECSSnake snake = SnakeSpawner.Instance.snakes[headData.snakeId];
                     //   SnakeSpawner.Instance.DestroySnake(snake);
                 }

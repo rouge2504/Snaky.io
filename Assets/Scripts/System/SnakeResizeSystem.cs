@@ -29,29 +29,33 @@ public class SnakeResizeSystem : JobComponentSystem
                     int newParts = 0;// snakeHeadParts.snakeParts;
                     if (snakePoints.points > 10000)
                     {
-                        newParts += (int)math.round(650 / (19));
-                        newParts += (int)math.round((1500-650) / (22));
-                        newParts += (int)math.round((5000 - 1500) / (30));
-                        newParts += (int)math.round((10000 - 5000) / (50));
-                        newParts += (int)math.round((snakePoints.points - 10000) / (100));
+                        //newParts += (int)math.round(650 / (19));
+                        //newParts += (int)math.round((1500-650) / (22));
+                        //newParts += (int)math.round((5000 - 1500) / (60));
+                        //newParts += (int)math.round((10000 - 5000) / (50));
+                        //newParts += (int)math.round((snakePoints.points - 10000) / (100));
+                        newParts += (int)math.round(snakePoints.points / (200));
                     }
                     else if (snakePoints.points > 5000&& snakePoints.points <= 10000)
                     {
-                        newParts += (int)math.round(650 / (19));
-                        newParts += (int)math.round((1500 - 650) / (22));
-                        newParts += (int)math.round((5000 - 1500) / (30));
-                        newParts += (int)math.round((snakePoints.points - 5000) / (50));
+                        //newParts += (int)math.round(650 / (19));
+                       // newParts += (int)math.round((1500 - 650) / (22));
+                       // newParts += (int)math.round((5000 - 1500) / (30));
+                        //newParts += (int)math.round((snakePoints.points - 5000) / (50));
+                        newParts += (int)math.round(snakePoints.points / (200));
                     }
                     else if (snakePoints.points > 1500&& snakePoints.points <= 5000)
                     {
-                        newParts += (int)math.round(650 / (19));
-                        newParts += (int)math.round((1500 - 650) / (22));
-                        newParts += (int)math.round((snakePoints.points - 1500) / (30));
+                        //newParts += (int)math.round(650 / (19));
+                        //newParts += (int)math.round((1500 - 650) / (22));
+                        //newParts += (int)math.round((snakePoints.points - 1500) / (30));
+                        newParts += (int)math.round(snakePoints.points / (80));
                     }
                     else if (snakePoints.points > 650&& snakePoints.points <=1500)
                     {
-                        newParts += (int)math.round(650 / (19));
-                        newParts += (int)math.round((snakePoints.points - 650) / (22));
+                        //newParts += (int)math.round(650 / (19));
+                        //newParts += (int)math.round((snakePoints.points - 650) / (22));
+                        newParts += (int)math.round(snakePoints.points / (40));
                     }
                     else
                         newParts = (int)math.round(snakePoints.points / (19));
@@ -72,6 +76,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 snakeParts.Add(new SnakePartBuffer { savedPosition = snakeParts[snakeParts.Length - 1].savedPosition });
 
                             float3 lastEntityPos = EntityManager.GetComponentData<Translation>(lastPart.lastPiece).Value;
+
                             PieceData data = EntityManager.GetComponentData<PieceData>(lastPart.lastPiece);
                             int lastPieceIndex = data.pieceIndex;
                             int lastSnakeId = data.snakeId;
@@ -121,7 +126,8 @@ public class SnakeResizeSystem : JobComponentSystem
 
                                 nLastEntity = newEntity;
                             }
-                            lastPart.lastPiece = nLastEntity;
+                        lastPart.lastPiece = nLastEntity;
+                            
 
                         }
                         else

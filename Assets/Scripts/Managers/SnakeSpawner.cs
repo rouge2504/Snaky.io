@@ -87,6 +87,23 @@ public class SnakeSpawner : MonoBehaviour
                 DestroySnake(snake);
             }
         }
+        Population.instance.realCount = 0;
+        SnakeEnvironment.Singleton.counterPiece = 0;
+        //SetupNewColorTemplatesAndMaterialsForBots();
+    }
+
+    public void DestroyAllSnakes(int it)
+    {
+        StopAllCoroutines();
+        for (int i = it; i < snakes.Length; i++)
+        {
+            if (snakes[i] != null)
+            {
+                snakes[i].dontSpawnFood = true;
+
+                DestroySnake(snakes[i]);
+            }
+        }
         //SetupNewColorTemplatesAndMaterialsForBots();
     }
 
@@ -96,7 +113,7 @@ public class SnakeSpawner : MonoBehaviour
 
         headData.shouldDestroy = true;
         headData.isDead = true;
-
+        SnakeEnvironment.Singleton.PopUpSnake(headData.snakeId, snake.snakePieces);
         manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
 
     }
@@ -116,9 +133,10 @@ public class SnakeSpawner : MonoBehaviour
 
     IEnumerator Create()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
+        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
+        Population.instance.Initialize();
 
     }
 
@@ -267,10 +285,11 @@ public class SnakeSpawner : MonoBehaviour
         manager.SetComponentData(snakeHead, new SnakeHeadData
         {
             snakeId = snakeIndex,
-            speed = 25,
+            speed = 40,
+            isPlayer = isPlayer,
             snakeRotationSpeed = 8,
             speedMultiplier = 1,
-            headDiff = /*isPlayer ? GameConstants.SNAKE_DIFF : 0.25f*/ GameConstants.SNAKE_DIFF,
+            headDiff = /*isPlayer ? GameConstants.SNAKE_DIFF :  (snake.points > 10000) ? 0.003f : GameConstants.SNAKE_DIFF*/ snake.Diff(),
             shouldDestroy = false,
             isDead = false,
             isImmune = true,
@@ -361,6 +380,7 @@ public class SnakeSpawner : MonoBehaviour
         snakeFirstAndLast[0] = snakeHead;
         Entity lastEntity = snakeHead;
         List<GameObject> body = new List<GameObject>();
+        print("Number of piece: " + numberOfPieces);
         for (int i = 0; i < numberOfPieces; i++)
         {
             // if (snake.isDestroyed)
@@ -524,6 +544,7 @@ public class SnakeSpawner : MonoBehaviour
 
         DestroyImmediate(snake.sprintMat, true);
         snakes[snake.snakeId] = null;
+        Population.instance.realCount = 0;
         // snakes.Remove(snake);
     }
 

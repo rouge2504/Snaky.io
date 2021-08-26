@@ -14,7 +14,7 @@ public class SnakePartMoveSystem : JobComponentSystem
     {
        
         var jobHandle = Entities
-            .ForEach((DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakeHeadData headData) =>
+            .ForEach((DynamicBuffer<SnakePartBuffer> snakeParts, ref SnakeHeadData headData, ref NonUniformScale scale) =>
             {
                 //float3[] bufferPosition = new float3[snakeParts.Length];
 
@@ -22,10 +22,17 @@ public class SnakePartMoveSystem : JobComponentSystem
                 for (int x = 1; x < snakeParts.Length; x++)
                 {
                     float diff = headData.headDiff;
+                    if (!headData.isPlayer)
+                    {
+                        diff = 2.3f / scale.Value.x;
+                    }
+
                     if (x == 1)
                         diff *= 2;
                     SnakePartBuffer buffer = snakeParts[x];
-                    buffer.savedPosition = math.lerp(snakeParts[x].savedPosition, snakeParts[x - 1].savedPosition, diff);
+                    float3 index = snakeParts[x].savedPosition;
+                    float3 last =snakeParts[x - 1].savedPosition;
+                    buffer.savedPosition = math.lerp(index, last, diff);
                     snakeParts[x] = buffer;
                     
                 }

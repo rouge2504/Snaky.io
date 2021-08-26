@@ -30,7 +30,11 @@ public class GameManager : MonoBehaviour
 
     public void PlayWithAI()
     {
-        SnakeSpawner.Instance.DestroyAllSnakes();
+        if (SnakeEnvironment.Singleton.CounterSnake > 40)
+        {
+            SnakeSpawner.Instance.DestroyAllSnakes(40);
+        }
+            //SnakeSpawner.Instance.DestroyAllSnakes();
         StartCoroutine(PlayAI());
     }
 

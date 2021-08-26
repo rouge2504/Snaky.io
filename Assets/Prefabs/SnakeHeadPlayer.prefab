@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakeId: 0
+  isPlayer: 0
   speed: 0
   snakeRotationSpeed: 0
   speedMultiplier: 0
@@ -270,12 +271,12 @@ MonoBehaviour:
   m_ShapeType: 2
   m_PrimitiveCenter:
     x: 0
-    y: 0
+    y: 0.105
     z: 0
   m_PrimitiveSize:
-    x: 2.66
-    y: 2.66
-    z: 2.66
+    x: 3.56
+    y: 3.56
+    z: 3.56
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -283,15 +284,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 2.66
-    Radius: 1.33
+    Height: 3.56
+    Radius: 1.78
     Axis: 2
   m_Cylinder:
-    Height: 2.66
-    Radius: 1.33
+    Height: 3.56
+    Radius: 1.78
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 1.33
+  m_SphereRadius: 1.78
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015

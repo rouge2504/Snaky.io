@@ -1,6 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Physics.Authoring;
 using Unity.Transforms;
 using UnityEngine;
 
@@ -18,7 +19,6 @@ public class SnakeSinSystem : JobComponentSystem
        var jobHandle = Entities
             .ForEach((ref NonUniformScale scale, in PieceScaleData data) =>
             {
-               
                 float scaleVal = amplitude * math.sin(((elapsedTime*speed)+ data.pieceIndex)*frequency);
 
                 float tempScale = GameConstants.SNAKE_HEAD_SCALE + ((data.scaleData + scaleVal)); 

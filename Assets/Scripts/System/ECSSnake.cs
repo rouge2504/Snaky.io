@@ -65,7 +65,7 @@ public class ECSSnake
         }
         
         snakePieces = GetSnakeParts();
-        //Debug.Log(snakePieces);
+        Debug.Log(snakePieces);
         if (SnakeSpawner.Instance.playerSnake != null)
         {
             if (spawnPos == Vector3.zero)
@@ -278,6 +278,27 @@ public class ECSSnake
         }
     }
 
+    public float Diff()
+    {
+        float diff = GameConstants.SNAKE_DIFF;
+        if (points > 50000)
+        {
+            diff = 0.030f;
+        }        
+        
+        if (points > 15000 && points < 20000)
+        {
+            diff = 0.050f;
+        }        
+        
+        if (points > 10000 && points < 12000)
+        {
+            diff = 0.060f;
+        }
+
+        return diff;
+    }
+
     public int GetSnakeParts()
     {
         
@@ -285,41 +306,45 @@ public class ECSSnake
         if (points > 10000)
         {
 
-            partsDiff += (int)math.round((650) / (19));
-            partsDiff += Mathf.RoundToInt((1500 - 650) / (22));
-            partsDiff += Mathf.RoundToInt((5000 - 1500) / (30));
-            partsDiff += Mathf.RoundToInt((10000 - 5000) / (50));
-            partsDiff += Mathf.RoundToInt((points - 10000) / (100));
+            //partsDiff += (int)math.round((650) / (19));
+            //partsDiff += Mathf.RoundToInt((1500 - 650) / (22));
+            //partsDiff += Mathf.RoundToInt((5000 - 1500) / (30));
+            //partsDiff += Mathf.RoundToInt((10000 - 5000) / (80));
+            //partsDiff += Mathf.RoundToInt((points - 10000) / (100));
+            partsDiff = 10;
             return partsDiff;// (int)math.round((points) / (30));
         }
-        else if(points > 5000 && points <= 10000)
+        else if (points > 5000 && points <= 10000)
         {
 
-            partsDiff += (int)math.round((650) / (19));
-            partsDiff += Mathf.RoundToInt((1500 - 650) / (22));
-            partsDiff += Mathf.RoundToInt((5000 - 1500) / (30));
-            partsDiff += Mathf.RoundToInt((points - 5000) / (50));
-            return partsDiff;// (int)math.round((points) / (30));
+            //partsDiff += (int)math.round((650) / (19));
+            partsDiff += Mathf.RoundToInt((1500 - 650) / (40));
+            //partsDiff += Mathf.RoundToInt((5000 - 1500) / (30));
+            //partsDiff += Mathf.RoundToInt((points - 5000) / (50));
+            partsDiff = 10;
+            return partsDiff ;// (int)math.round((points) / (30));
         }
-        else if (points > 1500&&points<=5000)
+        else if (points > 1500 && points <= 5000)
         {
 
-            partsDiff += (int)math.round((650) / (19));
-            partsDiff += Mathf.RoundToInt((1500 - 650) / (22));
-            partsDiff += Mathf.RoundToInt((points - 1500) / (30));
-         
+            //partsDiff += (int)math.round((650) / (19));
+            //partsDiff += Mathf.RoundToInt((1500 - 650) / (22));
+            //partsDiff += Mathf.RoundToInt((points - 1500) / (30));
+            partsDiff = 10;
+
             return partsDiff;// (int)math.round((points) / (30));
         }
-        else if (points > 650&&points<=1500)
+        else if (points > 650 && points <= 1500)
         {
             partsDiff += (int)math.round((650) / (19));
-            partsDiff += Mathf.RoundToInt((points-650) / (22));
-            return partsDiff;
+            partsDiff += Mathf.RoundToInt((points - 650) / (22));
+            partsDiff = 2;
+            return partsDiff ;
         }
         else
         {
-            
-            return (int)math.round((points) / (19));
+
+            return (int)math.round((points) / (3));
         }
     }
 
