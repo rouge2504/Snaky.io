@@ -43218,13 +43218,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b26fb6dcc0372b449f59a16030c19ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baby: 13
-  small: 12
-  medium: 13
-  big: 7
+  baby: 25
+  small: 15
+  medium: 9
+  big: 6
   reallybig: 3
   superbig: 2
-  MaxPopulation: 50
+  MaxPopulation: 60
   spawnCircleLenght: 340
   minimalSpawnDistanceToPlayer: 200
   updateScoreFrequency: 0
@@ -68898,8 +68898,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2120063572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -30, z: 0}
-  m_LocalScale: {x: 3000, y: 1, z: 3000}
+  m_LocalPosition: {x: -0.0000024414, y: -29.654, z: 0.0000036621}
+  m_LocalScale: {x: 3040, y: 1.01, z: 3040}
   m_Children:
   - {fileID: 66453143}
   m_Father: {fileID: 0}

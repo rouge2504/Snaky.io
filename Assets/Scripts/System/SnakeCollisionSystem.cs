@@ -56,9 +56,13 @@ public class SnakeCollisionSystem : JobComponentSystem
                                     if (!component.isImmune)
                                     {
                                        
-                                        if (!component.shouldDestroy)
-                                        {
-                                            component.isDead = true;
+                                        if (!component.shouldDestroy && component.snakeId >= 0 && piececomponent.snakeId >= 0)
+                                {
+                                    if (component.isPlayer)
+                                    {
+                                        Debug.Log("Player");
+                                    }
+                                    component.isDead = true;
                                             component.shouldDestroy = true;// foodComponent.foodValue;
                                             snakeHeadDataGroup[dynamicEntity] = component;
                                    // Debug.Log("muerto");

@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class GameConstants
 {
-    public static int TOTAL_SNAKES = 80;
+    public static int TOTAL_SNAKES = 60;
     public const float VISION_SNAKE = 0.2f;
     public const float VISION_FOOD = 0.5F;
     public const float VIS_DIST = 4;
+    public const float SPEED = 30;
     public const float VIS_ANGLE = 30;
     public const float OFFSET_BODY_Y_POSITION = 0.02f;
     public const float ROTATION_IA = 1F;
@@ -38,6 +39,6 @@ public class GameConstants
 
     public readonly static float SNAKE_HEAD_SCALE = 10;
 
-    public static float SNAKE_DIFF = 0.20F; //0.20
+    public static float SNAKE_DIFF = 0.30F; //0.20
 
 }

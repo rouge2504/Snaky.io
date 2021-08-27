@@ -105,13 +105,7 @@ public class Population : MonoBehaviour
         SpawnPopulation();
     }
 
-    public void DestroyAllSnakes()
-    {
-     /*   for (int i = 0; i < allSnakes.Count; i++)
-        {
-            allSnakes[i].gameObject.SetActive(false);
-        }*/
-    }
+
 
     public void SpawnPopulation()
     {
@@ -148,7 +142,7 @@ public class Population : MonoBehaviour
        //     {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
             realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -158,7 +152,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(15000, 20000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    SpawnSnake(Random.Range(35000, 60000), SnakeEnvironment.snakeType.superbig, "");  //10000
             realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -169,7 +163,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(10000, 12000), SnakeEnvironment.snakeType.reallybig, "");
+                    SpawnSnake(Random.Range(15000, 30000), SnakeEnvironment.snakeType.reallybig, "");
             realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -554,6 +548,11 @@ public class Population : MonoBehaviour
 
             
         
+    }
+
+    public void RemoveAllSnakes()
+    {
+
     }
 
     public int GetTotalTeamScore(string team)

@@ -33,7 +33,7 @@ public class SnakePieceDestroySystem : JobComponentSystem
                                         .WithoutBurst()
                                         .WithStructuralChanges()
                                        .WithSharedComponentFilter(new SnakeGroupData { group = snake.snakeId }).
-                                         ForEach((Entity entity, in Translation position) =>
+                                         ForEach((Entity entity, ref PieceData pieceData, in Translation position) =>
                                          {
 
                                              EntityManager.DestroyEntity(entity);
@@ -42,7 +42,7 @@ public class SnakePieceDestroySystem : JobComponentSystem
                                           if (!snake.dontSpawnFood)
                                           {
                                               Entity foodEn = EntityManager.Instantiate(foodEnt);
-                                              float3 randomCircle = UnityEngine.Random.insideUnitSphere * 3;
+                                              float3 randomCircle = UnityEngine.Random.insideUnitSphere * 5;
                                               float3 newPosition = position.Value;//new Vector3(positions[i].x, 0, positions[i].z);
                                               newPosition += randomCircle;
                                               int value = UnityEngine.Random.Range(Mathf.RoundToInt(snakePoints / 2 / snakeLength), Mathf.RoundToInt(snakePoints / 3 / snakeLength));

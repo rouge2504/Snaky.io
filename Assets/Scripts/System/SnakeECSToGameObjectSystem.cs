@@ -8,6 +8,7 @@ using UnityEngine;
 
 [UpdateBefore(typeof(AIDetectSystem))]
 [UpdateAfter(typeof(SnakeHeadMoveSystem))]
+[UpdateAfter(typeof(SnakeCollisionSystem))]
 public class SnakeECSToGameObjectSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps)
@@ -20,11 +21,17 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
 
                 if (headData.shouldDestroy&&headData.isDead)
                 {
+
+                    if (headData.isPlayer)
+                    {
+                        Debug.Log("Player");
+                    }
                        EntityManager.DestroyEntity(targetData.ai);
                        EntityManager.RemoveComponent<SnakeHeadTargetData>(entity);
                        EntityManager.RemoveComponent<PhysicsCollider>(entity);
                        EntityManager.RemoveComponent<PhysicsVelocity>(entity);
                        EntityManager.RemoveComponent<PhysicsMass>(entity);
+                    EntityManager.DestroyEntity(entity);
                   //     EntityManager.RemoveComponent<SnakePartBuffer>(entity);
                     //  DynamicBuffer<SnakePartBuffer> buffer = EntityManager.GetBuffer<SnakePartBuffer>(entity);
                     //  buffer.
@@ -49,14 +56,21 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
            .ForEach((Entity entity, ref SnakeHeadData headData,in PlayerData player) =>
            {
 
+               if (headData.isPlayer)
+               {
+                   Debug.Log("Player");
+               }
                if (headData.shouldDestroy && headData.isDead)
                {
                        headData.shouldDestroy = false;
-                       SnakeSpawner.Instance.snakes[headData.snakeId].sprinting = false;
+                   SnakeSpawner.Instance.snakes[headData.snakeId].isDestroyed = true;
+                   SnakeSpawner.Instance.snakes[headData.snakeId].sprinting = false;
                       SnakeSpawner.Instance.snakes[headData.snakeId].isDuelModeDestroyed = true;
                    SnakeSpawner.Instance.GetPlayerDead(headData.snakeId);
-
-
+                   EntityManager.RemoveComponent<PhysicsCollider>(entity);
+                   EntityManager.RemoveComponent<PhysicsVelocity>(entity);
+                   EntityManager.RemoveComponent<PhysicsMass>(entity);
+                   EntityManager.DestroyEntity(entity);
                }
 
 

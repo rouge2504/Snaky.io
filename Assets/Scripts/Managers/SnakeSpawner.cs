@@ -75,6 +75,7 @@ public class SnakeSpawner : MonoBehaviour
 
     }
 
+
     public void DestroyAllSnakes()
     {
         StopAllCoroutines();
@@ -100,8 +101,8 @@ public class SnakeSpawner : MonoBehaviour
             if (snakes[i] != null)
             {
                 snakes[i].dontSpawnFood = true;
-
                 DestroySnake(snakes[i]);
+                //snakes[i] = null;
             }
         }
         //SetupNewColorTemplatesAndMaterialsForBots();
@@ -285,9 +286,9 @@ public class SnakeSpawner : MonoBehaviour
         manager.SetComponentData(snakeHead, new SnakeHeadData
         {
             snakeId = snakeIndex,
-            speed = 40,
+            speed = GameConstants.SPEED,
             isPlayer = isPlayer,
-            snakeRotationSpeed = 8,
+            snakeRotationSpeed = 5,
             speedMultiplier = 1,
             headDiff = /*isPlayer ? GameConstants.SNAKE_DIFF :  (snake.points > 10000) ? 0.003f : GameConstants.SNAKE_DIFF*/ snake.Diff(),
             shouldDestroy = false,
@@ -388,7 +389,11 @@ public class SnakeSpawner : MonoBehaviour
             /*GameObject temp = PoolManager.instance.GetSnake();
             temp.name = "Body_" + snakeIndex + "_" + i;
             body.Add(temp);*/
+
+
         Entity pieceEntity = manager.Instantiate(snakePieceEntity);
+
+
             manager.SetComponentData(pieceEntity, new Translation
             {
                 Value = spawnPos
@@ -541,7 +546,6 @@ public class SnakeSpawner : MonoBehaviour
         {
             DestroyImmediate(snake.maskMat, true);
         }
-
         DestroyImmediate(snake.sprintMat, true);
         snakes[snake.snakeId] = null;
         Population.instance.realCount = 0;

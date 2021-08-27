@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
@@ -30,9 +31,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayWithAI()
     {
-        if (SnakeEnvironment.Singleton.CounterSnake > 40)
+        if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
         {
-            SnakeSpawner.Instance.DestroyAllSnakes(40);
+            SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
         }
             //SnakeSpawner.Instance.DestroyAllSnakes();
         StartCoroutine(PlayAI());
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayAI()
     {
+        SnakeSpawner.Instance.DestroyAllSnakes();
         yield return new WaitForSeconds(2);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);

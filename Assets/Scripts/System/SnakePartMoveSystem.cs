@@ -24,7 +24,7 @@ public class SnakePartMoveSystem : JobComponentSystem
                     float diff = headData.headDiff;
                     if (!headData.isPlayer)
                     {
-                        diff = 2.3f / scale.Value.x;
+                        diff = 3.8f / scale.Value.x;
                     }
 
                     if (x == 1)
@@ -45,6 +45,7 @@ public class SnakePartMoveSystem : JobComponentSystem
             {
                 if (!snake.isDestroyed)
                 {
+
                     DynamicBuffer<SnakePartBuffer> snakeParts = EntityManager.GetBuffer<SnakePartBuffer>(snake.snakeHead);
                     SnakeEnvironment.Singleton.BufferTemp = new List<Vector3>();
                     NativeArray<float3> positions = new NativeArray<float3>(snakeParts.Length, Allocator.TempJob);

@@ -5,9 +5,8 @@ using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Rendering;
-
-
-
+using Unity.Physics;
+using SphereCollider = Unity.Physics.SphereCollider;
 
 [UpdateAfter(typeof(SnakePartMoveSystem))]
 public class SnakeResizeSystem : JobComponentSystem
@@ -26,15 +25,26 @@ public class SnakeResizeSystem : JobComponentSystem
             {
                 if (!headData.isDead)
                 {
+
+
                     int newParts = 0;// snakeHeadParts.snakeParts;
-                    if (snakePoints.points > 10000)
+                    if (snakePoints.points > 30000)
                     {
                         //newParts += (int)math.round(650 / (19));
                         //newParts += (int)math.round((1500-650) / (22));
                         //newParts += (int)math.round((5000 - 1500) / (60));
                         //newParts += (int)math.round((10000 - 5000) / (50));
                         //newParts += (int)math.round((snakePoints.points - 10000) / (100));
-                        newParts += (int)math.round(snakePoints.points / (200));
+                        newParts += (int)math.round(snakePoints.points / (600));
+                    }
+                    else if (snakePoints.points > 10000 && snakePoints.points <= 30000)
+                    {
+                        //newParts += (int)math.round(650 / (19));
+                        //newParts += (int)math.round((1500-650) / (22));
+                        //newParts += (int)math.round((5000 - 1500) / (60));
+                        //newParts += (int)math.round((10000 - 5000) / (50));
+                        //newParts += (int)math.round((snakePoints.points - 10000) / (100));
+                        newParts += (int)math.round(snakePoints.points / (800));
                     }
                     else if (snakePoints.points > 5000&& snakePoints.points <= 10000)
                     {
