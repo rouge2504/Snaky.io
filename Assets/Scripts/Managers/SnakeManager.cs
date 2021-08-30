@@ -65,7 +65,7 @@ public class SnakeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        counterText.text = SnakeEnvironment.Singleton.CounterSnake + "/" + GameConstants.TOTAL_SNAKES  + "\n" +
+        counterText.text = SnakeEnvironment.Singleton.CounterSnake + "/" + Population.instance.MaxPopulation  + "\n" +
             "Total Pieces: " + SnakeEnvironment.Singleton.counterPiece;
 
         //SnakeEnvironment.Singleton.UpdateBuffer();

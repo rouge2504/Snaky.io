@@ -61,7 +61,7 @@ public class Population : MonoBehaviour
         transparentCount = (transparentPercent / 100) * GameConstants.TOTAL_SNAKES;
         noMaskCount = (noMaskPercent / 100) * GameConstants.TOTAL_SNAKES;
         noMaskCount = Mathf.RoundToInt(noMaskCount);
-        MaxPopulation = GameConstants.TOTAL_SNAKES;
+        //MaxPopulation = GameConstants.TOTAL_SNAKES;
         //Initialize();
     }
 
@@ -126,7 +126,7 @@ public class Population : MonoBehaviour
         float time;
         if (GameManager.instance.InGame)
         {
-            time = 1;
+            time = 5;
         }
         else
         {
@@ -142,7 +142,8 @@ public class Population : MonoBehaviour
        //     {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    //SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
             realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -152,7 +153,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(35000, 60000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    SpawnSnake(Random.Range(15000, 20000), SnakeEnvironment.snakeType.superbig, "");  //10000
             realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -475,7 +476,6 @@ public class Population : MonoBehaviour
         Debug.Log("Spawner started");
         while (true)
         {
-            Debug.Log("checking");
             
                 //Debug.Log("Check spawn snake running!");
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)

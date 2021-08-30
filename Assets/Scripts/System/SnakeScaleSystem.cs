@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using SphereCollider = Unity.Physics.SphereCollider;
 
-//[UpdateAfter(typeof(SnakeResizeSystem))]
+[UpdateAfter(typeof(SnakeResizeSystem))]
 public class SnakeScaleSystem : JobComponentSystem
 {
     protected override JobHandle OnUpdate(JobHandle inputDeps)
@@ -28,22 +28,24 @@ public class SnakeScaleSystem : JobComponentSystem
                                               data.scaleData = nscale;
                                               //data.scaleData = 10000;
 
-                                              /*unsafe
+                                              unsafe
                                               {
-                                                  float offset = 0.8f;
-                                                  if (points > 40000)
+                                                  float offset = 1.2f;
+                                                  /*if (points > 20000)
                                                   {
-                                                      offset = 1.9f;
-                                                  }
+                                                      offset = 3.2f;
+                                                  }*/
                                                   float oldRadius = 1.0f;
                                                   float newRadius = 10.0f;
                                                   SphereCollider* scPtr = (SphereCollider*)collider.ColliderPtr;
                                                   oldRadius = scPtr->Radius;
+                                                  
                                                   newRadius = math.lerp(oldRadius, nscale * offset, 0.05f);
                                                   var sphereGeometry = scPtr->Geometry;
                                                   sphereGeometry.Radius = nscale * offset;
+                                                  
                                                   scPtr->Geometry = sphereGeometry;
-                                              }*/
+                                              }
                                               //scale.Value = new float3(nscale, 1f, nscale);
                                           }).Schedule(inputDeps);
                     jobhandle.Complete();

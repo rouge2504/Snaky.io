@@ -76,6 +76,10 @@ public class SnakeResizeSystem : JobComponentSystem
                     if (snakeHeadParts.snakeParts != snakeHeadParts.snakeNewParts)
                     {
                         int diffPieces = snakeHeadParts.snakeNewParts - snakeHeadParts.snakeParts;
+                        if (headData.snakeId >= SnakeSpawner.Instance.snakes.Length)
+                        {
+                            return;
+                        }
                         ECSSnake snake = SnakeSpawner.Instance.snakes[headData.snakeId];
                         Mesh quadMesh = SnakeSpawner.Instance.quad;
                         if (diffPieces > 0)
@@ -159,13 +163,19 @@ public class SnakeResizeSystem : JobComponentSystem
 
                             }
                             lastPart.lastPiece = nextEntity;
-                            snake.DecreaseNextColor(diffPieces);
+                            if (snake != null)
+                            {
+                                snake.DecreaseNextColor(diffPieces);
+                            }
                         }
 
 
                         snakeHeadParts.snakeParts = snakeHeadParts.snakeNewParts;
-                        snake.points = snakePoints.points;
-                        snake.scaleChanged = true;
+                        if (snake != null)
+                        {
+                            snake.points = snakePoints.points;
+                            snake.scaleChanged = true;
+                        }
 
                     }
 

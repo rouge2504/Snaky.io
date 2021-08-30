@@ -56,10 +56,10 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
            .ForEach((Entity entity, ref SnakeHeadData headData,in PlayerData player) =>
            {
 
-               if (headData.isPlayer)
+              /* if (headData.isPlayer)
                {
                    Debug.Log("Player");
-               }
+               }*/
                if (headData.shouldDestroy && headData.isDead)
                {
                        headData.shouldDestroy = false;

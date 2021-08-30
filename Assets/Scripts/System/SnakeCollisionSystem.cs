@@ -5,6 +5,7 @@ using Unity.Physics.Systems;
 using Unity.Physics;
 using Unity.Mathematics;
 using Unity.Collections;
+using Unity.Transforms;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class SnakeCollisionSystem : JobComponentSystem
@@ -22,7 +23,9 @@ public class SnakeCollisionSystem : JobComponentSystem
     struct pieceTriggerJob : ITriggerEventsJob
     {
         [ReadOnly] public ComponentDataFromEntity<PieceData> pieceDataGroup;
-        public ComponentDataFromEntity<SnakeHeadData> snakeHeadDataGroup;
+         public ComponentDataFromEntity<SnakeHeadData> snakeHeadDataGroup;
+        [ReadOnly] public ComponentDataFromEntity<Translation> pieceTranslateDataGroup;
+        public ComponentDataFromEntity<NonUniformScale> pieceScaleDataGroup;
         public void Execute(TriggerEvent triggerEvent)
         {
             Entity entityA = triggerEvent.EntityA;
@@ -58,14 +61,35 @@ public class SnakeCollisionSystem : JobComponentSystem
                                        
                                         if (!component.shouldDestroy && component.snakeId >= 0 && piececomponent.snakeId >= 0)
                                 {
-                                    if (component.isPlayer)
+                                    var pieceScaleComponent = pieceScaleDataGroup[triggerEntity];
+                                    var pieceScaleHeadComponent = pieceScaleDataGroup[dynamicEntity];
+
+
+                                    var pieceTransformComponent = pieceTranslateDataGroup[triggerEntity];
+                                    var pieceHeadTransformComponent = pieceTranslateDataGroup[dynamicEntity];
+
+                                    float distPiece = pieceScaleComponent.Value.x / 2;
+                                    float distHead = pieceScaleHeadComponent.Value.x / 2;
+
+                                    float allDist = distHead + distPiece;
+
+                                    float distVector = Vector3.Distance(pieceTransformComponent.Value, pieceHeadTransformComponent.Value);
+                                    if (distVector < allDist)
+                                    {
+                                        Debug.Log("Fuck IT!!");
+                                        component.isDead = true;
+                                        component.shouldDestroy = true;
+                                        snakeHeadDataGroup[dynamicEntity] = component;
+                                    }
+                                    //Debug.Log(pieceTransformComponent.Value +", " + pieceHeadTransformComponent.Value);
+                                    /*if (component.isPlayer)
                                     {
                                         Debug.Log("Player");
                                     }
                                     component.isDead = true;
-                                            component.shouldDestroy = true;// foodComponent.foodValue;
+                                            component.shouldDestroy = true;
                                             snakeHeadDataGroup[dynamicEntity] = component;
-                                   // Debug.Log("muerto");
+                                   */
                                 }
                             }
                                 }
@@ -86,7 +110,9 @@ public class SnakeCollisionSystem : JobComponentSystem
         var pjobHandle = new pieceTriggerJob
         {
             pieceDataGroup = GetComponentDataFromEntity<PieceData>(),
-            snakeHeadDataGroup = GetComponentDataFromEntity<SnakeHeadData>()
+            snakeHeadDataGroup = GetComponentDataFromEntity<SnakeHeadData>(),
+            pieceScaleDataGroup = GetComponentDataFromEntity<NonUniformScale>(),
+            pieceTranslateDataGroup = GetComponentDataFromEntity<Translation>(),
         }.Schedule(stepsWorld.Simulation, ref physicsWorld.PhysicsWorld, inputDeps);
 
 

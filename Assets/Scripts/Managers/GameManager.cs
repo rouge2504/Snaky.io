@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayAI()
     {
-        SnakeSpawner.Instance.DestroyAllSnakes();
+        //SnakeSpawner.Instance.DestroyAllSnakes();
         yield return new WaitForSeconds(2);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);

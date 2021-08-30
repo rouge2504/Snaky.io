@@ -114,6 +114,7 @@ public class SnakeSpawner : MonoBehaviour
 
         headData.shouldDestroy = true;
         headData.isDead = true;
+        //SnakeSpawner.Instance.RemoveSnake(snake);
         SnakeEnvironment.Singleton.PopUpSnake(headData.snakeId, snake.snakePieces);
         manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
 
@@ -147,6 +148,10 @@ public class SnakeSpawner : MonoBehaviour
         ECSSnake newSnake = new ECSSnake(snakeNum, name, snakeSize, position, colortemp, maskSelected, isPlayer, team, isBabySnake);
         //  numOfSnake++;
         //Debug.Log("Snake num index chosen : " + snakeNum);
+        if (snakeNum >= snakes.Length - 1)
+        {
+            return;
+        }
         snakes[snakeNum] = newSnake;
 
         if (isPlayer)
