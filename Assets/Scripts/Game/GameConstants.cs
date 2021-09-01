@@ -41,4 +41,7 @@ public class GameConstants
 
     public static float SNAKE_DIFF = 0.30F; //0.20
 
+
+    public static float loadingMenuDelay = 1.5f;
+
 }

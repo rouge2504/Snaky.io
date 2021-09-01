@@ -7,9 +7,14 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
+    public enum STATE { IN_GAME, GO_TO_HOME_FROM_GAMEPLAY, IN_MENU }
+
+    public STATE state;
+
     public static GameManager instance;
     [Header("MENUS")]
     [SerializeField] public GameObject mainMenu;
+    [SerializeField] public GameObject loadingUI;
     [SerializeField] public GameObject gameplayMenu;
     [SerializeField] public GameObject gameOverMenu;
     [Header("Controls")]
@@ -27,6 +32,12 @@ public class GameManager : MonoBehaviour
         InGame = false;
     }
 
+    void Start()
+    {
+        SetLoading();
+        state = STATE.IN_MENU;
+    }
+
 
 
     public void PlayWithAI()
@@ -35,7 +46,7 @@ public class GameManager : MonoBehaviour
         {
             SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
         }
-            //SnakeSpawner.Instance.DestroyAllSnakes();
+        //SnakeSpawner.Instance.DestroyAllSnakes();
         StartCoroutine(PlayAI());
     }
 
@@ -49,6 +60,7 @@ public class GameManager : MonoBehaviour
         control.GetComponent<Image>().enabled = true;
         bust.GetComponent<Image>().enabled = true;
         InGame = true;
+        state = STATE.IN_GAME;
         SnakeSpawner.Instance.StartGameWithAI();
     }
 
@@ -57,8 +69,11 @@ public class GameManager : MonoBehaviour
         control.GetComponent<Image>().enabled = false;
         bust.GetComponent<Image>().enabled = false;
         gameplayMenu.SetActive(false);
-        
-        gameOverMenu.SetActive(true);
+
+        if (state != STATE.GO_TO_HOME_FROM_GAMEPLAY)
+        {
+            gameOverMenu.SetActive(true);
+        }
     }
 
     public void SnakeSpeedManager(bool anyValue)
@@ -75,5 +90,34 @@ public class GameManager : MonoBehaviour
                 SnakeSpawner.Instance.playerSnake.sprinting = false;
             }
         }
+    }
+
+    public void GoHomeFromGame()
+    {
+        /*SnakeSpawner.Instance.snakes[SnakeSpawner.Instance.playerID].isDestroyed = true;
+        SnakeSpawner.Instance.snakes[SnakeSpawner.Instance.playerID].isPlayerSnake = false;*/
+        state = STATE.GO_TO_HOME_FROM_GAMEPLAY;
+        SnakeSpawner.Instance.DestroyAllSnakes();
+        gameplayMenu.SetActive(false);
+        SetLoading(mainMenu);
+        //SetLoading();
+    }
+
+    public void SetLoading(GameObject additionalMenu = null)
+    {
+        StartCoroutine(ShowLoadingMenu(additionalMenu));
+    }
+
+    IEnumerator ShowLoadingMenu(GameObject additionalMenu = null)
+    {
+        loadingUI.SetActive(true);
+        yield return new WaitForSeconds(GameConstants.loadingMenuDelay);
+        loadingUI.SetActive(false);
+        if (additionalMenu != null)
+        {
+            additionalMenu.SetActive(true);
+        }
+
+
     }
 }
