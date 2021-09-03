@@ -5,19 +5,10 @@ using UnityEngine.UI;
 
 public class LooknFeelDisplay : MonoBehaviour
 {
-    public Transform contentSnake;
-    private Image[] colorRender;
+    public GameObject[] colorRender;
     // Start is called before the first frame update
     void Start()
     {
-        colorRender = new Image[contentSnake.childCount];
-
-        for (int i = 0; i < colorRender.Length; i++)
-        {
-            colorRender[i] = contentSnake.GetChild(i).GetComponent<Image>();
-            colorRender[i].gameObject.GetComponent<Floater>().enabled = false;
-
-        }
 
         StartCoroutine(StartAnimation());
     }
@@ -36,7 +27,6 @@ public class LooknFeelDisplay : MonoBehaviour
 
     IEnumerator StartAnimation()
     {
-
         for (int i = 0; i < colorRender.Length; i++)
         {
             colorRender[i].gameObject.GetComponent<Floater>().enabled = true;

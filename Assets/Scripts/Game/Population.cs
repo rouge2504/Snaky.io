@@ -388,7 +388,7 @@ public class Population : MonoBehaviour
             colorChosen = SkinManager._instance.GetTeamBasedColorTemplate(team);*/
 
         bool ifMask = (Random.Range(0, 4) == 0);
-        SnakeSpawner.Instance.CreateNewSnake(points, GetRandomName(), Vector3.zero, colorChosen,/*ifMask ? MaskManager.instance.GetRandomMask() : null*/ null,false, team);
+        SnakeSpawner.Instance.CreateNewSnake(points, GetRandomName(), Vector3.zero, colorChosen,/*ifMask ? MaskManager.instance.GetRandomMask() : null*/ SkinsManager.instance.GetRandomMask() ,false, team);
         // newsnake.SetActive(true);
         Debug.Log("snake is created successfully");
 

@@ -137,7 +137,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, null, true, "");
+        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
         Population.instance.Initialize();
 
     }

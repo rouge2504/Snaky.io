@@ -30,7 +30,7 @@ public class SnakeScaleSystem : JobComponentSystem
 
                                               unsafe
                                               {
-                                                  float offset = 1.2f;
+                                                  float offset = 8f;
                                                   /*if (points > 20000)
                                                   {
                                                       offset = 3.2f;

@@ -1,0 +1,76 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerProgress : MonoBehaviour
+{
+    public static PlayerProgress instance;
+    public SkinMask skinMask;
+    public List<Color> colorOnSnake;
+
+    public GameObject[] colorRenderSnakeMainUI;
+    public Image maskMainUI;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    public void SetMaskOnUI()
+    {
+        maskMainUI.sprite = skinMask.maskSprite;
+    }
+
+    public void SetColorOnMainUI()
+    {
+        for (int i = 0; i < colorRenderSnakeMainUI.Length; i++)
+        {
+
+            if (colorOnSnake.Count == 2)
+            {
+                if (i % 2 != 0)
+                {
+                    colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[0];
+                }
+                else
+                {
+                    colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[1];
+                }
+            }
+            else if (colorOnSnake.Count == 3)
+            {
+                int it = i + 1;
+
+
+
+                if (it % 2 != 0) //Rojo
+                {
+                    colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[0];
+                }
+                else if (it % 2 == 0) // Amarillo
+                {
+                    colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[1];
+                }
+
+                if (it > 2)
+                {
+                    if (it % 2 != 0) //Amarillo
+                    {
+                        colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[1];
+                    }
+                    else if (it % 2 == 0) // Rojo
+                    {
+                        colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[0];
+                    }
+                }
+
+                if (it % 3 == 0) //Verde
+                {
+                    colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[2];
+
+                }
+            }
+        }
+    }
+}

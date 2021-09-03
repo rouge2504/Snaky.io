@@ -41,7 +41,7 @@ public class ECSSnake
     int nextColor = -1;
   
     public ECSSnake(int id,string name,int snakePoints,Vector3 spawnPos,ColorTemplate colorTemp,Sprite mask=null,bool isPlayer=false,string team="",bool isBabySnake = false) {
-        mask = null;
+        //mask = null;
         originalSpeedMultiplier = speedMultiplier;
         snakeId = id;
         //SnakeEnvironment.Singleton.counterPiece += snakePoints;
@@ -104,7 +104,7 @@ public class ECSSnake
         if (mask != null)
         {
             defaultMask = false;
-            //maskMat = new Material(SnakeSpawner.Instance.maskMat);
+            maskMat = new Material(SnakeSpawner.Instance.maskMat);
 
             maskMat.mainTexture = mask.texture;
         }

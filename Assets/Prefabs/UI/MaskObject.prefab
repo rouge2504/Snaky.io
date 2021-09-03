@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: 
 --- !u!1 &5025973101967990457
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1418725287540797115}
   - component: {fileID: 7385941268177495436}
-  - component: {fileID: 7216553609635888396}
+  - component: {fileID: 4781979105283561911}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -124,7 +124,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5025973101967990457}
   m_CullTransparentMesh: 1
---- !u!114 &7216553609635888396
+--- !u!114 &4781979105283561911
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9b1cd2114e1c44641bae0a97ce8fa081, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9dd777b083bbae94d909a18c13381ed1, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 1130744034554766570}
   - component: {fileID: 7626027037615006293}
   - component: {fileID: 3894405792527230832}
+  - component: {fileID: 4698979078147478203}
   m_Layer: 5
   m_Name: MaskObject
   m_TagString: Untagged
@@ -276,3 +277,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4698979078147478203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5883495992091922079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6814b32bdcc9444a93943ad74e440da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maskImage: {fileID: 4781979105283561911}
+  buttonImage: {fileID: 3894405792527230832}
