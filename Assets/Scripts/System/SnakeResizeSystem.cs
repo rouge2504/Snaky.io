@@ -109,7 +109,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 {
                                     snakeId = (lastSnakeId),
                                     pieceIndex = (lastPieceIndex + x),
-                                    positionToMove = new float3(0, 0, 0),
+                                    positionToMove = new float3(0, x, 0),
                                     teamId = data.teamId
                                 });
                                 EntityManager.SetComponentData(newEntity, new PieceScaleData
@@ -130,7 +130,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 EntityManager.SetSharedComponentData<RenderMesh>(ballData.snakeBallEntity, new RenderMesh
                                 {
                                     mesh = quadMesh,
-                                    material = snake.GetNextColor()
+                                    material = headData.isPlayer ? snake.GetNextColor(lastPieceIndex + x, PlayerProgress.instance.colorOnSnake.Count) : snake.GetNextColor()
                                 });
                                 EntityManager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
                                 {

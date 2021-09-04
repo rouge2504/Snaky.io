@@ -351,14 +351,14 @@ public class SnakeSpawner : MonoBehaviour
         manager.SetSharedComponentData<RenderMesh>(glowData.glowEntity, new RenderMesh
         {
             mesh = square,
-            material = snake.sprintMat
+            material = snake.sprintMat[0]
         });
 
         SnakeBallColorData ballData = manager.GetComponentData<SnakeBallColorData>(snakeHead);
         manager.SetSharedComponentData<RenderMesh>(ballData.snakeBallEntity, new RenderMesh
         {
             mesh = quad,
-            material = snake.GetNextColor()
+            material = isPlayer ? snake.GetNextColor(0, PlayerProgress.instance.colorOnSnake.Count) : snake.GetNextColor()
         });
         manager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
         {
@@ -431,17 +431,20 @@ public class SnakeSpawner : MonoBehaviour
             });
 
             glowData = manager.GetComponentData<SnakeGlowData>(pieceEntity);
+
+            //Material colorNew = new Material(sprintMat);
+            //colorNew.color = Color.green;
             manager.SetSharedComponentData<RenderMesh>(glowData.glowEntity, new RenderMesh
             {
                 mesh = square,
-                material = snake.sprintMat
+                material = /*snake.sprintMat[0]*/  snake.sprintMat[0]
             });
 
             ballData = manager.GetComponentData<SnakeBallColorData>(pieceEntity);
             manager.SetSharedComponentData<RenderMesh>(ballData.snakeBallEntity, new RenderMesh
             {
                 mesh = quad,
-                material = snake.GetNextColor()
+                material =  isPlayer ? snake.GetNextColor(i + 1, PlayerProgress.instance.colorOnSnake.Count) : snake.GetNextColor()
             });
             manager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
             {
@@ -472,9 +475,9 @@ public class SnakeSpawner : MonoBehaviour
     {
         Color normalColor = Color.white;
         Color alphaColor = new Color(1, 1, 1, 0);
-        snake.sprintMat.color = normalColor;
+        snake.sprintMat[0].color = normalColor;
         yield return new WaitForSeconds(timer);
-        snake.sprintMat.color = alphaColor;
+        snake.sprintMat[0].color = alphaColor;
         SnakeHeadData headData = manager.GetComponentData<SnakeHeadData>(snake.snakeHead);
         headData.isImmune = false;
         manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
@@ -551,7 +554,7 @@ public class SnakeSpawner : MonoBehaviour
         {
             DestroyImmediate(snake.maskMat, true);
         }
-        DestroyImmediate(snake.sprintMat, true);
+        DestroyImmediate(snake.sprintMat[0], true);
         snakes[snake.snakeId] = null;
         Population.instance.realCount = 0;
         // snakes.Remove(snake);

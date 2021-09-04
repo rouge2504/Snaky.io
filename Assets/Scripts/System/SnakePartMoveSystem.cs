@@ -51,7 +51,7 @@ public class SnakePartMoveSystem : JobComponentSystem
                     NativeArray<float3> positions = new NativeArray<float3>(snakeParts.Length, Allocator.TempJob);
                     for (int x = 0; x < positions.Length; x++)
                     {
-                        positions[x] = snakeParts[x].savedPosition;
+                        positions[x] = new float3 (snakeParts[x].savedPosition.x, snakeParts[x].savedPosition.y, snakeParts[x].savedPosition.z);
                         SnakeEnvironment.Singleton.BufferTemp.Add(positions[x]);
                         SnakeEnvironment.Singleton.CheckBodyParts(snake.snakeId, SnakeEnvironment.Singleton.BufferTemp);
                     }

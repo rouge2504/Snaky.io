@@ -31,6 +31,8 @@ public class SkinsManager : MonoBehaviour
     public Color[] snankeColors;
 
     private List<Color> colorOnSnake;
+
+    public List<Material> materialColors;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +75,10 @@ public class SkinsManager : MonoBehaviour
             colorObject.color.color = snankeColors[i];
             colorObject.closeButton.gameObject.SetActive(false);
             colorObject.button.onClick.AddListener(() => SetColor(colorObject));
+
+
+            //materialColors.Add(snankeMaterial[i]);
+
         }
     }
 
@@ -154,6 +160,111 @@ public class SkinsManager : MonoBehaviour
         }
     }
 
+    public Color SetColorOnSnake(int i, List<Color> colorOnSnake)
+    {
+        Color tempColor = Color.white;
+        if (colorOnSnake.Count == 2)
+        {
+            if (i % 2 != 0)
+            {
+                tempColor = colorOnSnake[0];
+            }
+            else
+            {
+                tempColor = colorOnSnake[1];
+            }
+        }
+        else if (colorOnSnake.Count == 3)
+        {
+            int it = i + 1;
+
+
+
+            if (it % 2 != 0) //Rojo
+            {
+                tempColor = colorOnSnake[0];
+            }
+            else if (it % 2 == 0) // Amarillo
+            {
+                tempColor = colorOnSnake[1];
+            }
+
+            if (it > 2)
+            {
+                if (it % 2 != 0) //Amarillo
+                {
+                    tempColor = colorOnSnake[1];
+                }
+                else if (it % 2 == 0) // Rojo
+                {
+                    tempColor = colorOnSnake[0];
+                }
+            }
+
+            if (it % 3 == 0) //Verde
+            {
+                tempColor = colorOnSnake[2];
+
+            }
+        }
+
+        return tempColor;
+    }
+
+    public int SetColorOnSnake(int i, int Count)
+    {
+        int tempColor = 0;
+        if (Count == 2)
+        {
+            if (i % 2 != 0)
+            {
+                tempColor = 0;
+            }
+            else
+            {
+                tempColor = 1;
+            }
+        }
+        else if (Count == 3)
+        {
+            int it = i + 1;
+
+            int flip = it / 3;
+
+            bool isFlip = (flip % 2 != 0) ? false : true;
+
+            if (!isFlip) {
+                if (it % 2 != 0) //Rojo
+                {
+                    tempColor = 0;
+                }
+                else if (it % 2 == 0) // Amarillo
+                {
+                    tempColor = 1;
+                }
+
+            } else
+            {
+                if (it % 2 != 0) //Amarillo
+                {
+                    tempColor = 1;
+                }
+                else if (it % 2 == 0) // Rojo
+                {
+                    tempColor = 0;
+                }
+            }
+
+            if (it % 3 == 0) //Verde
+            {
+                tempColor = 2;
+
+            }
+        }
+
+        return tempColor;
+    }
+
     public void Check(Image type)
     {
         print(type);
@@ -208,7 +319,16 @@ public class SkinsManager : MonoBehaviour
 
     }
 
-
+    public Material[] GetMaterial()
+    {
+        Material[] materials = new Material[PlayerProgress.instance.colorOnSnake.Count];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i] = new Material(SnakeSpawner.Instance.sprintMat);
+            materials[i].color = PlayerProgress.instance.colorOnSnake[i];
+        }
+        return materials;
+    }
     public Sprite GetRandomMask()
     {
         int rnd = Random.Range(-1, skinMasks.Count);

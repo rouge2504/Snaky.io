@@ -30,11 +30,11 @@ public class SnakeScaleSystem : JobComponentSystem
 
                                               unsafe
                                               {
-                                                  float offset = 8f;
-                                                  /*if (points > 20000)
+                                                  float offset = 3f;
+                                                  if (points > 15000)
                                                   {
-                                                      offset = 3.2f;
-                                                  }*/
+                                                      offset = 8f;
+                                                  }
                                                   float oldRadius = 1.0f;
                                                   float newRadius = 10.0f;
                                                   SphereCollider* scPtr = (SphereCollider*)collider.ColliderPtr;

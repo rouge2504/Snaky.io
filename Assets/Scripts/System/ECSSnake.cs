@@ -29,7 +29,7 @@ public class ECSSnake
     public bool isPaused = false;
     public Entity snakeHead;
     public Entity lastPiece;
-    public Material sprintMat;
+    public Material[] sprintMat;
     public Material maskMat;
     public Material[] colorTempMats;
     public ColorTemplate colorTemplate;
@@ -42,6 +42,12 @@ public class ECSSnake
   
     public ECSSnake(int id,string name,int snakePoints,Vector3 spawnPos,ColorTemplate colorTemp,Sprite mask=null,bool isPlayer=false,string team="",bool isBabySnake = false) {
         //mask = null;
+
+        sprintMat = new Material[3];
+        if (isPlayer)
+        {
+            sprintMat = SkinsManager.instance.GetMaterial();
+        }
         originalSpeedMultiplier = speedMultiplier;
         snakeId = id;
         //SnakeEnvironment.Singleton.counterPiece += snakePoints;
@@ -114,7 +120,7 @@ public class ECSSnake
             maskMat = SnakeSpawner.Instance.maskMat;
         }
 
-        sprintMat  = new Material(SnakeSpawner.Instance.sprintMat);
+        sprintMat[0]  = new Material(SnakeSpawner.Instance.sprintMat);
         colorTemplate = colorTemp;
         Entity[] snakeFirstAndLast = SnakeSpawner.Instance.SpawnSnake(this,id, snakePieces, spawnPos,isPlayer, team,isBabySnake);
        
@@ -155,7 +161,56 @@ public class ECSSnake
         isDestroyed = true;
     }
 
-    
+    public int SetColorOnSnake(int i, int Count)
+    {
+        int tempColor = 0;
+        if (Count == 2)
+        {
+            if (i % 2 != 0)
+            {
+                tempColor = 0;
+            }
+            else
+            {
+                tempColor = 1;
+            }
+        }
+        else if (Count == 3)
+        {
+            int it = i + 1;
+
+
+
+            if (it % 2 != 0) //Rojo
+            {
+                tempColor = 0;
+            }
+            else if (it % 2 == 0) // Amarillo
+            {
+                tempColor = 1;
+            }
+
+            if (it > 2)
+            {
+                if (it % 2 != 0) //Amarillo
+                {
+                    tempColor = 1;
+                }
+                else if (it % 2 == 0) // Rojo
+                {
+                    tempColor = 0;
+                }
+            }
+
+            if (it % 3 == 0) //Verde
+            {
+                tempColor = 2;
+
+            }
+        }
+
+        return tempColor;
+    }
 
     public Material GetNextColor()
     {
@@ -164,6 +219,12 @@ public class ECSSnake
         int colorToChoose = nextColor % colorLength;
         return colorTempMats[colorToChoose];*/
         return SnakeSpawner.Instance.testMaterial;
+    }
+
+    public Material GetNextColor(int i, int count)
+    {
+        return SkinsManager.instance.materialColors[SkinsManager.instance.SetColorOnSnake(i, count)];
+        //return SnakeSpawner.Instance.testMaterial;
     }
 
     public void DecreaseNextColor(int num)
@@ -196,10 +257,12 @@ public class ECSSnake
             if (lerp <= 1.0f)
             {
                 lerp += Time.fixedDeltaTime * 2f;
-                sprintMat.color = Color.Lerp(alphaColor,normalColor, lerp);
+                sprintMat[0].color = Color.Lerp(alphaColor,normalColor, lerp);
             }
             else
-                sprintMat.color = normalColor;
+            {
+                sprintMat[0].color = normalColor;
+            }
             yield return new WaitForFixedUpdate();
         }
 
@@ -207,13 +270,13 @@ public class ECSSnake
         {
 
                 lerp -= Time.fixedDeltaTime * 5f;
-                sprintMat.color = Color.Lerp(alphaColor, normalColor, lerp);
+                sprintMat[0].color = Color.Lerp(alphaColor, normalColor, lerp);
 
             yield return new WaitForFixedUpdate();
         }
         if (!sprinting)
         {
-            sprintMat.color = alphaColor;
+            sprintMat[0].color = alphaColor;
             SpeedNormal();
         }
         
