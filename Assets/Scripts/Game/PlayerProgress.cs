@@ -8,6 +8,8 @@ public class PlayerProgress : MonoBehaviour
     public static PlayerProgress instance;
     public SkinMask skinMask;
     public List<Color> colorOnSnake;
+    public List<Material> materialOnSnake;
+    public List<Material> materialSprintOnSnake;
 
     public GameObject[] colorRenderSnakeMainUI;
     public Image maskMainUI;
@@ -15,17 +17,35 @@ public class PlayerProgress : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        CSVReader.Instance.Read();
+        skinMask = CSVReader.Instance.Find(GamePrefs.MASK);
+        if (skinMask != null)
+        {
+            SetMaskOnUI();
+        }
+
+        colorOnSnake = StorageManager.Singleton.LoadColors();
+
+        if (colorOnSnake.Count > 0)
+        {
+            SetColorOnMainUI();
+        }
     }
 
     public void SetMaskOnUI()
     {
         maskMainUI.sprite = skinMask.maskSprite;
+        GamePrefs.MASK= skinMask.nameMask;
     }
 
     public void SetColorOnMainUI()
     {
         for (int i = 0; i < colorRenderSnakeMainUI.Length; i++)
         {
+            if (colorOnSnake.Count == 1)
+            {
+                colorRenderSnakeMainUI[i].GetComponent<Image>().color = colorOnSnake[0];
+            }
 
             if (colorOnSnake.Count == 2)
             {

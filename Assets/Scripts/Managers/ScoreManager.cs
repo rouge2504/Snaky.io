@@ -20,7 +20,18 @@ public class ScoreManager : MonoBehaviour
     {;
         if (GameManager.instance.InGame)
         {
-            CheckLeaderBoard();
+            switch (GameManager.instance.state)
+            {
+                case GameManager.STATE.IN_GAME:
+                    CheckLeaderBoard();
+                    break;
+                case GameManager.STATE.TEAM2X2:
+                    CheckLeaderBoardTeam(GameManager.instance.state);  
+                    break;
+                case GameManager.STATE.TEAM3X3:
+                    CheckLeaderBoardTeam(GameManager.instance.state);
+                    break;
+            }
             if (SnakeSpawner.Instance.playerSnake != null)
             {
                 scoreGame.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
@@ -30,18 +41,36 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    private void CheckLeaderBoardTeam(GameManager.STATE state)
+    {
+        int limit = 0;
+
+        if (state == GameManager.STATE.TEAM2X2)
+        {
+            limit = 2;
+        }else if (state == GameManager.STATE.TEAM3X3)
+        {
+            limit = 3;
+        }
+        for (int i = 0; i < infoPoints.Count; i++)
+        {
+            infoPoints[i].image.SetActive(false);
+            if (i >= limit)
+            {
+                infoPoints[i].gameObject.SetActive(false);
+            }
+        }
+
+        
+        infoPoints[0].SetScoreOnTeam("Team A", Population.instance.GetTotalTeamScore("A"), SkinsManager.instance.teamColors[0].color);
+        infoPoints[1].SetScoreOnTeam("Team B", Population.instance.GetTotalTeamScore("B"), SkinsManager.instance.teamColors[1].color);
+        infoPoints[2].SetScoreOnTeam("Team C", Population.instance.GetTotalTeamScore("C"), SkinsManager.instance.teamColors[2].color);
+    }
+
     private void CheckLeaderBoard()
     {
         List<ECSSnake> tempListSnake = new List<ECSSnake>(); /*SnakeSpawner.Instance.snakes.ToList();*/
 
-            /*tempListSnake.Sort(delegate (ECSSnake a, ECSSnake b)
-            {
-                if (a == null || b == null)
-                {
-                    return 0;
-                }
-                return a.points.CompareTo(b);
-            });*/
             for (int i = 0; i < SnakeSpawner.Instance.snakes.Length; i++)
             {
                 if (SnakeSpawner.Instance.snakes[i] != null)
@@ -62,9 +91,14 @@ public class ScoreManager : MonoBehaviour
 
             if (i < infoPoints.Count)
             {
+                infoPoints[i].SetMainColor();
+                infoPoints[i].gameObject.SetActive(true);
+                infoPoints[i].image.SetActive(true);
                 infoPoints[i].nameSnake.text = tempSnake.snakeName;
                 infoPoints[i].points.text = tempSnake.points.ToString("0");
             }
+
+
         }
 
         //print(debug);

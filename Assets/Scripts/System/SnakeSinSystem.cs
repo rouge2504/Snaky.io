@@ -21,7 +21,7 @@ public class SnakeSinSystem : JobComponentSystem
             {
                 float scaleVal = amplitude * math.sin(((elapsedTime*speed)+ data.pieceIndex)*frequency);
 
-                float tempScale = GameConstants.SNAKE_HEAD_SCALE + ((data.scaleData + scaleVal)); 
+                float tempScale = GameConstants.SNAKE_HEAD_SCALE + ((data.scaleData /*+ scaleVal*/)); 
                 scale.Value = (new float3(tempScale, 1f, tempScale));
 
 

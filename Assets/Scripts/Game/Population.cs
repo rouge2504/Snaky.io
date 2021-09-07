@@ -111,7 +111,7 @@ public class Population : MonoBehaviour
     {
         Debug.Log("spawning snake population");
         StopCoroutine("checkSpawnSnake");
-        StopCoroutine("spawnSnakePopulation");
+        StopCoroutine(SpawnSnakePopulation());
         StartCoroutine(SpawnSnakePopulation());
     }
 
@@ -137,100 +137,131 @@ public class Population : MonoBehaviour
 
     IEnumerator SpawnSnakePopulation()
     {
-        float time = 0.5f;
-        //    for (int i = 0; i < mega; i++)
-       //     {
-                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
-                {
-                    SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
-                    //SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
-            realCount++;
-                    yield return new WaitForSeconds(time);
-                }
-        //   }
-        time = TimeToSpawnSnakes();
+        if (GameManager.instance.state == GameManager.STATE.IN_GAME)
+        {
+            float time = 0.5f;
+            //    for (int i = 0; i < mega; i++)
+            //     {
+            if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+            {
+                SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                                                                                                  //SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                realCount++;
+                yield return new WaitForSeconds(time);
+            }
+            //   }
+            time = TimeToSpawnSnakes();
             for (int i = 0; i < superbig; i++)
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
                     SpawnSnake(Random.Range(15000, 20000), SnakeEnvironment.snakeType.superbig, "");  //10000
-            realCount++;
+                    realCount++;
                     yield return new WaitForSeconds(time);
                 }
             }
-        time = TimeToSpawnSnakes();
+            time = TimeToSpawnSnakes();
 
-        for (int i = 0; i < reallybig; i++)
+            for (int i = 0; i < reallybig; i++)
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
                     SpawnSnake(Random.Range(15000, 30000), SnakeEnvironment.snakeType.reallybig, "");
-            realCount++;
+                    realCount++;
                     yield return new WaitForSeconds(time);
                 }
             }
-        time = TimeToSpawnSnakes();
-        for (int i = 0; i < big; i++)
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < big; i++)
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
                     SpawnSnake(Random.Range(5000, 8000), SnakeEnvironment.snakeType.big, "");
-            realCount++;
+                    realCount++;
                     yield return new WaitForSeconds(time);
                 }
             }
-        time = TimeToSpawnSnakes();
-        for (int i = 0; i < medium; i++)
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < medium; i++)
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
                     SpawnSnake(Random.Range(2000, 4000), SnakeEnvironment.snakeType.medium, "");
-            realCount++;
+                    realCount++;
                     yield return new WaitForSeconds(time);
                 }
             }
-        time = TimeToSpawnSnakes();
-        for (int i = 0; i < small; i++)
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < small; i++)
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
                     SpawnSnake(Random.Range(250, 1500), SnakeEnvironment.snakeType.small, "");
-            realCount++;
+                    realCount++;
                     yield return new WaitForSeconds(time);
                 }
 
             }
-        time = TimeToSpawnSnakes();
-        for (int i = 0; i < baby; i++)
-        {
-            if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < baby; i++)
             {
-                SpawnSnake(Random.Range(250, 500), SnakeEnvironment.snakeType.small, "");
-            realCount++;
-                yield return new WaitForSeconds(time);
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(250, 500), SnakeEnvironment.snakeType.small, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+
             }
-
-        }
-        time = TimeToSpawnSnakes();
+            time = TimeToSpawnSnakes();
 
 
 
-
+        
 
 
 
 
-        if (realCount <= MaxPopulation && !activeCounter)
-        {
-            for (int i = realCount; i < 80; i++)
+            if (realCount <= MaxPopulation && !activeCounter)
             {
-                realCount++;
-                SnakeEnvironment.Singleton.counterPiece += Random.Range(100, 500);
-                yield return new WaitForSeconds(time);
+                for (int i = realCount; i < 80; i++)
+                {
+                    realCount++;
+                    SnakeEnvironment.Singleton.counterPiece += Random.Range(100, 500);
+                    yield return new WaitForSeconds(time);
+                }
             }
-        }
         //   Debug.Log("spawning snake with check up");
         StartCoroutine("checkSpawnSnake");
+        }else if(GameManager.STATE.TEAM2X2 == GameManager.instance.state)
+        {
+            for (int x = 0; x < GameConstants.TOTAL_SNAKES; x++)
+            {
+                string nSelectedTeam = "B";
+                Debug.Log(((x + 2) % 2).ToString());
+                if ((x + 2) % 2 == 0)
+                    nSelectedTeam = "A";
+
+
+                SpawnSnakeAITeam(nSelectedTeam, "2/4/6/8/11");
+                yield return new WaitForSeconds(0.5f);
+            }
+        }else if (GameManager.STATE.TEAM3X3 == GameManager.instance.state)
+        {
+            for (int x = 0; x < 32; x++)
+            {
+                string nSelectedTeam = "C";
+                Debug.Log(((x + 3) % 3).ToString());
+                if ((x + 3) % 3 == 0)
+                    nSelectedTeam = "A";
+                else if ((x + 3) % 3 == 1)
+                    nSelectedTeam = "B";
+
+
+                SpawnSnakeAITeam(nSelectedTeam, "1/3/4/9/14");
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
     }
 
     public void SpawnSnakeAITeam(string team, string numbers)
@@ -265,7 +296,7 @@ public class Population : MonoBehaviour
                     if (ecsSnake.points >= 4000)
                         NbigSnakes++;
 
-                    if (ecsSnake.points >= 1000)
+                    if (ecsSnake.points >= 2000)
                         NmedSnakes++;
 
                     if (ecsSnake.points >= 150)
@@ -291,7 +322,7 @@ public class Population : MonoBehaviour
                    
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(10000, SnakeEnvironment.snakeType.superbig, team);  //10000
+                            SpawnSnake(20000, SnakeEnvironment.snakeType.superbig, team);  //10000
                             return;
                         }
                    
@@ -300,7 +331,7 @@ public class Population : MonoBehaviour
                    
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(6000, SnakeEnvironment.snakeType.reallybig, team);  //10000
+                            SpawnSnake(10000, SnakeEnvironment.snakeType.reallybig, team);  //10000
                             return;
                         }
                  
@@ -309,7 +340,7 @@ public class Population : MonoBehaviour
                   
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(4000, SnakeEnvironment.snakeType.big, team);  //10000
+                            SpawnSnake(6000, SnakeEnvironment.snakeType.big, team);  //10000
                             return;
                         }
                    

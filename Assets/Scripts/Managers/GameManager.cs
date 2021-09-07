@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -7,7 +8,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
-    public enum STATE { IN_GAME, GO_TO_HOME_FROM_GAMEPLAY, IN_MENU }
+    public enum STATE { IN_GAME, GO_TO_HOME_FROM_GAMEPLAY, IN_MENU, TEAM2X2, TEAM3X3 }
 
     public STATE state;
 
@@ -38,21 +39,100 @@ public class GameManager : MonoBehaviour
         state = STATE.IN_MENU;
     }
 
+    public void PlayWithTeam3x3()
+    {
+        SnakeSpawner.Instance.DestroyAllSnakes();
+        StartCoroutine(ShowLoadingMenu(Play3x3, gameplayMenu));
+    }
+
+    public void PlayWithTeam2x2()
+    {
+        SnakeSpawner.Instance.DestroyAllSnakes();
+        StartCoroutine(ShowLoadingMenu( Play2x2, gameplayMenu));
+    }
+
+    void Play2x2()
+    {
+        FoodSpawner.Instance.isReset = true;
+        FoodSpawner.Instance.isWiped = true;
+        mainMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
+        gameOverMenu.SetActive(false);
+        control.GetComponent<Image>().enabled = true;
+        bust.GetComponent<Image>().enabled = true;
+        InGame = true;
+        state = STATE.TEAM2X2;
+        SnakeSpawner.Instance.StartGame2x2();
+    }
+
+    void Play3x3()
+    {
+        FoodSpawner.Instance.isReset = true;
+        FoodSpawner.Instance.isWiped = true;
+        mainMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
+        gameOverMenu.SetActive(false);
+        control.GetComponent<Image>().enabled = true;
+        bust.GetComponent<Image>().enabled = true;
+        InGame = true;
+        state = STATE.TEAM3X3;
+        SnakeSpawner.Instance.StartGame3x3();
+    }
+
 
 
     public void PlayWithAI()
     {
-        if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
+        /*if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
         {
             SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
-        }
-        //SnakeSpawner.Instance.DestroyAllSnakes();
+        }*/
+        SnakeSpawner.Instance.DestroyAllSnakes();
         StartCoroutine(PlayAI());
+    }
+
+    public void GoToMainMenu()
+    {
+        switch (state)
+        {
+            case STATE.TEAM2X2:
+                SnakeSpawner.Instance.DestroyAllSnakes();
+                state = STATE.IN_MENU;
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
+                break;
+            case STATE.TEAM3X3:
+                SnakeSpawner.Instance.DestroyAllSnakes();
+                state = STATE.IN_MENU;
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
+                break;
+            case STATE.IN_GAME:
+                StartCoroutine(ShowLoadingMenu(mainMenu));
+                break;
+        }
+    }
+
+    public void RefreshPlay()
+    {
+        switch (state)
+        {
+            case STATE.IN_GAME:
+                PlayWithAI();
+                break;
+
+            case STATE.TEAM2X2:
+                PlayWithTeam2x2();
+                break;
+            case STATE.TEAM3X3:
+                PlayWithTeam3x3 ();
+                break;
+        }
     }
 
     IEnumerator PlayAI()
     {
         //SnakeSpawner.Instance.DestroyAllSnakes();
+        FoodSpawner.Instance.isReset = true;
+        FoodSpawner.Instance.isWiped = true;
         yield return new WaitForSeconds(2);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
@@ -117,6 +197,20 @@ public class GameManager : MonoBehaviour
         {
             additionalMenu.SetActive(true);
         }
+
+
+    }
+
+    IEnumerator ShowLoadingMenu(Action action, GameObject additionalMenu = null)
+    {
+        loadingUI.SetActive(true);
+        yield return new WaitForSeconds(GameConstants.loadingMenuDelay);
+        loadingUI.SetActive(false);
+        if (additionalMenu != null)
+        {
+            additionalMenu.SetActive(true);
+        }
+        action();
 
 
     }

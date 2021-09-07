@@ -17,24 +17,37 @@ public class SnakeScaleSystem : JobComponentSystem
         {
             if (snake != null)
             {
-                if (snake.scaleChanged && !snake.isDestroyed)
+                if (/*snake.scaleChanged && */!snake.isDestroyed)
                 {
                     float nscale = snake.GetSnakeScale();
                     float points = snake.points;
+                    int playerId = SnakeSpawner.Instance.playerID;
+                    int snakeId = snake.snakeId;
                     var jobhandle = Entities.
                                         WithSharedComponentFilter(new SnakeGroupData { group = snake.snakeId }).
-                                          ForEach((ref PieceScaleData data, ref PhysicsCollider collider) =>
+                                          ForEach((ref PieceScaleData data, ref PhysicsCollider collider, ref NonUniformScale scale) =>
                                           {
                                               data.scaleData = nscale;
                                               //data.scaleData = 10000;
 
                                               unsafe
                                               {
-                                                  float offset = 3f;
-                                                  if (points > 15000)
+                                                  float offset = 1.8f;
+                                                  /*if (points > 5000)
                                                   {
-                                                      offset = 8f;
+                                                      offset = 0.6f;
                                                   }
+                                                  else if (points > 15000 && points < 27000)
+                                                  {
+                                                      offset = 0.5f;
+                                                  }
+                                                  else if (points > 27000 && points < 100000){
+                                                      offset = 0.4f;
+                                                  }*/
+                                                  /*if (playerId == snakeId)
+                                                  {
+                                                      offset = 9.7f;
+                                                  }*/
                                                   float oldRadius = 1.0f;
                                                   float newRadius = 10.0f;
                                                   SphereCollider* scPtr = (SphereCollider*)collider.ColliderPtr;
@@ -42,7 +55,7 @@ public class SnakeScaleSystem : JobComponentSystem
                                                   
                                                   newRadius = math.lerp(oldRadius, nscale * offset, 0.05f);
                                                   var sphereGeometry = scPtr->Geometry;
-                                                  sphereGeometry.Radius = nscale * offset;
+                                                  sphereGeometry.Radius = /*nscale * offset*/ (scale.Value.x / 2) * offset;
                                                   
                                                   scPtr->Geometry = sphereGeometry;
                                               }

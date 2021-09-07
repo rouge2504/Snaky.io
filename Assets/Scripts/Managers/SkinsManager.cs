@@ -33,6 +33,11 @@ public class SkinsManager : MonoBehaviour
     private List<Color> colorOnSnake;
 
     public List<Material> materialColors;
+    public List<Material> materialSprintColors;
+
+    public List<Material> teamColors;
+    private List<Material> materialOnSnake;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,11 +53,38 @@ public class SkinsManager : MonoBehaviour
         {
             colorRender[i].gameObject.GetComponent<Floater>().enabled = false;
         }
+
+        if (PlayerProgress.instance.colorOnSnake.Count > 0)
+        {
+            colorOnSnake = PlayerProgress.instance.colorOnSnake;
+            SetColorOnSnake();
+            PlayerProgress.instance.materialSprintOnSnake = materialSprintColors;
+
+            for (int i = 0; i < PlayerProgress.instance.colorOnSnake.Count; i++)
+            {
+                Material material = materialColors[0];
+                Material materialSprint = materialSprintColors[0];
+                material.color = PlayerProgress.instance.colorOnSnake[i];
+                materialSprint.color = PlayerProgress.instance.colorOnSnake[i];
+                PlayerProgress.instance.materialOnSnake.Add(material);
+                PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+            }
+            /*for (int i = 0; i < PlayerProgress.instance.colorOnSnake.Count; i++)
+            {
+                materialSprintColors[i]
+            }*/
+        }
     }
 
     public void OpenWindow()
     {
         StartCoroutine(StartAnimation());
+        if (PlayerProgress.instance.skinMask != null)
+        {
+            MaskSnake.sprite = PlayerProgress.instance.skinMask.maskSprite;
+        }
+
+
     }
 
     public void CloseWindow()
@@ -74,7 +106,9 @@ public class SkinsManager : MonoBehaviour
             ColorObject colorObject = Instantiate(colorObjectPrefab, contentColorObjects).GetComponent<ColorObject>();
             colorObject.color.color = snankeColors[i];
             colorObject.closeButton.gameObject.SetActive(false);
-            colorObject.button.onClick.AddListener(() => SetColor(colorObject));
+            Material materialColor = materialColors[i];
+            Material materialSprintColor = materialSprintColors[i];
+            colorObject.button.onClick.AddListener(() => SetColor(colorObject, materialColor, materialSprintColor));
 
 
             //materialColors.Add(snankeMaterial[i]);
@@ -82,16 +116,19 @@ public class SkinsManager : MonoBehaviour
         }
     }
 
-    public void RemoveColor(ColorObject colorObject)
+    public void RemoveColor(ColorObject colorObject, Material material, Material materialSprint)
     {
         colorOnSnake.Remove(colorObject.color.color);
         colorObject.closeButton.gameObject.SetActive(false);
         colorObject.closeButton.onClick.RemoveAllListeners();
         SetColorOnSnake(colorOnSnake.Count == 1 ? colorOnSnake[0] : colorObject.color.color);
         PlayerProgress.instance.colorOnSnake = colorOnSnake;
+        StorageManager.Singleton.SaveColors(colorOnSnake);
+        PlayerProgress.instance.materialOnSnake.Remove(material);
+        PlayerProgress.instance.materialOnSnake.Remove(materialSprint);
     }
 
-    public void SetColor(ColorObject colorObject)
+    public void SetColor(ColorObject colorObject, Material material, Material materialSprint)
     {
         colorOnSnake.Add(colorObject.color.color);
         if (colorOnSnake.Count > 3)
@@ -101,11 +138,69 @@ public class SkinsManager : MonoBehaviour
         }
         colorObject.closeButton.gameObject.SetActive(true);
 
-        colorObject.closeButton.onClick.AddListener(() => RemoveColor(colorObject));
+        colorObject.closeButton.onClick.AddListener(() => RemoveColor(colorObject, material, materialSprint));
         SetColorOnSnake(colorObject.color.color);
         PlayerProgress.instance.colorOnSnake = colorOnSnake;
+        StorageManager.Singleton.SaveColors(colorOnSnake);
+        PlayerProgress.instance.materialOnSnake.Add(material);
+        PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
     }
+    private void SetColorOnSnake()
+    {
 
+        for (int i = 0; i < colorRender.Length; i++)
+        {
+            if (colorOnSnake.Count == 1)
+            {
+                colorRender[i].GetComponent<Image>().color = colorOnSnake[0];
+
+            }
+            if (colorOnSnake.Count == 2)
+            {
+                if (i % 2 != 0)
+                {
+                    colorRender[i].GetComponent<Image>().color = colorOnSnake[0];
+                }
+                else
+                {
+                    colorRender[i].GetComponent<Image>().color = colorOnSnake[1];
+                }
+            }
+            else if (colorOnSnake.Count == 3)
+            {
+                int it = i + 1;
+
+
+
+                if (it % 2 != 0) //Rojo
+                {
+                    colorRender[i].GetComponent<Image>().color = colorOnSnake[0];
+                }
+                else if (it % 2 == 0) // Amarillo
+                {
+                    colorRender[i].GetComponent<Image>().color = colorOnSnake[1];
+                }
+
+                if (it > 2)
+                {
+                    if (it % 2 != 0) //Amarillo
+                    {
+                        colorRender[i].GetComponent<Image>().color = colorOnSnake[1];
+                    }
+                    else if (it % 2 == 0) // Rojo
+                    {
+                        colorRender[i].GetComponent<Image>().color = colorOnSnake[0];
+                    }
+                }
+
+                if (it % 3 == 0) //Verde
+                {
+                    colorRender[i].GetComponent<Image>().color = colorOnSnake[2];
+
+                }
+            }
+        }
+    }
     private void SetColorOnSnake(Color color)
     {
 

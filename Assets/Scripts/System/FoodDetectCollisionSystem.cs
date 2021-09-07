@@ -5,6 +5,7 @@ using Unity.Physics.Systems;
 using Unity.Physics;
 using Unity.Mathematics;
 using Unity.Collections;
+using Unity.Transforms;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class FoodDetectCollisionSystem : JobComponentSystem
@@ -23,6 +24,8 @@ public class FoodDetectCollisionSystem : JobComponentSystem
        
         public ComponentDataFromEntity<FoodData> foodDataGroup;
         [ReadOnly] public ComponentDataFromEntity<FoodDetectData> foodDetectDataGroup;
+        public ComponentDataFromEntity<NonUniformScale> foodScaleDataGroup;
+        [ReadOnly] public ComponentDataFromEntity<Translation> foodTranslateDataGroup;
         public void Execute(TriggerEvent triggerEvent)
         {
             Entity entityA = triggerEvent.EntityA;
@@ -49,9 +52,29 @@ public class FoodDetectCollisionSystem : JobComponentSystem
 
                     if (!foodComponent.absorbed)
                     {
-                        foodComponent.absorbed = true;
+                        /*foodComponent.absorbed = true;
                         foodComponent.positionToMove = pointcomponent.currentPos;
-                        foodDataGroup[triggerEntity] = foodComponent;
+                        foodDataGroup[triggerEntity] = foodComponent;*/
+
+                        var foodScaleComponent = foodScaleDataGroup[triggerEntity];
+                        var foodScaleHeadComponent = foodScaleDataGroup [pointcomponent.headTargetData];
+
+
+                        var foodTransformComponent = foodTranslateDataGroup[triggerEntity];
+                        var foodHeadTransformComponent = foodTranslateDataGroup[dynamicEntity];
+
+                        float distPiece = foodScaleComponent.Value.x / 2;
+                        float distHead = foodScaleHeadComponent.Value.x / 2;
+
+                        float allDist = distHead + distPiece;
+
+                        float distVector = Vector3.Distance(foodTransformComponent.Value, foodHeadTransformComponent.Value);
+                        if (distVector < allDist)
+                        {
+                            foodComponent.absorbed = true;
+                            foodComponent.positionToMove = pointcomponent.currentPos;
+                            foodDataGroup[triggerEntity] = foodComponent;
+                        }
                     }
                 }
             }
@@ -72,7 +95,9 @@ public class FoodDetectCollisionSystem : JobComponentSystem
         var jobHandle = new foodDetectTriggerJob
         {
             foodDataGroup = GetComponentDataFromEntity<FoodData>(),
-            foodDetectDataGroup = GetComponentDataFromEntity<FoodDetectData>()
+            foodDetectDataGroup = GetComponentDataFromEntity<FoodDetectData>(),
+            foodScaleDataGroup = GetComponentDataFromEntity<NonUniformScale>(),
+            foodTranslateDataGroup = GetComponentDataFromEntity<Translation>(),
         }.Schedule(stepsWorld.Simulation, ref physicsWorld.PhysicsWorld, inputDeps);
 
 

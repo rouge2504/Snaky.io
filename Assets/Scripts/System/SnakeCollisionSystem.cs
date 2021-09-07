@@ -61,6 +61,10 @@ public class SnakeCollisionSystem : JobComponentSystem
                                        
                                         if (!component.shouldDestroy && component.snakeId >= 0 && piececomponent.snakeId >= 0)
                                 {
+                                    /*component.isDead = true;
+                                    component.shouldDestroy = true;
+                                    snakeHeadDataGroup[dynamicEntity] = component;*/
+                                    
                                     var pieceScaleComponent = pieceScaleDataGroup[triggerEntity];
                                     var pieceScaleHeadComponent = pieceScaleDataGroup[dynamicEntity];
 
@@ -81,15 +85,6 @@ public class SnakeCollisionSystem : JobComponentSystem
                                         component.shouldDestroy = true;
                                         snakeHeadDataGroup[dynamicEntity] = component;
                                     }
-                                    //Debug.Log(pieceTransformComponent.Value +", " + pieceHeadTransformComponent.Value);
-                                    /*if (component.isPlayer)
-                                    {
-                                        Debug.Log("Player");
-                                    }
-                                    component.isDead = true;
-                                            component.shouldDestroy = true;
-                                            snakeHeadDataGroup[dynamicEntity] = component;
-                                   */
                                 }
                             }
                                 }

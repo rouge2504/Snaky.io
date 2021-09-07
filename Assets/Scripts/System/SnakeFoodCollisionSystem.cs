@@ -4,6 +4,7 @@ using Unity.Jobs;
 using Unity.Physics.Systems;
 using Unity.Physics;
 using Unity.Mathematics;
+using Unity.Transforms;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class SnakeFoodCollisionSystem : JobComponentSystem
@@ -22,6 +23,8 @@ public class SnakeFoodCollisionSystem : JobComponentSystem
        
         public ComponentDataFromEntity<FoodData> foodDataGroup;
         public ComponentDataFromEntity<SnakePointsData> snakePointDataGroup;
+        public ComponentDataFromEntity<NonUniformScale> foodScaleDataGroup;
+        public ComponentDataFromEntity<Translation> foodTranslateDataGroup;
         public void Execute(TriggerEvent triggerEvent)
         {
             Entity entityA = triggerEvent.EntityA;
@@ -48,10 +51,28 @@ public class SnakeFoodCollisionSystem : JobComponentSystem
 
                     if (!foodComponent.shouldDestroy)
                     {
-                        foodComponent.shouldDestroy = true;
-                        pointcomponent.points += foodComponent.foodValue;
-                        snakePointDataGroup[dynamicEntity] = pointcomponent;
-                        foodDataGroup[triggerEntity] = foodComponent;
+
+
+                        var foodScaleComponent = foodScaleDataGroup[triggerEntity];
+                        var foodScaleHeadComponent = foodScaleDataGroup[dynamicEntity];
+
+
+                        var foodTransformComponent = foodTranslateDataGroup[triggerEntity];
+                        var foodHeadTransformComponent = foodTranslateDataGroup[dynamicEntity];
+
+                        float distPiece = foodScaleComponent.Value.x / 12;
+                        float distHead = foodScaleHeadComponent.Value.x / 2;
+
+                        float allDist = distHead + distPiece;
+
+                        float distVector = Vector3.Distance(foodTransformComponent.Value, foodHeadTransformComponent.Value);
+                        if (distVector < allDist)//if (distVector < allDist)
+                        {
+                            foodComponent.shouldDestroy = true;
+                            pointcomponent.points += foodComponent.foodValue;
+                            snakePointDataGroup[dynamicEntity] = pointcomponent;
+                            foodDataGroup[triggerEntity] = foodComponent;
+                        }
                     }
                 }
             }
@@ -72,7 +93,9 @@ public class SnakeFoodCollisionSystem : JobComponentSystem
         var jobHandle = new foodTriggerJob
         {
             foodDataGroup = GetComponentDataFromEntity<FoodData>(),
-            snakePointDataGroup = GetComponentDataFromEntity<SnakePointsData>()
+            snakePointDataGroup = GetComponentDataFromEntity<SnakePointsData>(),
+            foodScaleDataGroup = GetComponentDataFromEntity<NonUniformScale>(),
+            foodTranslateDataGroup = GetComponentDataFromEntity<Translation>(),
         }.Schedule(stepsWorld.Simulation, ref physicsWorld.PhysicsWorld, inputDeps);
 
 

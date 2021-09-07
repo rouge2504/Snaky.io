@@ -12,6 +12,7 @@ public class CSVReader
     private TextAsset data_result;
     private string[] lines;
 
+    private List<SkinMask> list;
     private static CSVReader instance;
     public static CSVReader Instance
     {
@@ -36,9 +37,15 @@ public class CSVReader
 
     }
 
+    public SkinMask Find(string name)
+    {
+        return list.Find(x => x.nameMask == name);
+
+    }
+
     public List<SkinMask> Read()
     {
-        var list = new List<SkinMask>();
+        list = new List<SkinMask>();
         if (lines.Length > 1)
         {
 
@@ -107,19 +114,4 @@ public class SkinMask
         maskSprite = Resources.Load<Sprite>(url);
     }
 
-    public void SetMaterial()
-    {
-        string url = "Masks/" + this.url + "/" + nameMask;
-        Material material = new Material(Shader.Find("Unlit/Transparent Cutout"));
-        Texture2D texture = Resources.Load<Texture2D>(url);
-        material.mainTexture = texture;
-        string savePath = UnityEditor.AssetDatabase.GetAssetPath(texture);
-        savePath = savePath.Substring(0, savePath.LastIndexOf('/') + 1);
-        maskMaterial = material;
-        string newAssetName = savePath + texture.name + ".mat";
-
-        UnityEditor.AssetDatabase.CreateAsset(material, newAssetName);
-
-        UnityEditor.AssetDatabase.SaveAssets();
-    }
 }

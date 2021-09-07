@@ -35,7 +35,7 @@ public class SnakeResizeSystem : JobComponentSystem
                         //newParts += (int)math.round((5000 - 1500) / (60));
                         //newParts += (int)math.round((10000 - 5000) / (50));
                         //newParts += (int)math.round((snakePoints.points - 10000) / (100));
-                        newParts += (int)math.round(snakePoints.points / (600));
+                        newParts += (int)math.round(snakePoints.points / (200));
                     }
                     else if (snakePoints.points > 10000 && snakePoints.points <= 30000)
                     {
@@ -130,7 +130,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 EntityManager.SetSharedComponentData<RenderMesh>(ballData.snakeBallEntity, new RenderMesh
                                 {
                                     mesh = quadMesh,
-                                    material = headData.isPlayer ? snake.GetNextColor(lastPieceIndex + x, PlayerProgress.instance.colorOnSnake.Count) : snake.GetNextColor()
+                                    material =  snake.GetNextColor(lastPieceIndex + x)
                                 });
                                 EntityManager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
                                 {
