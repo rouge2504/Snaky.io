@@ -46,6 +46,7 @@ public class SkinsManager : MonoBehaviour
     public List<Material> teamColors;
     private List<Material> materialOnSnake;
 
+
     public Color GetDefaultColor ()
     {
         return new Color (0,1,0,1);
@@ -57,7 +58,6 @@ public class SkinsManager : MonoBehaviour
         instance = this;
         skinMasks = CSVReader.Instance.Read();
         buyEggs.gameObject.SetActive(false);
-        
         GetMaskByType((int)type);
         print(skinMasks[0].nameMask);
         colorOnSnake = new List<Color>();
@@ -186,6 +186,10 @@ public class SkinsManager : MonoBehaviour
 
     public void SetColor(ColorObject colorObject, Material material, Material materialSprint, bool choosed = false)
     {
+        if (AchievementManager.instance != null)
+        {
+            AchievementManager.instance.SetAchievementGoal(GameUtils.PREFS_EDIT_SNAKE);
+        }
         if (!choosed)
         {
             colorOnSnake.Add(colorObject.color.color);
@@ -446,20 +450,30 @@ public class SkinsManager : MonoBehaviour
             if (type == skinMasks[i].type)
             {
                 SkinMask skinMask = skinMasks[i];
-               /* string url = "Masks/" + skinMask.url + "/" + skinMask.nameMask;
-                print(url);
-                Sprite texture = Resources.Load<Sprite>(url);*/
-
                 MaskObject maskObject = Instantiate(maskObjectPrefab, contentMaskObjects).GetComponent<MaskObject>();
+                maskObject.maskName = skinMask.nameMask;
                 maskObject.maskImage.sprite = skinMask.maskSprite;
-                maskObject.buttonImage.onClick.AddListener(() => SetMask(skinMask));
+                maskObject.SetImageOnLock();
+                maskObject.unlocked = SetUnlock(skinMask);
+                maskObject.lockImage.SetActive(!SetUnlock(skinMask));
+                maskObject.buttonImage.onClick.AddListener(() => SetMask(maskObject, skinMask));
 
             }
         }
     }
 
-    public void SetMask(SkinMask skinMask)
+    public bool SetUnlock(SkinMask skinMask)
     {
+        return (Type)skinMask.type != Type.PRO ? true : GamePrefs.GetBool(skinMask.id, 0);
+    }
+
+    public void SetMask(MaskObject maskObject, SkinMask skinMask)
+    {
+        if (!maskObject.unlocked)
+        {
+            DialogueManager.instance.PopUp("Unlock this Mask!\n" + skinMask.description);
+            return;
+        }
         MaskSnake.sprite = skinMask.maskSprite;
         PlayerProgress.instance.skinMask = skinMask;
         buyEggs.gameObject.SetActive(skinMask.eggValue != 0 ? true : false);
@@ -492,4 +506,6 @@ public class SkinsManager : MonoBehaviour
 
         return (-1 == rnd) ? null : skinMasks[rnd].maskSprite;
     }
+
+
 }

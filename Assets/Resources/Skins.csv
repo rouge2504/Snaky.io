@@ -1,10 +1,10 @@
-Name,Url,Price,Name Cube,EggValue,Type
-9,1) Animals,,cheese,2,1
-43_Pork-01,1) Animals,,sushi,8,1
-50_Cat-01,1) Animals,,cookie,16,1
-a16,1) Animals,,rubik,256,1
-a17,1) Animals,,jelly,1024,1
-celebi,1) Animals,,cube_lego,64536,1
+Name,Url,id,Description,EggValue,Type
+9,1) Animals,,,,1
+43_Pork-01,1) Animals,,,,1
+50_Cat-01,1) Animals,,,,1
+a16,1) Animals,,,,1
+a17,1) Animals,,,,1
+celebi,1) Animals,,,,1
 Charisard,1) Animals,,,,1
 Face9,1) Animals,,,,1
 Face10,1) Animals,,,,1
@@ -92,16 +92,16 @@ souperman,eggs,,,10,6
 spiderman,eggs,,,50,6
 Hat-boy,hats,,,,7
 Hat-Mexican,hats,,,,7
-corona-b,Pros,,,,5
-duck,Pros,,,,5
-genie,Pros,,,,5
-jasmine,Pros,,,,5
-king pink bear,Pros,,,,5
-skeleton,Pros,,,,5
-stitch_red1,Pros,,,,5
-sully,Pros,,,,5
-trex_c,Pros,,,,5
-tyrx_1,Pros,,,,5
+corona-b,Pros,PREFS_FIRST_KILL,Kill first snake,,5
+duck,Pros,PREFS_FIVE_KILL,Kill 5 snakes,,5
+genie,Pros,PREFS_TEN_KILL,Kill 10 snakes,,5
+jasmine,Pros,PREFS_HUNDRED_KILL,Kill 100 snakes,,5
+king pink bear,Pros,PREFS_EDIT_SNAKE,Change snake color,,5
+skeleton,Pros,PREFS_SOCIAL_MEDIA,Share your first score,,5
+stitch_red1,Pros,PREFS_TWO_HUNDRED_POINTS,Get 200 points,,5
+sully,Pros,PREFS_ONE_LAKH_POINTS,Get 100000 points,,5
+trex_c,Pros,PREFS_SECOND_PLAY,Play the game second time,,5
+tyrx_1,Pros,PREFS_BUY_TRANSPARENCY,Purchase Transparency,,5
 ,,,,,
 ,,,,,
 ,,,,,

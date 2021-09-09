@@ -72,11 +72,11 @@ public class CSVReader
                             //entry.SetMaterial();
                             break;
                         case 2:
-                            
-                            entry.price = int.Parse(string.IsNullOrEmpty(value) ? "0" : value);
+
+                            entry.id = value;
                             break;
                         case 3:
-                            entry.cube = value;
+                            entry.description = value;
                             break;
                         case 4:
                             entry.eggValue = int.Parse(string.IsNullOrEmpty(value) ? "0" : value);
@@ -101,8 +101,8 @@ public class SkinMask
 {
     public string nameMask;
     public string url;
-    public int price;
-    public string cube;
+    public string id;
+    public string description;
     public int eggValue;
     public int type;
     public Sprite maskSprite;
