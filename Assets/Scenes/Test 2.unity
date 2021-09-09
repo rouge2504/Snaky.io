@@ -34988,11 +34988,23 @@ MonoBehaviour:
   foodPrefab: {fileID: 6313716897604906580, guid: c1fd36f7e5741f044889c9af44f59168, type: 3}
   minFoodSize: 2
   maxFoodSize: 2000
-  foodQuantity: 600
+  foodQuantity: 2500
   isReset: 0
   isWiped: 1
   foodMats:
-  - {fileID: 2100000, guid: 37d8fbd1ca43c5f43b3d78c8984d2d76, type: 2}
+  - {fileID: 2100000, guid: 78067f3bfe3d77e4f90c335cf7a6dc81, type: 2}
+  - {fileID: 2100000, guid: 8a101fec5e2588846b5414c9a790a781, type: 2}
+  - {fileID: 2100000, guid: 6c855149476a686468e5b09c25af7b8a, type: 2}
+  - {fileID: 2100000, guid: 106efc748de13a944bb67947ec418356, type: 2}
+  - {fileID: 2100000, guid: dc4c7f3bac2172d40ba62208d98f1f53, type: 2}
+  - {fileID: 2100000, guid: 6bea37188a7903f4a81ec623b1c03afd, type: 2}
+  - {fileID: 2100000, guid: 39bb6573bc2714348904b1008331ceb0, type: 2}
+  - {fileID: 2100000, guid: 6889b403e38eb454ab102a5f1fb67eff, type: 2}
+  - {fileID: 2100000, guid: 21d985ae54d9f6a498c7dd6dd5f5ac5a, type: 2}
+  - {fileID: 2100000, guid: eb38fb55976f2c14497cd7223ca32f6d, type: 2}
+  - {fileID: 2100000, guid: c42aad2e328f7f343abd0ca40df5ccbb, type: 2}
+  - {fileID: 2100000, guid: 4622c5489d400824ea0bfe1478595f5f, type: 2}
+  - {fileID: 2100000, guid: 33a8c271b3b4c6d4b918c6afe620048f, type: 2}
   foodMesh: {fileID: -2124705421725058983, guid: 679bab4d900db51409c30b560ad26354, type: 3}
   duelModeSpawnSize: {x: 0, y: 0, z: 0}
 --- !u!4 &1899194059
