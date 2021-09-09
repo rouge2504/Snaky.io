@@ -9,12 +9,8 @@ public class UserInfoPoints : MonoBehaviour
     public Text nameSnake;
     public Text points;
 
-    private Color mainColor;
+    public Color mainColor;
 
-    private void Start()
-    {
-        mainColor = nameSnake.color;
-    }
 
     public void SetMainColor()
     {

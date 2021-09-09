@@ -44,4 +44,11 @@ public class GameConstants
 
     public static float loadingMenuDelay = 1.5f;
 
+    public static float searchiingMenuDelay {
+        get
+        {
+            return Random.Range(1.5f, 2);
+        }
+    }
+
 }

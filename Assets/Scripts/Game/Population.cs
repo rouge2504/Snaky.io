@@ -62,7 +62,8 @@ public class Population : MonoBehaviour
         noMaskCount = (noMaskPercent / 100) * GameConstants.TOTAL_SNAKES;
         noMaskCount = Mathf.RoundToInt(noMaskCount);
         //MaxPopulation = GameConstants.TOTAL_SNAKES;
-        //Initialize();
+        //SpawnSnake(Random.Range(30000, 35000), SnakeEnvironment.snakeType.superbig, "");
+        Initialize();
     }
 
     //private void SetDuelPositions()
@@ -137,6 +138,7 @@ public class Population : MonoBehaviour
 
     IEnumerator SpawnSnakePopulation()
     {
+
         if (GameManager.instance.state == GameManager.STATE.IN_GAME)
         {
             float time = 0.5f;
@@ -261,6 +263,102 @@ public class Population : MonoBehaviour
                 SpawnSnakeAITeam(nSelectedTeam, "1/3/4/9/14");
                 yield return new WaitForSeconds(0.5f);
             }
+        }else if (GameManager.STATE.IN_MENU == GameManager.instance.state)
+        {
+            float time = 0.5f;
+            //    for (int i = 0; i < mega; i++)
+            //     {
+            if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+            {
+                SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                                                                                                  //SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                realCount++;
+                yield return new WaitForSeconds(time);
+            }
+            //   }
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < superbig; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(15000, 20000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+            }
+            time = TimeToSpawnSnakes();
+
+            for (int i = 0; i < reallybig; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(15000, 30000), SnakeEnvironment.snakeType.reallybig, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+            }
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < big; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(5000, 8000), SnakeEnvironment.snakeType.big, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+            }
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < medium; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(2000, 4000), SnakeEnvironment.snakeType.medium, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+            }
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < small; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(250, 1500), SnakeEnvironment.snakeType.small, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+
+            }
+            time = TimeToSpawnSnakes();
+            for (int i = 0; i < baby; i++)
+            {
+                if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
+                {
+                    SpawnSnake(Random.Range(250, 500), SnakeEnvironment.snakeType.small, "");
+                    realCount++;
+                    yield return new WaitForSeconds(time);
+                }
+
+            }
+            time = TimeToSpawnSnakes();
+
+
+
+
+
+
+
+
+            if (realCount <= MaxPopulation && !activeCounter)
+            {
+                for (int i = realCount; i < 80; i++)
+                {
+                    realCount++;
+                    SnakeEnvironment.Singleton.counterPiece += Random.Range(100, 500);
+                    yield return new WaitForSeconds(time);
+                }
+            }
+            //   Debug.Log("spawning snake with check up");
+            StartCoroutine("checkSpawnSnake");
         }
     }
 
@@ -370,40 +468,16 @@ public class Population : MonoBehaviour
 
     public void AddSnakesDuel()
     {
-     //   SnakeManager.instance.usedSnakes.Clear();
-        //int counter = 0;
-        //var length = SnakeManager.instance.notUsedSnakes.Count;
-        //int i = 0;
+
 
         for (int i = 1; i < 4; i++)
         {
-            //ColorTemplate colorChosen = SnakeSpawner.Instance.stockColorTemplates[Random.Range(0, SnakeSpawner.Instance.stockColorTemplates.Count)];//SkinManager._instance.availableColorTemplate[Random.Range(2, SkinManager._instance.availableColorTemplate.Length - 1)];
             ColorTemplate colorChosen = SnakeSpawner.Instance.selectedColorTemplate;
 
             bool ifMask = (Random.Range(0, 3) == 0);
 
-            SnakeSpawner.Instance.CreateNewSnake(150, GetRandomName(), duelMode_Position[i], colorChosen, /*ifMask ? MaskManager.instance.GetRandomMask() : null*/ null, false);
-            // newsnake.SetActive(true);
-          //  Debug.Log("snake is created successfully");
-          //  SnakeManager.instance.InstantiateForDuel(i);
-            //var snakeObject = SnakeManager.instance.usedSnakes[0].GetComponent<Snake>();     //SnakeManager.instance.notUsedSnakes[i].GetComponent<Snake>();
-           
-            //if (snakeObject.gameObject.activeInHierarchy == false && 
-              //  snakeObject.val == Snake.snakeType.small)
-            //{
-                //SnakeManager.instance.InstantiateSnake_Duel(Vector3.zero, Quaternion.identity,snakeObject);
-     
+            SnakeSpawner.Instance.CreateNewSnake(250, GetRandomName(), duelMode_Position[i], colorChosen, SkinsManager.instance.GetRandomMask(), false);
 
-                //snakeObject.enabled = false;
-                //counter++;
-                ////i++;
-                //if (counter > 2)
-                //{
-                    
-                //    break;
-                //}
-            //Debug.Log("Counter:- " + counter);
-            // }
         }
     }
 
@@ -499,7 +573,7 @@ public class Population : MonoBehaviour
     public void StopAllSnakeIncrease()
     {
         StopCoroutine("checkSpawnSnake");
-        StopCoroutine("spawnSnakePopulation");
+        StopCoroutine("SpawnSnakePopulation");
     }
 
     IEnumerator checkSpawnSnake()

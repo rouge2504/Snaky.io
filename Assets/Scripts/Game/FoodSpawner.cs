@@ -18,7 +18,7 @@ public class FoodSpawner : MonoBehaviour
     public GameObject foodPrefab;
     public float minFoodSize = 2f;
     public float maxFoodSize = 6f;
-    public int foodQuantity = 600;
+    public int foodQuantity = 800;
     Entity foodEntity;
     World world;
     EntityManager manager;
@@ -62,7 +62,9 @@ public class FoodSpawner : MonoBehaviour
                 SpawnFoods();
             }
             else
+            {
                 SpawnDuelFoods();
+            }
 
             lastFoodSpawnType = foodSpawnType;
         }
@@ -161,7 +163,7 @@ public class FoodSpawner : MonoBehaviour
             });
             manager.SetComponentData(food, new FoodData
             {
-                foodValue = (int)(5 * scale),
+                foodValue = (int)(0.05  * scale),
                 shouldDestroy = false,
                 isNewSpawn = true,
                 absorbed = false,

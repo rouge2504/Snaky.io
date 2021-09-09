@@ -24,11 +24,27 @@ public class PlayerProgress : MonoBehaviour
             SetMaskOnUI();
         }
 
+
+    }
+
+    private void Start()
+    {
+
         colorOnSnake = StorageManager.Singleton.LoadColors();
 
         if (colorOnSnake.Count > 0)
         {
+           // SkinsManager.instance.Init();
             SetColorOnMainUI();
+        }
+        if (skinMask == null)
+        {
+            colorOnSnake.Clear();
+            skinMask = new SkinMask();
+            skinMask.maskSprite = SkinsManager.instance.defaultMask;
+            skinMask.maskMaterial = SkinsManager.instance.defaultMaskMaterial;
+            colorOnSnake.Add(SkinsManager.instance.GetDefaultColor());
+            //SkinsManager.instance.Init();
         }
     }
 

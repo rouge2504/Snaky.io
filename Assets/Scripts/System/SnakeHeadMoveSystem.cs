@@ -74,13 +74,25 @@ public class SnakeHeadMoveSystem : JobComponentSystem
 
                         }
                     }
-
+                    if (!snakeHeadData.isDuelMode)
+                    {
                         if (math.distance(position.Value, float3.zero) > GameConstants.FIELD_SCALE)
                         {
                             targetData.foodTarget = float3.zero;
                             targetData.isReachedPosition = false;
                             targetData.isAIMoveDirection = false;
                         }
+                    }
+                    else
+                    {
+                        Vector3 screen = FoodSpawner.Instance.duelModeSpawnSize;
+                        if (position.Value.x > screen.x || position.Value.x < (-screen.x) || position.Value.z < screen.z || position.Value.z > (-screen.z))
+                        {
+                            targetData.foodTarget = float3.zero;
+                            targetData.isReachedPosition = false;
+                            targetData.isAIMoveDirection = false;
+                        }
+                    }
 
 
 

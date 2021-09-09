@@ -70,10 +70,11 @@ public class StorageManager : MonoBehaviour
     public List<Color> LoadColors()
     {
         List<SnakeStorage> snakeStorages = new List<SnakeStorage>();
-
+        List<Color> colorStorage = new List<Color>();
         if (!File.Exists(URL_ANDROID + "/SnakeStorage.json") && Application.platform == RuntimePlatform.Android)
         {
-            return null;
+            colorStorage.Add(SkinsManager.instance.defaultColor);
+            return colorStorage;
         }
 
         string json = null;
@@ -91,12 +92,14 @@ public class StorageManager : MonoBehaviour
 
         if (String.IsNullOrEmpty(json))
         {
-            return null;
+            Color color = new Color(0, 1, 0, 1);
+            colorStorage.Add(color);
+            SaveColors(colorStorage);
+            return colorStorage;
         }
 
         snakeStorages = JsonHelper.FromJson<SnakeStorage>(json).ToList();
 
-        List<Color> colorStorage = new List<Color>();
 
         foreach(SnakeStorage snakeStorage in snakeStorages)
         {

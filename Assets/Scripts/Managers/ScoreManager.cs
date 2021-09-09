@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager intance;
     [SerializeField] private Text scoreGame;
     [SerializeField] private List<UserInfoPoints> infoPoints;
     [SerializeField] private UserInfoPoints gameOverScore;
     // Start is called before the first frame update
     void Start()
     {
-        
+        intance = this;
     }
 
     // Update is called once per frame
@@ -31,6 +32,9 @@ public class ScoreManager : MonoBehaviour
                 case GameManager.STATE.TEAM3X3:
                     CheckLeaderBoardTeam(GameManager.instance.state);
                     break;
+                case GameManager.STATE.IN_DUEL:
+                    CheckLeaderDuelBoard();
+                    break;
             }
             if (SnakeSpawner.Instance.playerSnake != null)
             {
@@ -38,6 +42,14 @@ public class ScoreManager : MonoBehaviour
 
                 gameOverScore.points.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
             }
+        }
+    }
+
+    public void ResetInfoPoints(int it)
+    {
+        for (int i = 0; i < it; i++)
+        {
+            infoPoints[i].gameObject.SetActive(false);
         }
     }
 
@@ -67,6 +79,8 @@ public class ScoreManager : MonoBehaviour
         infoPoints[2].SetScoreOnTeam("Team C", Population.instance.GetTotalTeamScore("C"), SkinsManager.instance.teamColors[2].color);
     }
 
+   
+
     private void CheckLeaderBoard()
     {
         List<ECSSnake> tempListSnake = new List<ECSSnake>(); /*SnakeSpawner.Instance.snakes.ToList();*/
@@ -93,6 +107,43 @@ public class ScoreManager : MonoBehaviour
             {
                 infoPoints[i].SetMainColor();
                 infoPoints[i].gameObject.SetActive(true);
+                infoPoints[i].image.SetActive(true);
+                infoPoints[i].nameSnake.text = tempSnake.snakeName;
+                infoPoints[i].points.text = tempSnake.points.ToString("0");
+            }
+
+
+        }
+
+        //print(debug);
+
+    }
+
+    private void CheckLeaderDuelBoard()
+    {
+        List<ECSSnake> tempListSnake = new List<ECSSnake>(); /*SnakeSpawner.Instance.snakes.ToList();*/
+
+        for (int i = 0; i < SnakeSpawner.Instance.snakes.Length; i++)
+        {
+            if (SnakeSpawner.Instance.snakes[i] != null)
+            {
+                tempListSnake.Add(SnakeSpawner.Instance.snakes[i]);
+            }
+        }
+        tempListSnake.Sort(delegate (ECSSnake a, ECSSnake b)
+        {
+            return a.points.CompareTo(b.points);
+        });
+        //string debug = null;
+        for (int i = 0; i < tempListSnake.Count; i++)
+        {
+            ECSSnake tempSnake = tempListSnake[(tempListSnake.Count - 1) - i];
+            //debug += "Points: " + tempListSnake[(tempListSnake.Count - 1) - i].points + "\n";
+
+            if (i < 4)
+            {
+                infoPoints[i].gameObject.SetActive(true);
+                infoPoints[i].SetMainColor();
                 infoPoints[i].image.SetActive(true);
                 infoPoints[i].nameSnake.text = tempSnake.snakeName;
                 infoPoints[i].points.text = tempSnake.points.ToString("0");

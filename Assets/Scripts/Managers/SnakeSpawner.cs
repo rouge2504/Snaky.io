@@ -88,6 +88,7 @@ public class SnakeSpawner : MonoBehaviour
                 DestroySnake(snake);
             }
         }
+        Population.instance.StopAllRoutines();
         Population.instance.realCount = 0;
         SnakeEnvironment.Singleton.counterPiece = 0;
         //SetupNewColorTemplatesAndMaterialsForBots();
@@ -209,6 +210,7 @@ public class SnakeSpawner : MonoBehaviour
         {
             print("muerto player");
             //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
+            playerSnake = null;
             GameManager.instance.LooseWithAI();
         }
     }
@@ -345,7 +347,7 @@ public class SnakeSpawner : MonoBehaviour
             isDead = false,
             isImmune = true,
             teamId = (teamid == -1) ? snakeIndex : teamid,
-            //isDuelMode = GameManager.instance.IsDuelMode(),
+            isDuelMode = GameManager.instance.IsDuelMode,
             isBabySnake = isBaby
         });
 
@@ -579,6 +581,10 @@ public class SnakeSpawner : MonoBehaviour
 
     public void UpdateSnakeHead(ECSSnake snake)
     {
+        if (!manager.HasComponent<SnakeHeadData>(snake.snakeHead))
+        {
+            return;
+        }
         SnakeHeadData headData = manager.GetComponentData<SnakeHeadData>(snake.snakeHead);
         headData.speedMultiplier = snake.speedMultiplier;
         headData.speed = snake.speed;
@@ -610,5 +616,71 @@ public class SnakeSpawner : MonoBehaviour
     public void FixedUpdate()
     {
     }
-    
+
+
+    public void SpawnDuelPlayer(Vector3 pos)
+    {
+        Debug.Log("spawning duel player");
+        int randomSpawnPoint = UnityEngine.Random.Range(0, playerSpawnPoints.Length);
+
+        // GameManager.instance.chosenPlayerSpawnPoint = playerSpawnPoints[randomSpawnPoint];
+        ColorTemplate colortemp = selectedColorTemplate;
+
+
+        Sprite mask = null;
+
+
+
+        CreateNewSnake(250, PlayerPrefs.GetString("PlayerName", "You"), pos, colortemp, PlayerProgress.instance.skinMask.maskSprite, true);
+    }
+
+    public void PauseAllSnakes()
+    {
+        for (int x = 0; x < snakes.Length; x++)
+        {
+            if (snakes[x] != null)
+            {
+                PauseSnake(snakes[x]);
+            }
+        }
+    }
+
+    public void PauseSnake(ECSSnake snake)
+    {
+        snake.isPaused = true;
+        SnakeHeadData headData = manager.GetComponentData<SnakeHeadData>(snake.snakeHead);
+        headData.isDead = true;
+        manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
+    }
+
+    public void ActivateSnakesAI_Duel()
+    {
+        UnPauseAllSnakes();
+        /*  for(int i = 0; i < usedSnakes.Count; i++)
+          {
+              var snakeItem = usedSnakes[i].GetComponent<Snake>();
+              snakeItem.isLoaded = true;
+          }*/
+    }
+
+    public void UnPauseAllSnakes(float time = 1f)
+    {
+        for (int x = 0; x < snakes.Length; x++)
+        {
+            if (snakes[x] != null)
+            {
+                UnPauseSnake(snakes[x], time);
+            }
+        }
+    }
+
+    public void UnPauseSnake(ECSSnake snake, float time = 1f)
+    {
+        snake.isPaused = false;
+        SnakeHeadData headData = manager.GetComponentData<SnakeHeadData>(snake.snakeHead);
+        headData.isDead = false;
+        headData.isImmune = true;
+        manager.SetComponentData<SnakeHeadData>(snake.snakeHead, headData);
+        DisableImmune(snake, time);
+    }
 }

@@ -52,13 +52,12 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
                     }
                     else
                     {
-                       /* //Vector3 screen = FoodSpawner.Instance.duelModeSpawnSize;
+                        Vector3 screen = FoodSpawner.Instance.duelModeSpawnSize;
                         if (position.Value.x > screen.x || position.Value.x < (-screen.x) || position.Value.z < screen.z || position.Value.z > (-screen.z))
                         {
-                            // Debug.Log("going zero x " + position.Value.x + " " + screen.x + " " + (-screen.x) + " z " + position.Value.z + " " + screen.z + " " + (-screen.z));
                             heading = float3.zero - position.Value;
 
-                        }*/
+                        }
 
                     }
 

@@ -8,7 +8,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class GameManager : MonoBehaviour
 {
-    public enum STATE { IN_GAME, GO_TO_HOME_FROM_GAMEPLAY, IN_MENU, TEAM2X2, TEAM3X3 }
+    public enum STATE { IN_GAME, GO_TO_HOME_FROM_GAMEPLAY, IN_MENU, TEAM2X2, TEAM3X3, IN_DUEL }
 
     public STATE state;
 
@@ -16,14 +16,32 @@ public class GameManager : MonoBehaviour
     [Header("MENUS")]
     [SerializeField] public GameObject mainMenu;
     [SerializeField] public GameObject loadingUI;
+    [SerializeField] public GameObject searchUI;
     [SerializeField] public GameObject gameplayMenu;
     [SerializeField] public GameObject gameOverMenu;
+
     [Header("Controls")]
     [SerializeField] public GameObject control;
     [SerializeField] public GameObject bust;
 
+    public GameObject mainCamera;
+
     public bool InGame;
     public bool dev_SpeedUp { get; private set; }
+
+    public void ControlsActive(bool active)
+    {
+        control.GetComponent<Image>().enabled = active;
+        bust.GetComponent<Image>().enabled = active;
+    }
+
+    public bool IsDuelMode
+    {
+        get
+        {
+            return state == STATE.IN_DUEL;
+        }
+    }
 
     public void Awake()
     {
@@ -37,6 +55,17 @@ public class GameManager : MonoBehaviour
     {
         SetLoading();
         state = STATE.IN_MENU;
+    }
+
+    public void PlayDuel()
+    {
+        SnakeSpawner.Instance.DestroyAllSnakes();
+
+
+        InGame = true;
+        state = STATE.IN_DUEL;
+        ScoreManager.intance.ResetInfoPoints(4);
+        StartCoroutine(ShowSearchingMenu(DuelManager.instance.Init, gameplayMenu));
     }
 
     public void PlayWithTeam3x3()
@@ -53,6 +82,7 @@ public class GameManager : MonoBehaviour
 
     void Play2x2()
     {
+        Camera.main.GetComponent<Camera>().orthographicSize = 50;
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
         mainMenu.SetActive(false);
@@ -67,13 +97,14 @@ public class GameManager : MonoBehaviour
 
     void Play3x3()
     {
+        Camera.main.GetComponent<Camera>().orthographicSize = 50;
+
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         gameOverMenu.SetActive(false);
-        control.GetComponent<Image>().enabled = true;
-        bust.GetComponent<Image>().enabled = true;
+        ControlsActive(true);
         InGame = true;
         state = STATE.TEAM3X3;
         SnakeSpawner.Instance.StartGame3x3();
@@ -83,11 +114,13 @@ public class GameManager : MonoBehaviour
 
     public void PlayWithAI()
     {
-        /*if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
+        if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
         {
             SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
-        }*/
-        SnakeSpawner.Instance.DestroyAllSnakes();
+        }
+        Camera.main.GetComponent<Camera>().orthographicSize = 50;
+
+        //SnakeSpawner.Instance.DestroyAllSnakes();
         StartCoroutine(PlayAI());
     }
 
@@ -106,7 +139,15 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
                 break;
             case STATE.IN_GAME:
+                state = STATE.IN_MENU;
                 StartCoroutine(ShowLoadingMenu(mainMenu));
+                break;
+            case STATE.IN_DUEL:
+                SnakeSpawner.Instance.DestroyAllSnakes();
+                FoodSpawner.Instance.foodSpawnType = FoodSpawnType.Normal;
+                mainCamera.GetComponent<CameraManager>().enabled = true;
+                state = STATE.IN_MENU;
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
                 break;
         }
     }
@@ -125,6 +166,10 @@ public class GameManager : MonoBehaviour
             case STATE.TEAM3X3:
                 PlayWithTeam3x3 ();
                 break;
+
+            case STATE.IN_DUEL:
+                PlayDuel();
+                break;
         }
     }
 
@@ -137,8 +182,7 @@ public class GameManager : MonoBehaviour
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         gameOverMenu.SetActive(false);
-        control.GetComponent<Image>().enabled = true;
-        bust.GetComponent<Image>().enabled = true;
+        ControlsActive(true);
         InGame = true;
         state = STATE.IN_GAME;
         SnakeSpawner.Instance.StartGameWithAI();
@@ -146,10 +190,10 @@ public class GameManager : MonoBehaviour
 
     public void LooseWithAI()
     {
-        control.GetComponent<Image>().enabled = false;
-        bust.GetComponent<Image>().enabled = false;
+        ControlsActive(false);
         gameplayMenu.SetActive(false);
-
+        DuelManager.instance.timerDuel.SetActive(false);
+        DuelManager.instance.isOnDuel = false;
         if (state != STATE.GO_TO_HOME_FROM_GAMEPLAY)
         {
             gameOverMenu.SetActive(true);
@@ -210,6 +254,23 @@ public class GameManager : MonoBehaviour
         {
             additionalMenu.SetActive(true);
         }
+        action();
+
+
+    }
+
+    IEnumerator ShowSearchingMenu(Action action, GameObject additionalMenu = null)
+    {
+        searchUI.SetActive(true);
+        yield return new WaitForSeconds(GameConstants.searchiingMenuDelay);
+        mainMenu.SetActive(false);
+        gameOverMenu.SetActive(false);
+        searchUI.SetActive(false);
+        if (additionalMenu != null)
+        {
+            additionalMenu.SetActive(true);
+        }
+        ControlsActive(true);
         action();
 
 

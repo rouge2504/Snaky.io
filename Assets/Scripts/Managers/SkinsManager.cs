@@ -6,8 +6,16 @@ using UnityEngine.UI;
 public class SkinsManager : MonoBehaviour
 {
     public static SkinsManager instance;
+
+
     public enum Type { NONE, ANIMALS, CHARACTERS, FACES, FLAGS, PRO, EGGS}
     public Type type;
+
+    public Sprite defaultMask;
+    public Material defaultMaterial;
+    public Material defaultSprintMaterial;
+    public Material defaultMaskMaterial;
+    public Color defaultColor;
 
     List<SkinMask> skinMasks;
 
@@ -38,8 +46,13 @@ public class SkinsManager : MonoBehaviour
     public List<Material> teamColors;
     private List<Material> materialOnSnake;
 
+    public Color GetDefaultColor ()
+    {
+        return new Color (0,1,0,1);
+    }
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         instance = this;
         skinMasks = CSVReader.Instance.Read();
@@ -47,33 +60,66 @@ public class SkinsManager : MonoBehaviour
         
         GetMaskByType((int)type);
         print(skinMasks[0].nameMask);
-        GetColors();
         colorOnSnake = new List<Color>();
         for (int i = 0; i < colorRender.Length; i++)
         {
             colorRender[i].gameObject.GetComponent<Floater>().enabled = false;
         }
 
+        Init();
+        GetColors();
+    }
+
+    public void Init()
+    {
+        PlayerProgress.instance.colorOnSnake = StorageManager.Singleton.LoadColors();
         if (PlayerProgress.instance.colorOnSnake.Count > 0)
         {
             colorOnSnake = PlayerProgress.instance.colorOnSnake;
             SetColorOnSnake();
-            PlayerProgress.instance.materialSprintOnSnake = materialSprintColors;
+            //PlayerProgress.instance.materialSprintOnSnake = materialSprintColors;
 
             for (int i = 0; i < PlayerProgress.instance.colorOnSnake.Count; i++)
             {
-                Material material = materialColors[0];
-                Material materialSprint = materialSprintColors[0];
+                /*Material material = materialColors[SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+                Material materialSprint = materialSprintColors[SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
                 material.color = PlayerProgress.instance.colorOnSnake[i];
-                materialSprint.color = PlayerProgress.instance.colorOnSnake[i];
-                PlayerProgress.instance.materialOnSnake.Add(material);
-                PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+                materialSprint.color = PlayerProgress.instance.colorOnSnake[i];*/
+                PlayerProgress.instance.materialOnSnake.Add(materialColors[GetMaterialForColor(PlayerProgress.instance.colorOnSnake[i])]);
+                PlayerProgress.instance.materialSprintOnSnake.Add(materialSprintColors[GetMaterialForColor(PlayerProgress.instance.colorOnSnake[i])]);
             }
-            /*for (int i = 0; i < PlayerProgress.instance.colorOnSnake.Count; i++)
-            {
-                materialSprintColors[i]
-            }*/
         }
+        else
+        {
+            colorOnSnake = PlayerProgress.instance.colorOnSnake;
+            SetColorOnSnake();
+            //PlayerProgress.instance.materialSprintOnSnake = materialSprintColors;
+
+            for (int i = 0; i < PlayerProgress.instance.colorOnSnake.Count; i++)
+            {
+                /*Material material = materialColors[SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+                Material materialSprint = materialSprintColors[SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+                material.color = PlayerProgress.instance.colorOnSnake[i];
+                materialSprint.color = PlayerProgress.instance.colorOnSnake[i];*/
+                /*Material material = new Material(defaultMaterial);
+                Material materialSprint = new Material(defaultSprintMaterial);*/
+                PlayerProgress.instance.materialOnSnake.Add(materialColors[GetMaterialForColor(Color.green)]);
+                PlayerProgress.instance.materialSprintOnSnake.Add(materialSprintColors[GetMaterialForColor(Color.green)]);
+            }
+        }
+    }
+
+    public int GetMaterialForColor(Color color)
+    {
+        for(int i = 0; i < materialColors.Count; i++)
+        {
+            if (color.r == materialColors[i].color.r && color.g == materialColors[i].color.g && color.b == materialColors[i].color.b)
+            {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
     public void OpenWindow()
@@ -108,9 +154,19 @@ public class SkinsManager : MonoBehaviour
             colorObject.closeButton.gameObject.SetActive(false);
             Material materialColor = materialColors[i];
             Material materialSprintColor = materialSprintColors[i];
+
+            foreach (Color color in PlayerProgress.instance.colorOnSnake)
+            {
+                if (color == snankeColors[i])
+                {
+                    SetColor(colorObject, materialColor, materialSprintColor, true);
+                    
+                }
+            }
             colorObject.button.onClick.AddListener(() => SetColor(colorObject, materialColor, materialSprintColor));
 
 
+           
             //materialColors.Add(snankeMaterial[i]);
 
         }
@@ -128,9 +184,12 @@ public class SkinsManager : MonoBehaviour
         PlayerProgress.instance.materialOnSnake.Remove(materialSprint);
     }
 
-    public void SetColor(ColorObject colorObject, Material material, Material materialSprint)
+    public void SetColor(ColorObject colorObject, Material material, Material materialSprint, bool choosed = false)
     {
-        colorOnSnake.Add(colorObject.color.color);
+        if (!choosed)
+        {
+            colorOnSnake.Add(colorObject.color.color);
+        }
         if (colorOnSnake.Count > 3)
         {
             colorOnSnake.RemoveAt(colorOnSnake.Count - 1);
@@ -139,11 +198,14 @@ public class SkinsManager : MonoBehaviour
         colorObject.closeButton.gameObject.SetActive(true);
 
         colorObject.closeButton.onClick.AddListener(() => RemoveColor(colorObject, material, materialSprint));
-        SetColorOnSnake(colorObject.color.color);
-        PlayerProgress.instance.colorOnSnake = colorOnSnake;
-        StorageManager.Singleton.SaveColors(colorOnSnake);
-        PlayerProgress.instance.materialOnSnake.Add(material);
-        PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+        if (!choosed)
+        {
+            SetColorOnSnake(colorObject.color.color);
+            PlayerProgress.instance.colorOnSnake = colorOnSnake;
+            StorageManager.Singleton.SaveColors(colorOnSnake);
+            PlayerProgress.instance.materialOnSnake.Add(material);
+            PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+        }
     }
     private void SetColorOnSnake()
     {

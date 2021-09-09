@@ -20,7 +20,7 @@ public class ECSSnake
     int startingPoints = 50; // You can't go lower than this value
     float pieceForPoints = 19f; // Each 50p gets 1 piece //18
     public float referenceScale = 1f;
-    int pointsForScale = 50; // Each 250p the scale increases 
+    int pointsForScale = 85; // Each 250p the scale increases 
     float scaleOffset = 0.1f;
     public float MOVlerpTime = 0.25f;
     public int snakePieces;
