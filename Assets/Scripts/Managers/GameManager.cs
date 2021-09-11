@@ -20,10 +20,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject gameplayMenu;
     [SerializeField] public GameObject gameOverMenu;
 
+    public enum CONTROL_MODE { LEFT, RIGHT, ARROW_LEFT, ARROW_RIGHT}
     [Header("Controls")]
-    [SerializeField] public GameObject control;
-    [SerializeField] public GameObject basecontrol;
-    [SerializeField] public GameObject bust;
+
+    [SerializeField] public GameObject controlLeft;
+    [SerializeField] public GameObject controlRight;
+    [SerializeField] public GameObject arrow;
+    [SerializeField] public GameObject arrowBoostLeft;
+    [SerializeField] public GameObject arrowBoostRight;
+    [SerializeField] public GameObject parentControl;
+    private GameObject selectedMobileControl;
     public long SurvivalTimeTicks { get; set; }
 
     public DateTime SpawnTime { get; set; }
@@ -35,11 +41,59 @@ public class GameManager : MonoBehaviour
     public bool InGame;
     public bool dev_SpeedUp { get; private set; }
 
+    public void SetControls()
+    {
+        int control = PlayerPrefs.GetInt(GameUtils.PREFS_JOYSTICK_CONTROL_MODE, 0);
+        int hand = PlayerPrefs.GetInt(GameUtils.PREFS_JOYSTICK_CONTROL_HAND, 0);
+        CONTROL_MODE controlMode = CONTROL_MODE.RIGHT/*= (CONTROL_MODE)PlayerPrefs.GetInt(GameUtils.PREFS_JOYSTICK_CONTROL_MODE, 0)*/;
+
+        if (control == 0 && hand == 0 /*Left*/)
+        {
+            controlMode = CONTROL_MODE.ARROW_LEFT;
+
+        }else  if (control == 1 && hand == 0 )
+        {
+            controlMode = CONTROL_MODE.LEFT;
+
+        }else  if (control == 0 && hand == 1 )
+        {
+            controlMode = CONTROL_MODE.ARROW_RIGHT;
+
+        }else if (control == 1 && hand == 1 )
+        {
+            controlMode = CONTROL_MODE.RIGHT;
+
+        }
+        controlLeft.SetActive(false);
+        controlRight.SetActive(false);
+        arrow.SetActive(false);
+        switch (controlMode)
+        {
+            case CONTROL_MODE.LEFT:
+                controlLeft.SetActive(true);
+                break;
+            case CONTROL_MODE.RIGHT:
+                controlRight.SetActive(true);
+                break;
+            case CONTROL_MODE.ARROW_RIGHT:
+                arrow.SetActive(true);
+                arrowBoostLeft.SetActive(true);
+                arrowBoostRight.SetActive(false);
+                break;
+            case CONTROL_MODE.ARROW_LEFT:
+                arrowBoostRight.SetActive(true);
+                arrowBoostLeft.SetActive(false);
+                arrow.SetActive(true);
+                break;
+        }
+
+        //selectedMobileControl = arrowLeft; 
+    }
     public void ControlsActive(bool active)
     {
-        control.GetComponent<Image>().enabled = active;
-        bust.GetComponent<Image>().enabled = active;
-        basecontrol.GetComponent<Image>().enabled = active;
+
+        parentControl.SetActive(active);
+
     }
 
     public bool IsDuelMode
@@ -53,6 +107,7 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         instance = this;
+        SetControls();
         ControlsActive(false);
         InGame = false;
         nameField.text = GamePrefs.PLAYER_NAME;

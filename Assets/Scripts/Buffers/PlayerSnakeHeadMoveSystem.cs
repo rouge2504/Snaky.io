@@ -1,3 +1,4 @@
+using CnControls;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -11,12 +12,14 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
     {
         float deltaTime = 0.04f;// UnityEngine.Time.deltaTime;
                                 //   float trueDelta = Time.DeltaTime;
-        float3 axis = new float3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        //float3 axis = new float3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+
         if (RuntimePlatform.Android == Application.platform)
         {
-            axis = new float3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical"));
+            //axis = new float3(CrossPlatformInputManager.GetAxis("Horizontal"), 0, CrossPlatformInputManager.GetAxis("Vertical"));
 
         }
+        float3 axis = new float3(CnInputManager.GetAxis("Horizontal"), 0, CnInputManager.GetAxis("Vertical"));
         float3 trackerNewPos = float3.zero;
 
         int id = 0;
