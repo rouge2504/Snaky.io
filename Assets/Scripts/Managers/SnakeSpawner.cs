@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -44,6 +45,8 @@ public class SnakeSpawner : MonoBehaviour
 
 
     public ColorTemplate selectedColorTemplate;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -144,7 +147,7 @@ public class SnakeSpawner : MonoBehaviour
                 break;
         }
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, team);
+        CreateNewSnake(150, GamePrefs.PLAYER_NAME, playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, team);
         Population.instance.Initialize();
     }
 
@@ -166,7 +169,7 @@ public class SnakeSpawner : MonoBehaviour
                 break;
         }
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, team);
+        CreateNewSnake(150, GamePrefs.PLAYER_NAME, playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, team);
         Population.instance.Initialize();
     }
     public void StartGameWithAI()
@@ -180,7 +183,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(150, "PlayerName", playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
+        CreateNewSnake(150, GamePrefs.PLAYER_NAME, playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
         Population.instance.Initialize();
 
     }
@@ -201,6 +204,7 @@ public class SnakeSpawner : MonoBehaviour
         {
             playerSnake = newSnake;
             camerManager.playerSnake = playerSnake;
+            GameManager.instance.SpawnTime = DateTime.Now;
         }
     }
 
@@ -209,6 +213,7 @@ public class SnakeSpawner : MonoBehaviour
         if (id == playerID)
         {
             AchievementManager.instance.KillerCounter(playerSnake.killerCounter);
+            PlayerStatsManager.instance.SaveKillsRed(playerSnake.killerCounter);
             print("muerto player");
             //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
             playerSnake = null;

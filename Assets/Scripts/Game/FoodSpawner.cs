@@ -75,6 +75,7 @@ public class FoodSpawner : MonoBehaviour
         lastFoodSpawnType = foodSpawnType;
         foodSpawnType = FoodSpawnType.DuelMode;
         isReset = true;
+        isWiped = true;
     }
 
     public void SwitchToNormalModeAndReset()

@@ -25,5 +25,8 @@ public class GameUtils {
 	public const string PREFS_JOYSTICK_CONTROL_MODE = "PREFS_JOYSTICK_CONTROL_MODE";
 	public const string PREFS_JOYSTICK_CONTROL_HAND = "PREFS_JOYSTICK_CONTROL_HAND";
 	public const string PREFS_MSPORTS_UPDATE = "PREFS_MSPORTS_UPDATE";
+	public const string TRANSPARENCY = "transparency";
+	public const string ADS = "ads";
+	public const string BABY_SNAKE = "babysnake";
 
 }

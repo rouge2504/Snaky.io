@@ -10,6 +10,8 @@ public class StoreManager : MonoBehaviour
     public Text eggsMainMenu;
     public Text eggsSkinsMenu;
 
+    public GameObject EggsMenu;
+
     private void Start()
     {
         instance = this;
@@ -25,6 +27,14 @@ public class StoreManager : MonoBehaviour
 
     public void BuyEggs(int count)
     {
+        GamePrefs.EGGS += count;
+        UpdateEggsView();
+        SuccesPurchase("You purchased " + count + " Eggs!");
+    }
+
+    public void IncreaseEggs(int count)
+    {
+        PlayerStatsManager.instance.EggsCounter = count;
         GamePrefs.EGGS += count;
         UpdateEggsView();
     }
@@ -43,5 +53,32 @@ public class StoreManager : MonoBehaviour
             UpdateEggsView();
             return true;
         }
+    }
+
+    public void BuyTransparency()
+    {
+        GamePrefs.SetBool(GameUtils.TRANSPARENCY, true);
+
+        SkinsManager.instance.UpdateTransparencyState(GamePrefs.GetBool(GameUtils.TRANSPARENCY));
+    }
+
+    public void BuyBundle()
+    {
+        BuyTransparency();
+        IncreaseEggs(15);
+        NoADS();
+        SuccesPurchase("You purchased Bundle!");
+    }
+
+    public void NoADS()
+    {
+        GamePrefs.SetBool(GameUtils.ADS, true);
+    }
+
+    public void SuccesPurchase(string text)
+    {
+        DialogueManager.instance.PopUp(text);
+        EggsMenu.SetActive(false);
+
     }
 }

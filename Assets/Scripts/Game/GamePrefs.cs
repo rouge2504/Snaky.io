@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class GamePrefs
 {
+    public static string PLAYER_NAME
+    {
+        get
+        {
+            return PlayerPrefs.GetString("PlayerName", "You");
+        }
+
+        set
+        {
+            PlayerPrefs.SetString("PlayerName", value);
+        }
+    }
     public static string MASK
     {
         get
@@ -28,6 +40,19 @@ public class GamePrefs
         set
         {
             PlayerPrefs.SetInt("eggs", value);
+        }
+    }
+
+    public static float PLAYER_TRASNPARENCY
+    {
+        get
+        {
+            return PlayerPrefs.GetFloat("PlayerTransparency", 1f);
+        }
+
+        set
+        {
+            PlayerPrefs.SetFloat("PlayerTransparency", value);
         }
     }
 

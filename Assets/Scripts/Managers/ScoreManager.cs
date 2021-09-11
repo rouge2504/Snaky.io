@@ -41,7 +41,23 @@ public class ScoreManager : MonoBehaviour
                 scoreGame.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
 
                 gameOverScore.points.text = SnakeSpawner.Instance.playerSnake.points.ToString("0");
+                PlayerStatsManager.instance.SaveScore(SnakeSpawner.Instance.playerSnake.points);
+                CheckAchievement();
+
+
             }
+        }
+    }
+
+    private void CheckAchievement()
+    {
+        if (SnakeSpawner.Instance.playerSnake.points > 200)
+        {
+            GamePrefs.SetBool(GameUtils.PREFS_TWO_HUNDRED_POINTS, true);
+        }else if (SnakeSpawner.Instance.playerSnake.points > 100000)
+        {
+            GamePrefs.SetBool(GameUtils.PREFS_ONE_LAKH_POINTS, true);
+
         }
     }
 

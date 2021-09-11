@@ -22,9 +22,15 @@ public class GameManager : MonoBehaviour
 
     [Header("Controls")]
     [SerializeField] public GameObject control;
+    [SerializeField] public GameObject basecontrol;
     [SerializeField] public GameObject bust;
+    public long SurvivalTimeTicks { get; set; }
+
+    public DateTime SpawnTime { get; set; }
 
     public GameObject mainCamera;
+
+    public InputField nameField;
 
     public bool InGame;
     public bool dev_SpeedUp { get; private set; }
@@ -33,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         control.GetComponent<Image>().enabled = active;
         bust.GetComponent<Image>().enabled = active;
+        basecontrol.GetComponent<Image>().enabled = active;
     }
 
     public bool IsDuelMode
@@ -46,9 +53,9 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         instance = this;
-        control.GetComponent<Image>().enabled = false;
-        bust.GetComponent<Image>().enabled = false;
+        ControlsActive(false);
         InGame = false;
+        nameField.text = GamePrefs.PLAYER_NAME;
     }
 
     void Start()
@@ -83,13 +90,13 @@ public class GameManager : MonoBehaviour
     void Play2x2()
     {
         Camera.main.GetComponent<Camera>().orthographicSize = 50;
+        mainCamera.GetComponent<CameraManager>().enabled = true;
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         gameOverMenu.SetActive(false);
-        control.GetComponent<Image>().enabled = true;
-        bust.GetComponent<Image>().enabled = true;
+        ControlsActive(true);
         InGame = true;
         state = STATE.TEAM2X2;
         SnakeSpawner.Instance.StartGame2x2();
@@ -98,7 +105,7 @@ public class GameManager : MonoBehaviour
     void Play3x3()
     {
         Camera.main.GetComponent<Camera>().orthographicSize = 50;
-
+        mainCamera.GetComponent<CameraManager>().enabled = true;
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
         mainMenu.SetActive(false);
@@ -190,14 +197,26 @@ public class GameManager : MonoBehaviour
 
     public void LooseWithAI()
     {
+        if(state == STATE.IN_DUEL)
+        {
+            PlayerStatsManager.instance.SaveDuelLooses(1);
+        }
         ControlsActive(false);
         gameplayMenu.SetActive(false);
         DuelManager.instance.timerDuel.SetActive(false);
         DuelManager.instance.isOnDuel = false;
+
         if (state != STATE.GO_TO_HOME_FROM_GAMEPLAY)
         {
             gameOverMenu.SetActive(true);
         }
+        IncreaseSurvivingTime();
+        PlayerStatsManager.instance.SaveSurvivalTime(SurvivalTimeTicks);
+    }
+
+    private void IncreaseSurvivingTime()
+    {
+        SurvivalTimeTicks += DateTime.Now.Ticks - SpawnTime.Ticks;
     }
 
     public void SnakeSpeedManager(bool anyValue)
@@ -216,14 +235,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     public void GoHomeFromGame()
     {
+        if (state == STATE.IN_DUEL)
+        {
+            DuelManager.instance.FinishDuel();
+        }
         /*SnakeSpawner.Instance.snakes[SnakeSpawner.Instance.playerID].isDestroyed = true;
         SnakeSpawner.Instance.snakes[SnakeSpawner.Instance.playerID].isPlayerSnake = false;*/
         state = STATE.GO_TO_HOME_FROM_GAMEPLAY;
         SnakeSpawner.Instance.DestroyAllSnakes();
         gameplayMenu.SetActive(false);
-        SetLoading(mainMenu);
+        gameOverMenu.SetActive(false);
+        StartCoroutine(ShowLoadingMenu (mainMenu, STATE.IN_MENU));
         //SetLoading();
     }
 
@@ -259,6 +284,20 @@ public class GameManager : MonoBehaviour
 
     }
 
+    IEnumerator ShowLoadingMenu(GameObject additionalMenu, STATE state)
+    {
+        loadingUI.SetActive(true);
+        yield return new WaitForSeconds(GameConstants.loadingMenuDelay);
+        loadingUI.SetActive(false);
+        if (additionalMenu != null)
+        {
+            additionalMenu.SetActive(true);
+        }
+        this.state = state;
+
+
+    }
+
     IEnumerator ShowSearchingMenu(Action action, GameObject additionalMenu = null)
     {
         searchUI.SetActive(true);
@@ -274,5 +313,11 @@ public class GameManager : MonoBehaviour
         action();
 
 
+    }
+
+
+    public void SetPlayerName(Text name)
+    {
+        GamePrefs.PLAYER_NAME = name.text;
     }
 }

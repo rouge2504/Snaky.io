@@ -325,11 +325,14 @@ public class ECSSnake
         if (colorMaterialType == COLOR_MATERIAL_TYPE.ONE_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.TWO_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.THREE_ALPHA)
         {
             materialColor = snakeMaterialSprintColor[SkinsManager.instance.SetColorOnSnake(i, snakeMaterialColor.Count)];
+            materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
         }
         if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_GAME)
         {
             materialColor = PlayerProgress.instance.materialSprintOnSnake[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+            materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
         }
+        
 
 
         return materialColor;

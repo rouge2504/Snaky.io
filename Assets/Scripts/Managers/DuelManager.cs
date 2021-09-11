@@ -57,6 +57,11 @@ public class DuelManager : MonoBehaviour
         }
     }
 
+    public void FinishDuel()
+    {
+        isOnDuel = false;
+    }
+
     private bool DuelTimeOver()
     {
         timingToDuel -= Time.deltaTime;
@@ -93,5 +98,7 @@ public class DuelManager : MonoBehaviour
     {
         gameFinishDuelUI.SetActive(true);
         GameManager.instance.ControlsActive(false);
+        StoreManager.instance.IncreaseEggs(1);
+        PlayerStatsManager.instance.SaveDuelVictories(1);
     }
 }
