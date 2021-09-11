@@ -80,16 +80,16 @@ SouthKor,4) Flags,,,,4
 Swe,4) Flags,,,,4
 UK,4) Flags,,,,4
 USA,4) Flags,,,,4
-1. naruto,eggs,,,20,6
-2. saitama,eggs,,,10,6
-3. luffy,eggs,,,20,6
-4. kilua,eggs,,,10,6
-5. tanjiro,eggs,,,10,6
-6-10-02,eggs,,,15,6
-6-10-03,eggs,,,,6
-6-10-05,eggs,,,,6
-souperman,eggs,,,10,6
-spiderman,eggs,,,50,6
+1. naruto,eggs,egg0,,20,6
+2. saitama,eggs,egg4,,10,6
+3. luffy,eggs,egg1,,20,6
+4. kilua,eggs,egg2,,10,6
+5. tanjiro,eggs,egg3,,10,6
+6-10-02,eggs,egg5,,15,6
+6-10-03,eggs,egg6,,10,6
+6-10-05,eggs,egg7,,15,6
+souperman,eggs,egg8,,10,6
+spiderman,eggs,egg9,,50,6
 Hat-boy,hats,,,,7
 Hat-Mexican,hats,,,,7
 corona-b,Pros,PREFS_FIRST_KILL,Kill first snake,,5

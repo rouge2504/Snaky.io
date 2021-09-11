@@ -28,7 +28,7 @@ public class SnakeResizeSystem : JobComponentSystem
 
 
                     int newParts = 0;// snakeHeadParts.snakeParts;
-                    if (snakePoints.points > 30000)
+                    /*if (snakePoints.points > 30000)
                     {
                         //newParts += (int)math.round(650 / (19));
                         //newParts += (int)math.round((1500-650) / (22));
@@ -68,11 +68,28 @@ public class SnakeResizeSystem : JobComponentSystem
                         newParts += (int)math.round(snakePoints.points / (40));
                     }
                     else
-                        newParts = (int)math.round(snakePoints.points / (19));
+                        newParts = (int)math.round(snakePoints.points / (19));*/
+
+
+                    if (snakePoints.points <= 400)
+                    {
+                        newParts += 7;
+                    }
+                    else
+                    {
+                        newParts += 7;
+                        newParts += (int)math.round((snakePoints.points - 400) / (400));
+                    }
 
                  
 
                     snakeHeadParts.snakeNewParts = newParts;
+                    ECSSnake snake = SnakeSpawner.Instance.snakes[headData.snakeId];
+                    if (snake != null)
+                    {
+                        snake.points = snakePoints.points;
+                        snake.scaleChanged = true;
+                    }
                     if (snakeHeadParts.snakeParts != snakeHeadParts.snakeNewParts)
                     {
                         int diffPieces = snakeHeadParts.snakeNewParts - snakeHeadParts.snakeParts;
@@ -80,7 +97,7 @@ public class SnakeResizeSystem : JobComponentSystem
                         {
                             return;
                         }
-                        ECSSnake snake = SnakeSpawner.Instance.snakes[headData.snakeId];
+                        
                         Mesh quadMesh = SnakeSpawner.Instance.quad;
                         if (diffPieces > 0)
                         {

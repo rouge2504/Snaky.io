@@ -42,11 +42,12 @@ public class ECSSnake
     public bool isDuelModeDestroyed = false;
     public int teamId=-1;
     public string team = "";
+    public int killerCounter;
     int nextColor = -1;
   
     public ECSSnake(int id,string name,int snakePoints,Vector3 spawnPos,ColorTemplate colorTemp,Sprite mask=null,bool isPlayer=false,string team="",bool isBabySnake = false) {
         //mask = null;
-
+        killerCounter = 0;
         sprintMat = new Material[3];
         if (isPlayer)
         {

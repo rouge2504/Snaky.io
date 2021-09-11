@@ -208,6 +208,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         if (id == playerID)
         {
+            AchievementManager.instance.KillerCounter(playerSnake.killerCounter);
             print("muerto player");
             //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
             playerSnake = null;

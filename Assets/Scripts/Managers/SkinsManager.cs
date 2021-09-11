@@ -209,6 +209,7 @@ public class SkinsManager : MonoBehaviour
             StorageManager.Singleton.SaveColors(colorOnSnake);
             PlayerProgress.instance.materialOnSnake.Add(material);
             PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+
         }
     }
     private void SetColorOnSnake()
@@ -469,15 +470,33 @@ public class SkinsManager : MonoBehaviour
 
     public void SetMask(MaskObject maskObject, SkinMask skinMask)
     {
+        buyEggs.onClick.RemoveAllListeners();
         if (!maskObject.unlocked)
         {
             DialogueManager.instance.PopUp("Unlock this Mask!\n" + skinMask.description);
             return;
         }
+        buyEggs.gameObject.SetActive(skinMask.eggValue != 0 ? true : false);
+        if (skinMask.eggValue != 0)
+        {
+            buyEggs.onClick.AddListener(() => SelectBuyEgg(skinMask));
+            buyEggs.GetComponentInChildren<Text>().text = skinMask.eggValue.ToString();
+            return;
+        }
         MaskSnake.sprite = skinMask.maskSprite;
         PlayerProgress.instance.skinMask = skinMask;
-        buyEggs.gameObject.SetActive(skinMask.eggValue != 0 ? true : false);
-        buyEggs.GetComponentInChildren<Text>().text = skinMask.eggValue.ToString();
+        GamePrefs.MASK = skinMask.nameMask;
+
+    }
+
+    public void SelectBuyEgg(SkinMask skinMask)
+    {
+        if (StoreManager.instance.DecreaseEggs(skinMask))
+        {
+            MaskSnake.sprite = skinMask.maskSprite;
+            PlayerProgress.instance.skinMask = skinMask;
+            GamePrefs.MASK = skinMask.nameMask;
+        }
     }
 
     IEnumerator StartAnimation()

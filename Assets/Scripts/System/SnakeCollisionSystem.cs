@@ -80,6 +80,14 @@ public class SnakeCollisionSystem : JobComponentSystem
                                     float distVector = Vector3.Distance(pieceTransformComponent.Value, pieceHeadTransformComponent.Value);
                                     if (distVector < allDist)
                                     {
+                                        if (SnakeSpawner.Instance.playerID == piececomponent.snakeId)
+                                        {
+                                            if (SnakeSpawner.Instance.playerSnake != null)
+                                            {
+                                                SnakeSpawner.Instance.playerSnake.killerCounter++;
+                                            }
+                                            Debug.Log("Player Killer counter:" + SnakeSpawner.Instance.playerSnake.killerCounter);
+                                        }
                                         Debug.Log("Fuck IT!!");
                                         component.isDead = true;
                                         component.shouldDestroy = true;
