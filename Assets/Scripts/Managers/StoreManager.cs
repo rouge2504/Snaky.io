@@ -32,6 +32,37 @@ public class StoreManager : MonoBehaviour
         SuccesPurchase("You purchased " + count + " Eggs!");
     }
 
+    public void OnSuccessfulPurchaseEggPack(int eggs)
+    {
+        Debug.Log("eggs purchased");
+        IncreaseEggs(eggs);
+        DialogueManager.instance.PopUp("You purchased " + eggs + " Eggs!");
+    }
+
+    public void OnSuccessfulPurchaseRemoveAD()
+    {
+        PlayerPrefs.SetInt(GameUtils.ADS, 0);
+        //AdRemoveBtn.SetActive(false);
+        Debug.Log("Ad button successfully removed");
+    }
+
+    public void OnSuccessfulPurchaseBabySnake()
+    {
+        PlayerPrefs.SetInt(GameUtils.BABY_SNAKE, 1);
+        //babySnakeBtn.SetActive(false);
+        Debug.Log("Baby Snake button successfully removed");
+    }
+
+    public void OnSuccessfulPurchaseTransperancy()
+    {
+        BuyTransparency();
+    }
+
+    public void OnSuccessfulPurchaseBundle()
+    {
+        BuyBundle();
+    }
+
     public void IncreaseEggs(int count)
     {
         PlayerStatsManager.instance.EggsCounter = count;
@@ -80,5 +111,80 @@ public class StoreManager : MonoBehaviour
         DialogueManager.instance.PopUp(text);
         EggsMenu.SetActive(false);
 
+    }
+
+
+    public void OnRemoveAdsButtonClick()
+    {
+#if UIP
+#if UNITY_ANDROID
+        UnityIAP.instance.BuyItem("com.camc.slitherio.snakes.worms.adremove");    //Commented out recently
+#endif
+#if UNITY_IPHONE
+        UnityIAP.instance.BuyItem("com.camc.removeads");
+#endif
+#endif
+        //GameManager.instance.ifAdRemoveClicked = true;
+    }
+
+    public void RemoveAds(string key)
+    {
+        PlayerPrefs.SetInt(key, 1);
+    }
+
+    public void OnBabySnakeButtonClick()
+    {
+#if UIP
+#if UNITY_ANDROID
+        UnityIAP.instance.BuyItem("com.camc.slitherio.snakes.worms.babysnake");    //Commented out recently
+#endif
+#if UNITY_IPHONE
+        UnityIAP.instance.BuyItem("com.camc.babysnake");
+#endif
+#endif
+        //  GameManager.instance.ifAdRemoveClicked = true;
+    }
+
+    public void OnBundleButtonClick()
+    {
+#if UIP
+#if UNITY_ANDROID
+        UnityIAP.instance.BuyItem("com.camc.slitherio.snakes.worms.bundle");    //Commented out recently
+#endif
+#if UNITY_IPHONE
+        UnityIAP.instance.BuyItem("com.camc.bundle");
+#endif
+#endif
+        //  GameManager.instance.ifAdRemoveClicked = true;
+    }
+
+    public void OnTestPurchaseClicked()
+    {
+#if UIP
+#if UNITY_ANDROID
+        Debug.Log("purchased test id");
+        UnityIAP.instance.BuyItem("android.test.purchased");    //Commented out recently
+#endif
+#endif
+    }
+
+    public void OnEggButtonClick(string eggName)
+    {
+#if UIP
+#if UNITY_ANDROID
+        UnityIAP.instance.BuyItem("com.camc.slitherio.snakes.worms." + eggName);    //Commented out recently
+#endif
+#if UNITY_IPHONE
+        UnityIAP.instance.BuyItem("com.camc."+eggName);
+#endif
+#endif
+        //  GameManager.instance.ifAdRemoveClicked = true;
+    }
+
+    public void OnRestoreAdsButtonClick()
+    {
+#if UIP
+        UnityIAP.instance.RestorePurchase();  //Commented out recently
+#endif
     }
 }

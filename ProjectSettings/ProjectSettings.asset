@@ -702,9 +702,10 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: ENABLE_HYBRID_RENDERER_V2;CROSS_PLATFORM_INPUT
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
-    7: STARTER_ASSETS_PACKAGES_CHECKED;CROSS_PLATFORM_INPUT;MOBILE_INPUT
+    7: STARTER_ASSETS_PACKAGES_CHECKED;CROSS_PLATFORM_INPUT;MOBILE_INPUT;UIP
     14: MOBILE_INPUT
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    7: []
   platformArchitecture: {}
   scriptingBackend: {}
   il2cppCompilerConfiguration: {}
@@ -778,6 +779,8 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Analytics: 1
+    Purchasing: 1
     UNet: 1
   luminIcon:
     m_Name: 
@@ -792,11 +795,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 2
-  cloudProjectId: 
+  cloudProjectId: 4f16ae08-f6b6-43fe-8ed6-9db0807343e5
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Snaky.io
+  organizationId: rouge2504
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   virtualTexturingSupportEnabled: 0

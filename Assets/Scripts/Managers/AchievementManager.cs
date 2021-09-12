@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
-
+#if GPG
+using GooglePlayGames.BasicApi;
+using GooglePlayGames;
+#endif
 public class AchievementManager : MonoBehaviour
 {
     public static AchievementManager instance;
@@ -29,6 +32,9 @@ public class AchievementManager : MonoBehaviour
 
             }
         });
+#endif
+#if UNITY_EDITOR_WIN
+        GamePrefs.SetBool(achievement, true);
 #endif
     }
 
@@ -149,6 +155,91 @@ public class AchievementManager : MonoBehaviour
             else
                 Debug.Log("No achievements returned");
         });
+    }
+
+    public void OnAchievementButtonClicked()
+    {
+
+        Debug.Log("Achievement button clicked");
+        if (Social.localUser.authenticated)
+        {
+#if UNITY_ANDROID
+#if GPG
+             Social.ShowAchievementsUI();
+            ((PlayGamesPlatform)Social.Active).ShowAchievementsUI();  //Commented out recently
+#endif
+#else
+            //Social.ShowLeaderboardUI();
+            Social.Active.ShowAchievementsUI();
+#endif
+
+        }
+        else
+        {
+            Social.localUser.Authenticate((bool success) =>
+            {
+                if (success)
+                {
+                    Debug.Log("Login Sucess");
+#if UNITY_ANDROID
+#if GPG
+                        Social.ShowAchievementsUI();
+                        ((PlayGamesPlatform)Social.Active).ShowAchievementsUI();   //Commented out recently
+#endif
+#else
+                    //Social.ShowLeaderboardUI();
+                    Social.Active.ShowAchievementsUI();
+#endif
+                }
+                else
+                {
+                    Debug.Log("Login failed");
+                }
+            });
+        }
+
+    }
+
+    public void OnLeaderboardClick()
+    {
+        if (Social.localUser.authenticated)
+        {
+#if UNITY_ANDROID
+#if GPG
+            //Social.ShowLeaderboardUI();
+            // ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(GPGSID.leaderboard_leaderboard);   //Commented out recently
+            PlayGamesPlatform.Instance.ShowLeaderboardUI();
+#endif
+#else
+            //Social.ShowLeaderboardUI();
+            Social.Active.ShowLeaderboardUI ();
+#endif
+
+        }
+        else
+        {
+            Debug.Log("Inside leaderboard else");
+#if GPG
+            Social.localUser.Authenticate((bool success) =>
+               {
+                   if (success)
+                   {
+#if UNITY_ANDROID
+                       Social.ShowLeaderboardUI();
+                       //((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(GPGSID.leaderboard_leaderboard);    //Commented out recently
+                       PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSID.leaderboard_slither_high_score);
+#else
+						//Social.ShowLeaderboardUI();
+						Social.Active.ShowLeaderboardUI ();
+#endif
+                   }
+                   else
+                   {
+                       //Debugger.instance.DebugLog("Authentication failed");
+                   }
+               });
+#endif
+        }
     }
 
 }
