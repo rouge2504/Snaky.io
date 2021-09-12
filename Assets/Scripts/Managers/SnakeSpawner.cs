@@ -521,6 +521,22 @@ public class SnakeSpawner : MonoBehaviour
         return snakeFirstAndLast;
     }
 
+    public void ToggleCrown(ECSSnake snake, bool toggle)
+    {
+        SnakeCrownData crownData = manager.GetComponentData<SnakeCrownData>(snake.snakeHead);
+        RenderMesh render = manager.GetSharedComponentData<RenderMesh>(crownData.crownEntity);
+        if (toggle)
+        {
+            render.material = crown;
+        }
+        else
+        {
+            render.material = noCrown;
+        }
+
+        manager.SetSharedComponentData<RenderMesh>(crownData.crownEntity, render);
+    }
+
     public void DisableImmune(ECSSnake snake, float timer = 2f)
     {
         StartCoroutine(disableImmune(snake, timer));

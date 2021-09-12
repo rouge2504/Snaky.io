@@ -633,26 +633,60 @@ public class Population : MonoBehaviour
             );
 
 
-                int highScoreDisplayCount = nameText.Length;
-                if (highScoreDisplayCount >= 1 && individualSnakes.Count > 0)
+
+        if (GameManager.instance.IsDuelMode)
+        {
+            int highScoreDisplayCount = nameTextDuel.Length;
+            if (highScoreDisplayCount >= 1 && individualSnakes.Count > 0)
+            {
+                for (int i = 1; i <= highScoreDisplayCount; i++)
                 {
-                    for (int i = 1; i <= highScoreDisplayCount; i++)
+                    if (scoreList.Count - i >= 0)
                     {
                         if (i == 1)
                             topperName = scoreList[scoreList.Count - i].Key.ToString();
                         var t = i - 1;
                         var d = scoreList.Count;
-                        nameText[i - 1].text = scoreList[scoreList.Count - i].Key.ToString();
-                        scoreText[i - 1].text = scoreList[scoreList.Count - i].Value.ToString();//individualSnakes [scoreList [scoreList.Count - i].ToString()].ToString();
+                        nameTextDuel[i - 1].text = scoreList[scoreList.Count - i].Key.ToString();
+                        scoreTextDuel[i - 1].text = scoreList[scoreList.Count - i].Value.ToString();
+                    }
+                    else
+                    {
+                        nameTextDuel[i - 1].text = "-";
+                        scoreTextDuel[i - 1].text = "-";
                     }
                 }
+            }
 
-                if (lastTopperName != topperName)
-                    UpdateCrownedSnake(topperName);
+            if (lastTopperName != topperName)
+                UpdateCrownedSnake(topperName);
+        }
+        else
+        {
+
+            int highScoreDisplayCount = nameText.Length;
+            if (highScoreDisplayCount >= 1 && individualSnakes.Count > 0)
+            {
+                for (int i = 1; i <= highScoreDisplayCount; i++)
+                {
+                    if (i == 1)
+                        topperName = scoreList[scoreList.Count - i].Key.ToString();
+                    var t = i - 1;
+                    var d = scoreList.Count;
+                    nameText[i - 1].text = scoreList[scoreList.Count - i].Key.ToString();
+                    scoreText[i - 1].text = scoreList[scoreList.Count - i].Value.ToString();//individualSnakes [scoreList [scoreList.Count - i].ToString()].ToString();
+                }
 
 
-            
-        
+            }
+
+            if (lastTopperName != topperName)
+                UpdateCrownedSnake(topperName);
+
+
+        }
+
+
     }
 
     public void RemoveAllSnakes()
@@ -688,14 +722,14 @@ public class Population : MonoBehaviour
             if (SnakeSpawner.Instance.snakes[j] != null)
             {
                 ECSSnake snake = SnakeSpawner.Instance.snakes[j];
-                /*if (snake.snakeName == lastTopperNameFound)
+                if (snake.snakeName == lastTopperNameFound)
                 {
                     SnakeSpawner.Instance.ToggleCrown(snake, false);
                 }
                 if (snake.snakeName == topperName)
                 {
                     SnakeSpawner.Instance.ToggleCrown(snake, true);
-                }*/
+                }
             }
         }
     }

@@ -6684,8 +6684,8 @@ MonoBehaviour:
   solidColor: {fileID: 2100000, guid: 38b7bc83e83523241927f18b15e38ce6, type: 2}
   transparentColor: {fileID: 2100000, guid: 01107f5eba4289146a5504f2bcb612bb, type: 2}
   maskMat: {fileID: 2100000, guid: 8482931b5c234ea46a43356d7b04e9f4, type: 2}
-  noCrown: {fileID: 2100000, guid: b5c60e8543c27eb46bc50516991c97cf, type: 2}
-  crown: {fileID: 2100000, guid: 8039f5d2cb21b3c478dc9e33bd23f0ee, type: 2}
+  noCrown: {fileID: 2100000, guid: 66d36b6c757ed6f49bf9e4667c2765c9, type: 2}
+  crown: {fileID: 2100000, guid: 8bbdbf4b792a9d34b8f64b56e0dc7822, type: 2}
   testMaterial: {fileID: 2100000, guid: 38b7bc83e83523241927f18b15e38ce6, type: 2}
   playerID: 0
   square: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
@@ -16890,6 +16890,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1060052952}
     m_Modifications:
+    - target: {fileID: 1829257105957007753, guid: 2db82dc3975211741961d9a046c9b036, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 86188958ef5cc174fbb9b9e2bb8c43be, type: 3}
     - target: {fileID: 3012947894335604112, guid: 2db82dc3975211741961d9a046c9b036, type: 3}
       propertyPath: m_Name
       value: User
@@ -20537,21 +20541,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 573
   m_Colors:
-    m_NormalColor: {r: 0.050980393, g: 0.28235295, b: 0.35686275, a: 1}
-    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0, g: 0.8235294, b: 1, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+    m_NormalColor: {r: 3.9397202, g: 8.03e-43, b: 0, a: 0}
+    m_HighlightedColor: {r: 0, g: 0, b: 0, a: 0}
+    m_PressedColor: {r: 44.32959, g: 8.03e-43, b: 23.65332, a: 8.03e-43}
+    m_SelectedColor: {r: 10.856705, g: 8.03e-43, b: 0, a: 0}
+    m_DisabledColor: {r: 6.262268, g: 8.03e-43, b: 2.350989e-38, a: 9.2196e-41}
+    m_ColorMultiplier: 0
+    m_FadeDuration: 0
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -20563,50 +20567,15 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 805446711}
-  toggleTransition: 1
+  m_Interactable: 0
+  m_TargetGraphic: {fileID: 0}
+  toggleTransition: 0
   graphic: {fileID: 0}
-  m_Group: {fileID: 627125433}
+  m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1541251118}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1854667288}
-        m_TargetAssemblyTypeName: PlayerStatsManager, Assembly-CSharp
-        m_MethodName: OpenStats
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
---- !u!114 &805446711 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2691826279438205979, guid: ef99f5146da444c43867cf9f51011d8d, type: 3}
-  m_PrefabInstance: {fileID: 1893713955}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805446708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &808007034
 GameObject:
   m_ObjectHideFlags: 0
@@ -31716,8 +31685,20 @@ MonoBehaviour:
   spawnCircleLenght: 340
   minimalSpawnDistanceToPlayer: 200
   updateScoreFrequency: 0
-  nameText: []
-  scoreText: []
+  nameText:
+  - {fileID: 1998239668}
+  - {fileID: 771753142}
+  - {fileID: 1881034505}
+  - {fileID: 1388547126}
+  - {fileID: 2123436745}
+  - {fileID: 1283593532}
+  scoreText:
+  - {fileID: 97153298}
+  - {fileID: 204760573}
+  - {fileID: 1524905953}
+  - {fileID: 758942459}
+  - {fileID: 496593339}
+  - {fileID: 770184116}
   nameTextDuel: []
   scoreTextDuel: []
   teamsScore: []
