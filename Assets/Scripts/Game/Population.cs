@@ -673,6 +673,10 @@ public class Population : MonoBehaviour
                         topperName = scoreList[scoreList.Count - i].Key.ToString();
                     var t = i - 1;
                     var d = scoreList.Count;
+                    if (d <= 0)
+                    {
+                        return;
+                    }
                     nameText[i - 1].text = scoreList[scoreList.Count - i].Key.ToString();
                     scoreText[i - 1].text = scoreList[scoreList.Count - i].Value.ToString();//individualSnakes [scoreList [scoreList.Count - i].ToString()].ToString();
                 }
