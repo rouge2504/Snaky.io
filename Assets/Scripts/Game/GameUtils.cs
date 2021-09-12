@@ -30,5 +30,7 @@ public class GameUtils {
 	public const string BABY_SNAKE = "babysnake";
 	public const string ONE_TIME_RATE = "IsRateUsShowGlobal";
 	public const string ON_TUTORIAL = "OnTutorial";
+	public const string PLAYER_FIRST_TIME = "PlayerdFirstTime";
+	public const string GDPR_WINDOW = "GDPR_Window";
 
 }

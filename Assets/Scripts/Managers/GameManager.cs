@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject gameplayMenu;
     [SerializeField] public GameObject gameOverMenu;
     [SerializeField] public GameObject tutorialMenu;
+    [SerializeField] public GameObject gdprMenu;
 
     public enum CONTROL_MODE { LEFT, RIGHT, ARROW_LEFT, ARROW_RIGHT}
     [Header("Controls")]
@@ -109,6 +110,19 @@ public class GameManager : MonoBehaviour
             GamePrefs.SetBool(GameUtils.ON_TUTORIAL, value); 
         }
     }
+
+    public bool IsFirstTime
+    {
+        get
+        {
+            return GamePrefs.GetBool(GameUtils.PLAYER_FIRST_TIME, 1);
+        }
+
+        set
+        {
+            GamePrefs.SetBool(GameUtils.PLAYER_FIRST_TIME, value);
+        }
+    }
     public bool IsDuelMode
     {
         get
@@ -131,6 +145,7 @@ public class GameManager : MonoBehaviour
         SetLoading();
         state = STATE.IN_MENU;
         tutorialMenu.SetActive(IsOnTutorial);
+        gdprMenu.SetActive(GamePrefs.GetBool(GameUtils.GDPR_WINDOW, 1));
 
     }
 
@@ -390,5 +405,15 @@ public class GameManager : MonoBehaviour
     public void SetPlayerName(Text name)
     {
         GamePrefs.PLAYER_NAME = name.text;
+    }
+
+    public void GDPR_Acept()
+    {
+        GamePrefs.SetBool(GameUtils.GDPR_WINDOW, false);
+    }
+
+    public void OpenLink(string link)
+    {
+        Application.OpenURL(link);
     }
 }
