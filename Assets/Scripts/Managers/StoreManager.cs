@@ -57,9 +57,9 @@ public class StoreManager : MonoBehaviour
 
     public void BuyTransparency()
     {
-        GamePrefs.SetBool(GameUtils.TRANSPARENCY, true);
-
         SkinsManager.instance.UpdateTransparencyState(GamePrefs.GetBool(GameUtils.TRANSPARENCY));
+
+        AchievementManager.instance.BuyTransparency();
     }
 
     public void BuyBundle()

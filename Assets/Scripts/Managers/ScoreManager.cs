@@ -51,14 +51,7 @@ public class ScoreManager : MonoBehaviour
 
     private void CheckAchievement()
     {
-        if (SnakeSpawner.Instance.playerSnake.points > 200)
-        {
-            GamePrefs.SetBool(GameUtils.PREFS_TWO_HUNDRED_POINTS, true);
-        }else if (SnakeSpawner.Instance.playerSnake.points > 100000)
-        {
-            GamePrefs.SetBool(GameUtils.PREFS_ONE_LAKH_POINTS, true);
-
-        }
+        AchievementManager.instance.PointCounter(SnakeSpawner.Instance.playerSnake.points);
     }
 
     public void ResetInfoPoints(int it)

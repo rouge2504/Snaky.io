@@ -223,7 +223,7 @@ public class SkinsManager : MonoBehaviour
     {
         if (AchievementManager.instance != null)
         {
-            AchievementManager.instance.SetAchievementGoal(GameUtils.PREFS_EDIT_SNAKE);
+            AchievementManager.instance.EditSnake();
         }
         if (!choosed)
         {

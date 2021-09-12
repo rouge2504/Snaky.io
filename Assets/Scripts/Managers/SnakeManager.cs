@@ -16,6 +16,21 @@ public class SnakeManager : MonoBehaviour
         //InvokeRepeating("CheckSpawnSnake", 5, 10);
         //Init();
         Population.instance.Initialize();
+
+        Social.localUser.Authenticate((bool success) =>
+        {
+            if (success)
+            {
+                Debug.Log("Logged in to google play services!!!!");
+                AchievementManager.instance.PlaySessionCount();
+                AchievementManager.instance.UnlockAllProMasks();
+            }
+            else
+            {
+                Debug.LogError("Unable to sign into google play service");
+            }
+            SnakeManager.instance.isLoaded = true;
+        });
     }
 
     public void Init()
