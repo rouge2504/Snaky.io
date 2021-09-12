@@ -183,7 +183,7 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         ColorTemplate colorTemp = selectedColorTemplate;
-        CreateNewSnake(150, GamePrefs.PLAYER_NAME, playerSpawnPoints[0].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
+        CreateNewSnake(150, GamePrefs.PLAYER_NAME, playerSpawnPoints[UnityEngine.Random.Range(0, playerSpawnPoints.Length)].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
         Population.instance.Initialize();
 
     }

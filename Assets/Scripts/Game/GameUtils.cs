@@ -28,5 +28,7 @@ public class GameUtils {
 	public const string TRANSPARENCY = "transparency";
 	public const string ADS = "ads";
 	public const string BABY_SNAKE = "babysnake";
+	public const string ONE_TIME_RATE = "IsRateUsShowGlobal";
+	public const string ON_TUTORIAL = "OnTutorial";
 
 }

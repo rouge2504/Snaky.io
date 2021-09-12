@@ -9,7 +9,12 @@ public class SettingManager : MonoBehaviour
     public Image checkMarkHandLeft;
     public Image checkMarkHandRight;
     public Image checkMarkArrow;
-    public Image checkMarkJoystick;
+    public Image checkMarkJoystick;    
+    
+    public Image tutorial_checkMarkHandLeft;
+    public Image tutorial_checkMarkHandRight;
+    public Image tutorial_checkMarkArrow;
+    public Image tutorial_checkMarkJoystick;
 
     public void Start()
     {
@@ -17,6 +22,11 @@ public class SettingManager : MonoBehaviour
         checkMarkHandRight.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
         checkMarkArrow.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
         checkMarkJoystick.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
+
+        tutorial_checkMarkHandLeft.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
+        tutorial_checkMarkHandRight.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
+        tutorial_checkMarkArrow.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
+        tutorial_checkMarkJoystick.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
     }
     public bool JoystickMode
     {

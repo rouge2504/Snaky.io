@@ -55,7 +55,6 @@ public class GamePrefs
             PlayerPrefs.SetFloat("PlayerTransparency", value);
         }
     }
-
     public static bool GetBool(string pref, int defaultValue = 1)
     {
         if (!PlayerPrefs.HasKey(pref))

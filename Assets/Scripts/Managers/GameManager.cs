@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject searchUI;
     [SerializeField] public GameObject gameplayMenu;
     [SerializeField] public GameObject gameOverMenu;
+    [SerializeField] public GameObject tutorialMenu;
 
     public enum CONTROL_MODE { LEFT, RIGHT, ARROW_LEFT, ARROW_RIGHT}
     [Header("Controls")]
@@ -96,6 +97,18 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public bool IsOnTutorial
+    {
+        get
+        {
+            return GamePrefs.GetBool(GameUtils.ON_TUTORIAL, 1);
+        }
+
+        set
+        {
+            GamePrefs.SetBool(GameUtils.ON_TUTORIAL, value); 
+        }
+    }
     public bool IsDuelMode
     {
         get
@@ -117,6 +130,8 @@ public class GameManager : MonoBehaviour
     {
         SetLoading();
         state = STATE.IN_MENU;
+        tutorialMenu.SetActive(IsOnTutorial);
+
     }
 
     public void PlayDuel()
@@ -176,6 +191,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayWithAI()
     {
+        IsOnTutorial = false;
         if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
         {
             SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
@@ -240,7 +256,7 @@ public class GameManager : MonoBehaviour
         //SnakeSpawner.Instance.DestroyAllSnakes();
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.1f);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         gameOverMenu.SetActive(false);
