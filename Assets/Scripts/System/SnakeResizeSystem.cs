@@ -151,7 +151,7 @@ public class SnakeResizeSystem : JobComponentSystem
                                 });
                                 EntityManager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
                                 {
-                                    Value = new float3(0, (((lastPieceIndex + x) + 1) * -0.001f), 0)
+                                    Value = new float3(0, (((lastPieceIndex + x) + 1) * -GameConstants.TRANSLATION_OFFSET), 0)
                                 });
 
 

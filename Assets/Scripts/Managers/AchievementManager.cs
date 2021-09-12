@@ -18,10 +18,12 @@ public class AchievementManager : MonoBehaviour
     public void SetAchievementGoal(string achievement, string gpfsid, string pro)
     {
 
-            
+
 
 #if UNITY_ANDROID
-        Social.Active.ReportProgress(gpfsid, 100.0f, (bool success) =>  //Social.Active.ReportProgress(SnakeMask.achievement_kill_your_first_snake, 100.0f, (bool success) =>
+        if (RuntimePlatform.Android == Application.platform)
+        {
+            Social.Active.ReportProgress(gpfsid, 100.0f, (bool success) =>  //Social.Active.ReportProgress(SnakeMask.achievement_kill_your_first_snake, 100.0f, (bool success) =>
         {
             // handle success or failure
             if (success)
@@ -32,6 +34,7 @@ public class AchievementManager : MonoBehaviour
 
             }
         });
+        }
 #endif
 #if UNITY_EDITOR_WIN
         GamePrefs.SetBool(achievement, true);

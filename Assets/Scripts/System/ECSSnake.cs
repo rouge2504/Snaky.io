@@ -232,7 +232,7 @@ public class ECSSnake
         //return SnakeSpawner.Instance.testMaterial;
     }
 
-    public void AssignMaterial(int teamid)
+    public void AssignMaterial(int teamid, bool isPlayer)
     {
         snakeMaterialColor = new List<Material>();
         snakeMaterialSprintColor = new List<Material>();
@@ -256,37 +256,50 @@ public class ECSSnake
         {
             return;
         }
+
+        if (isPlayer)
+        {
+            for (int i = 0; i < PlayerProgress.instance.materialOnSnake.Count; i++)
+            {
+                snakeMaterialColor.Add(new Material(PlayerProgress.instance.materialOnSnake[i]));
+                snakeMaterialSprintColor.Add(new Material(PlayerProgress.instance.materialSprintOnSnake[i]));
+            }
+            /*snakeMaterialColor = PlayerProgress.instance.materialOnSnake;
+            snakeMaterialSprintColor = PlayerProgress.instance.materialSprintOnSnake;*/
+            return;
+        }
         int rnd = UnityEngine.Random.Range(0, 6);
         colorMaterialType = (COLOR_MATERIAL_TYPE)rnd;
         switch (colorMaterialType)
         {
             case COLOR_MATERIAL_TYPE.ONE_ALPHA:
-                snakeMaterialSprintColor.Add(SkinsManager.instance.materialSprintColors[rnd]);
+                snakeMaterialSprintColor.Add(new Material(SkinsManager.instance.materialSprintColors[rnd]));
                 break;
             case COLOR_MATERIAL_TYPE.TWO_ALPHA:
                 for (int i = 0; i < 2; i++)
                 {
                     rnd = UnityEngine.Random.Range(0, SkinsManager.instance.materialColors.Count);
-                    snakeMaterialSprintColor.Add(SkinsManager.instance.materialSprintColors[rnd]);
+                    snakeMaterialSprintColor.Add(new Material(SkinsManager.instance.materialSprintColors[rnd]));
                 }
                 break;
             case COLOR_MATERIAL_TYPE.THREE_ALPHA:
                 for (int i = 0; i < 3; i++)
                 {
                     rnd = UnityEngine.Random.Range(0, SkinsManager.instance.materialColors.Count);
-                    snakeMaterialSprintColor.Add(SkinsManager.instance.materialSprintColors[rnd]);
+                    snakeMaterialSprintColor.Add(new Material(SkinsManager.instance.materialSprintColors[rnd]));
+                    //snakeMaterialSprintColor.Add(SkinsManager.instance.materialSprintColors[rnd]);
                 }
                 break;
             case COLOR_MATERIAL_TYPE.ONE_SOLID:
                 rnd = UnityEngine.Random.Range(0, SkinsManager.instance.materialColors.Count);
-                snakeMaterialColor.Add(SkinsManager.instance.materialColors[rnd]);
+                snakeMaterialColor.Add(new Material(SkinsManager.instance.materialColors[rnd]));
                     break;
 
             case COLOR_MATERIAL_TYPE.TWO_SOLID:
                 for (int i = 0; i < 2; i++)
                 {
                     rnd = UnityEngine.Random.Range(0, SkinsManager.instance.materialColors.Count);
-                    snakeMaterialColor.Add(SkinsManager.instance.materialColors[rnd]);
+                    snakeMaterialColor.Add(new Material(SkinsManager.instance.materialColors[rnd]));
                 }
                 break;
 
@@ -294,7 +307,8 @@ public class ECSSnake
                 for (int i = 0; i < 3; i++)
                 {
                     rnd = UnityEngine.Random.Range(0, SkinsManager.instance.materialColors.Count);
-                    snakeMaterialColor.Add(SkinsManager.instance.materialColors[rnd]);
+                    snakeMaterialColor.Add(new Material(SkinsManager.instance.materialColors[rnd]));
+                    //snakeMaterialColor.Add(SkinsManager.instance.materialColors[rnd]);
                 }
                 break;
         }
@@ -306,15 +320,35 @@ public class ECSSnake
         /*if (colorMaterialType == COLOR_MATERIAL_TYPE.ONE_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.TWO_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.THREE_ALPHA)
         {
             materialColor = snakeMaterialColor[SkinsManager.instance.SetColorOnSnake(i, snakeMaterialColor.Count)];
-        }
-        else */if (colorMaterialType == COLOR_MATERIAL_TYPE.ONE_SOLID || colorMaterialType == COLOR_MATERIAL_TYPE.TWO_SOLID || colorMaterialType == COLOR_MATERIAL_TYPE.THREE_SOLID)
+        }*/
+        if (colorMaterialType == COLOR_MATERIAL_TYPE.ONE_SOLID || colorMaterialType == COLOR_MATERIAL_TYPE.TWO_SOLID || colorMaterialType == COLOR_MATERIAL_TYPE.THREE_SOLID)
         {
             materialColor = snakeMaterialColor[SkinsManager.instance.SetColorOnSnake(i, snakeMaterialColor.Count)];
         }
-        if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_GAME)
+        if (isPlayerSnake && (GameManager.instance.state == GameManager.STATE.IN_GAME || GameManager.instance.state == GameManager.STATE.IN_DUEL))
+        {
+            if (GamePrefs.PLAYER_TRASNPARENCY != 1)
+            {
+                materialColor = snakeMaterialSprintColor[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+                materialColor.SetColor("_Color", new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY));
+
+            }
+            else
+            {
+                materialColor = snakeMaterialColor[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+
+            }
+            //materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, 0f); 
+            //materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, 0.5f);
+        }
+       /* if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_GAME)
         {
             materialColor = PlayerProgress.instance.materialOnSnake[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
         }
+        if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_DUEL)
+        {
+            materialColor = PlayerProgress.instance.materialOnSnake[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+        }*/
 
         return materialColor;
     }
@@ -322,17 +356,38 @@ public class ECSSnake
     public Material GetNextSprintColor(int i)
     {
         Material materialColor = null;
+
         if (colorMaterialType == COLOR_MATERIAL_TYPE.ONE_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.TWO_ALPHA || colorMaterialType == COLOR_MATERIAL_TYPE.THREE_ALPHA)
         {
             materialColor = snakeMaterialSprintColor[SkinsManager.instance.SetColorOnSnake(i, snakeMaterialColor.Count)];
-            materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
+            //materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
         }
-        if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_GAME)
+        if (isPlayerSnake && (GameManager.instance.state == GameManager.STATE.IN_GAME || GameManager.instance.state == GameManager.STATE.IN_DUEL))
+        {
+            if (GamePrefs.PLAYER_TRASNPARENCY != 1)
+            {
+                materialColor = snakeMaterialSprintColor[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+                materialColor.SetColor("_Color", new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY));
+
+            }
+            else
+            {
+                materialColor = snakeMaterialSprintColor[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+
+            }
+        }
+        /*if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_GAME)
         {
             materialColor = PlayerProgress.instance.materialSprintOnSnake[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
-            materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
+            //materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
         }
-        
+
+        if (isPlayerSnake && GameManager.instance.state == GameManager.STATE.IN_DUEL)
+        {
+            materialColor = PlayerProgress.instance.materialSprintOnSnake[SkinsManager.instance.SetColorOnSnake(i, PlayerProgress.instance.colorOnSnake.Count)];
+            //materialColor.color = new Color(materialColor.color.r, materialColor.color.g, materialColor.color.b, GamePrefs.PLAYER_TRASNPARENCY);
+        }*/
+
 
 
         return materialColor;

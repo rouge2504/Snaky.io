@@ -137,9 +137,8 @@ public class SkinsManager : MonoBehaviour
                 materialSprint.color = PlayerProgress.instance.colorOnSnake[i];*/
                 /*Material material = new Material(defaultMaterial);
                 Material materialSprint = new Material(defaultSprintMaterial);*/
-                Material sprint = new Material(materialSprintColors[GetMaterialForColor(Color.green)]);
                 PlayerProgress.instance.materialOnSnake.Add(materialColors[GetMaterialForColor(Color.green)]);
-                PlayerProgress.instance.materialSprintOnSnake.Add(sprint);
+                PlayerProgress.instance.materialSprintOnSnake.Add(materialSprintColors[GetMaterialForColor(Color.green)]);
             }
         }
     }
@@ -210,6 +209,10 @@ public class SkinsManager : MonoBehaviour
     public void RemoveColor(ColorObject colorObject, Material material, Material materialSprint)
     {
         colorOnSnake.Remove(colorObject.color.color);
+        if (colorOnSnake.Count == 0)
+        {
+            StorageManager.ClearJSON();
+        }
         colorObject.closeButton.gameObject.SetActive(false);
         colorObject.closeButton.onClick.RemoveAllListeners();
         SetColorOnSnake(colorOnSnake.Count == 1 ? colorOnSnake[0] : colorObject.color.color);
@@ -242,9 +245,9 @@ public class SkinsManager : MonoBehaviour
             SetColorOnSnake(colorObject.color.color);
             PlayerProgress.instance.colorOnSnake = colorOnSnake;
             StorageManager.Singleton.SaveColors(colorOnSnake);
-            Material sprint = new Material(materialSprint);
             PlayerProgress.instance.materialOnSnake.Add(material);
-            PlayerProgress.instance.materialSprintOnSnake.Add(sprint);
+            //PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
+            PlayerProgress.instance.materialSprintOnSnake.Add(materialSprint);
 
         }
     }

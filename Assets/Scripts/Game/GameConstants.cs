@@ -44,6 +44,8 @@ public class GameConstants
 
     public static float loadingMenuDelay = 1.5f;
 
+    public const float TRANSLATION_OFFSET = 0.001F;
+
     public static float searchiingMenuDelay {
         get
         {

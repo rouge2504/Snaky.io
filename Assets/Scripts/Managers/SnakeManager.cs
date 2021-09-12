@@ -16,8 +16,9 @@ public class SnakeManager : MonoBehaviour
         //InvokeRepeating("CheckSpawnSnake", 5, 10);
         //Init();
         Population.instance.Initialize();
-
-        Social.localUser.Authenticate((bool success) =>
+        if (RuntimePlatform.Android == Application.platform)
+        {
+            Social.localUser.Authenticate((bool success) =>
         {
             if (success)
             {
@@ -31,6 +32,7 @@ public class SnakeManager : MonoBehaviour
             }
             SnakeManager.instance.isLoaded = true;
         });
+        }
     }
 
     public void Init()

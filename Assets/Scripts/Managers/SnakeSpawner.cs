@@ -308,7 +308,7 @@ public class SnakeSpawner : MonoBehaviour
                 break;
         }
         
-        snake.AssignMaterial(teamid);
+        snake.AssignMaterial(teamid, isPlayer);
         //Debug.Log("Team id : " + teamid);
 
         /*if (isBaby)
@@ -401,10 +401,16 @@ public class SnakeSpawner : MonoBehaviour
         }
 
         SnakeGlowData glowData = manager.GetComponentData<SnakeGlowData>(snakeHead);
+        Material colorNew = /*isPlayer ? snake.GetNextColor(0) :*/ snake.GetNextSprintColor(0);
+        if (teamid != -1)
+        {
+            colorNew = snake.GetNextSprintColor(0);
+        }
+
         manager.SetSharedComponentData<RenderMesh>(glowData.glowEntity, new RenderMesh
         {
             mesh = square,
-            material = snake.GetNextSprintColor(0)
+            material = colorNew
         });
 
         SnakeBallColorData ballData = manager.GetComponentData<SnakeBallColorData>(snakeHead);
@@ -485,12 +491,16 @@ public class SnakeSpawner : MonoBehaviour
 
             glowData = manager.GetComponentData<SnakeGlowData>(pieceEntity);
 
-            //Material colorNew = new Material(sprintMat);
+            colorNew = /* isPlayer ? snake.GetNextColor(i + 1) :*/ snake.GetNextSprintColor(i + 1);
+            if (teamid != -1)
+            {
+                colorNew = snake.GetNextSprintColor(i + 1);
+            }
             //colorNew.color = Color.green;
             manager.SetSharedComponentData<RenderMesh>(glowData.glowEntity, new RenderMesh
             {
                 mesh = square,
-                material = /*snake.sprintMat[0]*/  snake.GetNextSprintColor(i + 1)
+                material = colorNew
             });
 
             
@@ -503,7 +513,7 @@ public class SnakeSpawner : MonoBehaviour
             });
             manager.SetComponentData<Translation>(ballData.snakeBallEntity, new Translation
             {
-                Value = new float3(0, ((i + 1) * -0.001f), 0)
+                Value = new float3(0, ((i + 1) * -GameConstants.TRANSLATION_OFFSET), 0)
             });
             lastEntity = pieceEntity;
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 public class StorageManager : MonoBehaviour
 {
     private string URL_EDITOR;
-    private string URL_ANDROID;
+    private static string URL_ANDROID;
 
     public static StorageManager Singleton
     {
@@ -31,7 +31,7 @@ public class StorageManager : MonoBehaviour
         instance = this;
     }
 
-    public void ClearJSON()
+    public static void ClearJSON()
     {
         string json = null;
 

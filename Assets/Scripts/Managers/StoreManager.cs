@@ -88,6 +88,7 @@ public class StoreManager : MonoBehaviour
 
     public void BuyTransparency()
     {
+        GamePrefs.SetBool(GameUtils.TRANSPARENCY, true);
         SkinsManager.instance.UpdateTransparencyState(GamePrefs.GetBool(GameUtils.TRANSPARENCY));
 
         AchievementManager.instance.BuyTransparency();
@@ -113,7 +114,24 @@ public class StoreManager : MonoBehaviour
 
     }
 
-
+    public void OnUseTransparency()
+    {
+        Debug.Log("On use transparency called");
+        if (RuntimePlatform.Android != Application.platform)
+        {
+            OnSuccessfulPurchaseTransperancy();
+            return;
+        }
+#if UIP
+#if UNITY_ANDROID
+            UnityIAP.instance.BuyItem("com.camc.slitherio.snakes.worms.usetransparency");
+#endif
+#if UNITY_IPHONE
+        UnityIAP.instance.BuyItem("com.camc.usetransparency");
+#endif
+#endif
+       // GameManager.instance.ifAdRemoveClicked = false;
+    }
     public void OnRemoveAdsButtonClick()
     {
 #if UIP
