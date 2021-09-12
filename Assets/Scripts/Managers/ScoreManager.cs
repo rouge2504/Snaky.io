@@ -129,6 +129,8 @@ public class ScoreManager : MonoBehaviour
             }
 
 
+
+
         }
 
         //print(debug);
@@ -144,6 +146,11 @@ public class ScoreManager : MonoBehaviour
             if (SnakeSpawner.Instance.snakes[i] != null)
             {
                 tempListSnake.Add(SnakeSpawner.Instance.snakes[i]);
+            }
+
+            if (i < infoPoints.Count)
+            {
+                infoPoints[i].gameObject.SetActive(false);
             }
         }
         tempListSnake.Sort(delegate (ECSSnake a, ECSSnake b)
@@ -164,7 +171,6 @@ public class ScoreManager : MonoBehaviour
                 infoPoints[i].nameSnake.text = tempSnake.snakeName;
                 infoPoints[i].points.text = tempSnake.points.ToString("0");
             }
-
 
         }
 

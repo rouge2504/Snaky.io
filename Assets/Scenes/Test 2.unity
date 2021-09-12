@@ -31699,8 +31699,16 @@ MonoBehaviour:
   - {fileID: 758942459}
   - {fileID: 496593339}
   - {fileID: 770184116}
-  nameTextDuel: []
-  scoreTextDuel: []
+  nameTextDuel:
+  - {fileID: 1998239668}
+  - {fileID: 771753142}
+  - {fileID: 1881034505}
+  - {fileID: 1388547126}
+  scoreTextDuel:
+  - {fileID: 97153298}
+  - {fileID: 204760573}
+  - {fileID: 1524905953}
+  - {fileID: 496593339}
   teamsScore: []
   teamsLabels: []
   teamsScoreObj: []

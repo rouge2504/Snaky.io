@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour
                 break;
             case STATE.IN_GAME:
                 state = STATE.IN_MENU;
+                mainCamera.GetComponent<CameraManager>().enabled = true;
                 StartCoroutine(ShowLoadingMenu(mainMenu));
                 break;
             case STATE.IN_DUEL:
@@ -271,6 +272,8 @@ public class GameManager : MonoBehaviour
         //SnakeSpawner.Instance.DestroyAllSnakes();
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
+        FoodSpawner.Instance.SwitchToNormalModeAndReset();
+        mainCamera.GetComponent<CameraManager>().enabled = true;
         yield return new WaitForSeconds(0.1f);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
