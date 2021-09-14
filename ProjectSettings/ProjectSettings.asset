@@ -246,7 +246,7 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 0
+  AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: '{inproject}: Assets/Keystore/Duolabz.keystore'
@@ -702,13 +702,13 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: ENABLE_HYBRID_RENDERER_V2;CROSS_PLATFORM_INPUT
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
-    7: STARTER_ASSETS_PACKAGES_CHECKED;CROSS_PLATFORM_INPUT;MOBILE_INPUT;UIP;GPG
+    7: STARTER_ASSETS_PACKAGES_CHECKED;CROSS_PLATFORM_INPUT;MOBILE_INPUT;UIP;APPLOVIN;GPG
     14: MOBILE_INPUT
   additionalCompilerArguments:
     7: []
   platformArchitecture: {}
   scriptingBackend:
-    Android: 1
+    Android: 0
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}

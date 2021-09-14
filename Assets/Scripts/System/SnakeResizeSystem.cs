@@ -73,11 +73,11 @@ public class SnakeResizeSystem : JobComponentSystem
 
                     if (snakePoints.points <= 400)
                     {
-                        newParts += 7;
+                        newParts += 8;
                     }
                     else
                     {
-                        newParts += 7;
+                        newParts += 8;
                         newParts += (int)math.round((snakePoints.points - 400) / (400));
                     }
 

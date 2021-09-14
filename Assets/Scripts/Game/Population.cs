@@ -146,7 +146,7 @@ public class Population : MonoBehaviour
             //     {
             if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
             {
-                SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                SpawnSnake(Random.Range(30000, 45000), SnakeEnvironment.snakeType.superbig, "");  //10000
                                                                                                   //SpawnSnake(Random.Range(60000, 80000), SnakeEnvironment.snakeType.superbig, "");  //10000
                 realCount++;
                 yield return new WaitForSeconds(time);
@@ -157,7 +157,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(15000, 20000), SnakeEnvironment.snakeType.superbig, "");  //10000
+                    SpawnSnake(Random.Range(20000, 30000), SnakeEnvironment.snakeType.superbig, "");  //10000
                     realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -168,7 +168,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(15000, 30000), SnakeEnvironment.snakeType.reallybig, "");
+                    SpawnSnake(Random.Range(10000, 20000), SnakeEnvironment.snakeType.reallybig, "");
                     realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -178,7 +178,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(5000, 8000), SnakeEnvironment.snakeType.big, "");
+                    SpawnSnake(Random.Range(5000, 10000), SnakeEnvironment.snakeType.big, "");
                     realCount++;
                     yield return new WaitForSeconds(time);
                 }
@@ -198,7 +198,7 @@ public class Population : MonoBehaviour
             {
                 if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                 {
-                    SpawnSnake(Random.Range(250, 1500), SnakeEnvironment.snakeType.small, "");
+                    SpawnSnake(Random.Range(500, 1500), SnakeEnvironment.snakeType.small, "");
                     realCount++;
                     yield return new WaitForSeconds(time);
                 }

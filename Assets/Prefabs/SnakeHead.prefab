@@ -934,7 +934,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829350365017057877}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: 0.21, z: -0.7}
+  m_LocalPosition: {x: 0, y: 0.993, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1482361556844184716}
@@ -1063,11 +1063,11 @@ MonoBehaviour:
   m_PrimitiveCenter:
     x: 0
     y: 0
-    z: 13.37
+    z: 21.31
   m_PrimitiveSize:
-    x: 28.44
-    y: 28.44
-    z: 28.44
+    x: 48.29917
+    y: 48.29917
+    z: 48.29917
   m_PrimitiveOrientation:
     Value:
       x: 0
@@ -1075,15 +1075,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 28.44
-    Radius: 14.22
+    Height: 48.29917
+    Radius: 24.149586
     Axis: 2
   m_Cylinder:
-    Height: 28.44
-    Radius: 14.22
+    Height: 48.29917
+    Radius: 24.149586
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 14.22
+  m_SphereRadius: 24.149586
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015
