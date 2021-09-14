@@ -11,7 +11,7 @@ public class PlayerStatsManager : MonoBehaviour
   private const string KEY_BEST_TOP = "KEY_BEST_TOP";
   private const string KEY_BEST_SURVIVAL_TIME = "KEY_BEST_SURVIVAL_TIME";
   
-  private const string KEY_LAST_SCORE = "KEY_LAST_SCORE";
+  public const string KEY_LAST_SCORE = "KEY_LAST_SCORE";
   private const string KEY_LAST_KILLS = "KEY_LAST_KILLS";
   private const string KEY_KILLS = "KEY_KILLS";
   private const string KEY_LAST_TOP = "KEY_LAST_TOP";

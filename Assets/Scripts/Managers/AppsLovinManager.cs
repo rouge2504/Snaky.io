@@ -370,6 +370,7 @@ public class AppsLovinManager : MonoBehaviour
             /*GameManager.instance.watchedAd = true;
             GameManager.instance.loadingOverlay.SetActive(true);
             GameManager.instance.KillAllSnakes();*/
+            GameManager.instance.Revive();
         }
         else if (rewardType == RewardType.egg)
         {

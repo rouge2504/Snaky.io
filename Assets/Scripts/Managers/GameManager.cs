@@ -228,6 +228,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
+        ShowAds();
         switch (state)
         {
             case STATE.TEAM2X2:
@@ -257,6 +258,7 @@ public class GameManager : MonoBehaviour
 
     public void RefreshPlay()
     {
+        ShowAds();
         switch (state)
         {
             case STATE.IN_GAME:
@@ -268,6 +270,27 @@ public class GameManager : MonoBehaviour
                 break;
             case STATE.TEAM3X3:
                 PlayWithTeam3x3 ();
+                break;
+
+            case STATE.IN_DUEL:
+                PlayDuel();
+                break;
+        }
+    }
+
+    public void Revive()
+    {
+        switch (state)
+        {
+            case STATE.IN_GAME:
+                PlayWithAI();
+                break;
+
+            case STATE.TEAM2X2:
+                PlayWithTeam2x2();
+                break;
+            case STATE.TEAM3X3:
+                PlayWithTeam3x3();
                 break;
 
             case STATE.IN_DUEL:
@@ -456,6 +479,21 @@ public class GameManager : MonoBehaviour
         Application.OpenURL(link);
     }
 
+
+    public void ShowAds()
+    {
+
+#if IRONSOURCE
+      ISManager.instance.ShowInterstitial();
+#endif
+#if APPLOVIN
+        AppsLovinManager.instance.ShowInterstitial("duelgameover");
+#endif
+#if YODO
+          YodoManager.instance.ShowInterstitial();
+#endif
+
+    }
     public void GetEggReward(Action act)
     {
         loadingUI.SetActive(true);
@@ -491,6 +529,41 @@ public class GameManager : MonoBehaviour
 #if YODO
         YodoManager.instance.ShowRewardAd("egg");
 #endif
+    }
+
+    public void WatchRewardedVideo()
+    {
+        //Debug.Log("Rewarded video opened!");
+
+#if IRONSOURCE
+        ISManager.instance.ShowRewardVideo("");
+#endif
+#if APPLOVIN
+        AppsLovinManager.instance.ShowRewardVideo(AppsLovinManager.RewardType.revive, "revive");
+#endif
+
+#if YODO
+            YodoManager.instance.ShowRewardAd("");
+#endif
+
+
+        #region APP_METRICA
+        Dictionary<string, object> vals = new Dictionary<string, object>
+        {
+            { "ad_type", "interstitial" },
+            { "placement", "revive" },
+            { "result", "start " },
+            { "connection", 1 }
+        };
+        //AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_STARTED, vals);
+        #endregion
+        /*if (GamePrefs.GetBool(GamePrefs.ON_TUTORIAL))
+        {
+            OnReplayButtonPressed();
+            GamePrefs.SetBool(GamePrefs.ON_TUTORIAL, false);
+            freeImage.SetActive(false);
+            mainGameOverButtons.SetActive(true);
+        }*/
     }
 
     public void SetNotification(string title, string desc, System.DateTime time)
