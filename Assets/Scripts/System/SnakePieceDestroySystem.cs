@@ -45,8 +45,8 @@ public class SnakePieceDestroySystem : JobComponentSystem
                                               float3 randomCircle = UnityEngine.Random.insideUnitSphere * 5;
                                               float3 newPosition = position.Value;//new Vector3(positions[i].x, 0, positions[i].z);
                                               newPosition += randomCircle;
-                                              int value = UnityEngine.Random.Range(Mathf.RoundToInt(snakePoints / 2 / snakeLength), Mathf.RoundToInt(snakePoints / 3 / snakeLength));
-                                              value = Mathf.Clamp(value, 1, 20);
+                                              int value = UnityEngine.Random.Range(Mathf.RoundToInt(snakePoints / 2 / snakeLength), Mathf.RoundToInt(snakePoints / 2 / snakeLength));
+                                              value = Mathf.Clamp(value, 1, 40);
                                               float scale = (float)value;
                                               EntityManager.SetComponentData(foodEn, new Translation
                                               {

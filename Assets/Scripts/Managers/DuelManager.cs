@@ -16,7 +16,7 @@ public class DuelManager : MonoBehaviour
 
     public bool isOnDuel;
 
-    private float timingToDuel = 30;
+    public float timingToDuel = 30;
     private void Start()
     {
         instance = this;

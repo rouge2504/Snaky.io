@@ -18,6 +18,38 @@ public class GameManager : MonoBehaviour
 
     public STATE state;
 
+    public string STATE_STRING
+    {
+        get
+        {
+            string _state = null;
+
+            switch (state)
+            {
+                case STATE.IN_GAME:
+                    _state = "InGame";
+                    break;
+                case STATE.GO_TO_HOME_FROM_GAMEPLAY:
+                    _state = "GO_TO_HOME_FROM_GAMEPLAY";
+                    break;
+                case STATE.IN_MENU:
+                    _state = "IN_MENU";
+                    break;
+                case STATE.TEAM2X2:
+                    _state = "TEAM2X2";
+                    break;
+                case STATE.TEAM3X3:
+                    _state = "TEAM3X3";
+                    break;              
+                case STATE.IN_DUEL:
+                    _state = "IN_DUEL";
+                    break;
+            }
+
+            return _state;
+        }
+    }
+
     private Action actRewardDoubleEgg;
 
     public static GameManager instance;
@@ -229,6 +261,14 @@ public class GameManager : MonoBehaviour
     public void GoToMainMenu()
     {
         ShowAds();
+        Dictionary<string, object> vals = new Dictionary<string, object>
+        {
+            { "ad_type", "interstitial" },
+            { "placement", "revive" },
+            { "result", "available" },
+            { "connection", 1 }
+        };
+        AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_AVAILABLE, vals);
         switch (state)
         {
             case STATE.TEAM2X2:
@@ -258,6 +298,16 @@ public class GameManager : MonoBehaviour
 
     public void RefreshPlay()
     {
+        #region APP_METRICA
+        Dictionary<string, object> vals = new Dictionary<string, object>
+        {
+            { "ad_type", "interstitial" },
+            { "placement", "replay" },
+            { "result", "start " },
+            { "connection", 1 }
+        };
+        AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_STARTED, vals);
+        #endregion
         ShowAds();
         switch (state)
         {
@@ -318,10 +368,15 @@ public class GameManager : MonoBehaviour
 
     public void LooseWithAI()
     {
-        if(state == STATE.IN_DUEL)
+
+        if (state == STATE.IN_DUEL)
         {
+            AppMetricaManager.instance.LevelFinish(PlayerPrefs.GetInt("level_number"), STATE_STRING, PlayerPrefs.GetInt("level_count"), "normal", 1, false, "normal", "classic", "Lose", (int)DuelManager.instance.timingToDuel, 0, 0);
+
             PlayerStatsManager.instance.SaveDuelLooses(1);
         }
+        AppMetricaManager.instance.LevelFinish(PlayerPrefs.GetInt("level_number"), STATE_STRING, PlayerPrefs.GetInt("level_count"), "normal", 1, false, "normal", "classic", "Lose", (int)DuelManager.instance.timingToDuel, 0, 0);
+
         ControlsActive(false);
         gameplayMenu.SetActive(false);
         DuelManager.instance.timerDuel.SetActive(false);
@@ -555,7 +610,7 @@ public class GameManager : MonoBehaviour
             { "result", "start " },
             { "connection", 1 }
         };
-        //AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_STARTED, vals);
+        AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_STARTED, vals);
         #endregion
         /*if (GamePrefs.GetBool(GamePrefs.ON_TUTORIAL))
         {

@@ -183,8 +183,18 @@ public class SnakeSpawner : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         ColorTemplate colorTemp = selectedColorTemplate;
+        int level_number = PlayerPrefs.GetInt("level_number", 0);
+        level_number++;
+        PlayerPrefs.SetInt("level_number", level_number);
+        int level_count = PlayerPrefs.GetInt("level_count", 0);
+        level_count++;
+
+
+        AppMetricaManager.instance.LevelStart(level_number, GameManager.instance.STATE_STRING, level_count, "normal", level_count, false, "classic", "normal");
 
         int lifePoints = AppsLovinManager.instance.rewardType == AppsLovinManager.RewardType.revive ? PlayerPrefs.GetInt(PlayerStatsManager.KEY_LAST_SCORE) : 250;
+
+
         CreateNewSnake(lifePoints, GamePrefs.PLAYER_NAME, playerSpawnPoints[UnityEngine.Random.Range(0, playerSpawnPoints.Length)].position, colorTemp, PlayerProgress.instance.skinMask.maskSprite, true, "");
         AppsLovinManager.instance.rewardType = AppsLovinManager.RewardType.none;
 

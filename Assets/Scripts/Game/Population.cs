@@ -647,6 +647,10 @@ public class Population : MonoBehaviour
                             topperName = scoreList[scoreList.Count - i].Key.ToString();
                         var t = i - 1;
                         var d = scoreList.Count;
+                        if (d <= 0)
+                        {
+                            return;
+                        }
                         nameTextDuel[i - 1].text = scoreList[scoreList.Count - i].Key.ToString();
                         scoreTextDuel[i - 1].text = scoreList[scoreList.Count - i].Value.ToString();
                     }

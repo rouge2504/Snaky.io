@@ -219,7 +219,7 @@ public class SkinsManager : MonoBehaviour
         PlayerProgress.instance.colorOnSnake = colorOnSnake;
         StorageManager.Singleton.SaveColors(colorOnSnake);
         PlayerProgress.instance.materialOnSnake.Remove(material);
-        PlayerProgress.instance.materialOnSnake.Remove(materialSprint);
+        PlayerProgress.instance.materialSprintOnSnake.Remove(materialSprint);
     }
 
     public void SetColor(ColorObject colorObject, Material material, Material materialSprint, bool choosed = false)
@@ -562,6 +562,14 @@ public class SkinsManager : MonoBehaviour
     {
         int rnd = Random.Range(-1, skinMasks.Count);
 
+
+        if (-1 != rnd)
+        {
+            while (skinMasks[rnd].type == 7)
+            {
+                rnd = Random.Range(-1, skinMasks.Count);
+            }
+        }
         return (-1 == rnd) ? null : skinMasks[rnd].maskSprite;
     }
 
