@@ -245,7 +245,7 @@ public class Population : MonoBehaviour
                     nSelectedTeam = "A";
 
 
-                SpawnSnakeAITeam(nSelectedTeam, "2/4/6/8/11");
+                SpawnSnakeAITeam(nSelectedTeam, "4/15/15/16/10");
                 yield return new WaitForSeconds(0.5f);
             }
         }else if (GameManager.STATE.TEAM3X3 == GameManager.instance.state)
@@ -260,7 +260,7 @@ public class Population : MonoBehaviour
                     nSelectedTeam = "B";
 
 
-                SpawnSnakeAITeam(nSelectedTeam, "1/3/4/9/14");
+                SpawnSnakeAITeam(nSelectedTeam, "6/9/15/15/20");
                 yield return new WaitForSeconds(0.5f);
             }
         }else if (GameManager.STATE.IN_MENU == GameManager.instance.state)
@@ -420,7 +420,7 @@ public class Population : MonoBehaviour
                    
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(20000, SnakeEnvironment.snakeType.superbig, team);  //10000
+                            SpawnSnake(Random.Range(20000, 35000), SnakeEnvironment.snakeType.superbig, team);  //10000
                             return;
                         }
                    
@@ -429,7 +429,7 @@ public class Population : MonoBehaviour
                    
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(10000, SnakeEnvironment.snakeType.reallybig, team);  //10000
+                            SpawnSnake(Random.Range(15000, 30000), SnakeEnvironment.snakeType.reallybig, team);  //10000
                             return;
                         }
                  
@@ -438,7 +438,7 @@ public class Population : MonoBehaviour
                   
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(6000, SnakeEnvironment.snakeType.big, team);  //10000
+                            SpawnSnake(Random.Range(5000, 8000), SnakeEnvironment.snakeType.big, team);  //10000
                             return;
                         }
                    
@@ -447,7 +447,7 @@ public class Population : MonoBehaviour
                    
                         if (SnakeEnvironment.Singleton.CounterSnake < MaxPopulation)
                         {
-                            SpawnSnake(Random.Range(1000, 2000), SnakeEnvironment.snakeType.medium, team);  //10000
+                            SpawnSnake(Random.Range(2000, 4000), SnakeEnvironment.snakeType.medium, team);  //10000
                             return;
                         }
                   

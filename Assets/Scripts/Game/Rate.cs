@@ -7,6 +7,7 @@ public class Rate : MonoBehaviour
 {
     public Image[] rateStars;
     public GameObject rateThanks;
+ 
     private bool activeThanks;
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,7 @@ public class Rate : MonoBehaviour
             activeThanks = true;
 
         }
+
     }
 
     public void ButtonRate()
@@ -55,6 +57,13 @@ public class Rate : MonoBehaviour
             Application.OpenURL("https://play.google.com/store/apps/details?id=com.carmin.slitherio.snake.worm");   
         }
         GamePrefs.SetBool(GameUtils.ONE_TIME_RATE, false);
+        if (GameManager.instance.IsOnTutorial)
+        {
+            GameManager.instance.IsOnTutorial = false;
+            GameManager.instance.LooseWithAI();
+            this.gameObject.SetActive(false);
+        }
+
     }
 
     public void NotRate()

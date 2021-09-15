@@ -30,7 +30,7 @@ public class DuelManager : MonoBehaviour
         timerDuel.SetActive(false);
         camera.GetComponent<CameraManager>().enabled = false;
         camera.transform.position = new Vector3(0f, 50f, 0f);
-        camera.GetComponent<Camera>().orthographicSize = 150f;
+        camera.GetComponent<Camera>().orthographicSize = 80f;
         FoodSpawner.Instance.duelModeSpawnSize = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, Screen.height));
         SnakeSpawner.Instance.SpawnDuelPlayer(Population.instance.duelMode_Position[0]);
         Population.instance.AddSnakesDuel();
@@ -49,7 +49,7 @@ public class DuelManager : MonoBehaviour
         if (isOnDuel)
         {
             bool timer = DuelTimeOver();
-            if (SnakeEnvironment.Singleton.CounterSnake < 2 && !timer && SnakeSpawner.Instance.playerSnake != null)
+            if (SnakeEnvironment.Singleton.CounterSnake <= 1 && !timer && SnakeSpawner.Instance.playerSnake != null)
             {
                 WinDuel();
                 isOnDuel = false;
@@ -68,6 +68,9 @@ public class DuelManager : MonoBehaviour
         timerDuel.GetComponentInChildren<Text>().text = timingToDuel.ToString("0");
         if (timingToDuel < 0)
         {
+            FinishDuel();
+            SnakeSpawner.Instance.PauseAllSnakes();
+            GameManager.instance.LooseWithAI();
             timingToDuel = 30;
             return true;
         }

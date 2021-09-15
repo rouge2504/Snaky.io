@@ -85,10 +85,16 @@ public class SnakeCollisionSystem : JobComponentSystem
                                             if (SnakeSpawner.Instance.playerSnake != null)
                                             {
                                                 SnakeSpawner.Instance.playerSnake.killerCounter++;
+
+
                                             }
                                             Debug.Log("Player Killer counter:" + SnakeSpawner.Instance.playerSnake.killerCounter);
                                         }
-                                        Debug.Log("Fuck IT!!");
+                                        if (SnakeSpawner.Instance.playerID == component.snakeId)
+                                        {
+                                            SnakeSpawner.Instance.SetTempPlayerTracker(pieceHeadTransformComponent.Value);
+
+                                        }
                                         component.isDead = true;
                                         component.shouldDestroy = true;
                                         snakeHeadDataGroup[dynamicEntity] = component;

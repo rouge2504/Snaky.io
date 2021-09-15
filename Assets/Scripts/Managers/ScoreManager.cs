@@ -18,7 +18,8 @@ public class ScoreManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {;
+    {
+        if (GameManager.instance != null)
         if (GameManager.instance.InGame)
         {
             switch (GameManager.instance.state)

@@ -33,4 +33,7 @@ public class GameUtils {
 	public const string PLAYER_FIRST_TIME = "PlayerdFirstTime";
 	public const string GDPR_WINDOW = "GDPR_Window";
 
+	public const string BACKGROUND_MUSIC = "Background";
+	public const string GAMEPLAY_MUSIC = "Gameplay";
+
 }

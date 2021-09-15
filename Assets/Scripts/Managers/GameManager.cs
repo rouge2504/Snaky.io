@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject gameOverMenu;
     [SerializeField] public GameObject tutorialMenu;
     [SerializeField] public GameObject gdprMenu;
+    [SerializeField] public GameObject rateMenu;
 
     public enum CONTROL_MODE { LEFT, RIGHT, ARROW_LEFT, ARROW_RIGHT}
     [Header("Controls")]
@@ -95,15 +96,15 @@ public class GameManager : MonoBehaviour
 
         }else  if (control == 1 && hand == 0 )
         {
-            controlMode = CONTROL_MODE.LEFT;
 
+            controlMode = CONTROL_MODE.RIGHT;
         }else  if (control == 0 && hand == 1 )
         {
-            controlMode = CONTROL_MODE.ARROW_RIGHT;
+            controlMode = CONTROL_MODE.LEFT;
 
         }else if (control == 1 && hand == 1 )
         {
-            controlMode = CONTROL_MODE.RIGHT;
+            controlMode = CONTROL_MODE.ARROW_RIGHT;
 
         }
         controlLeft.SetActive(false);
@@ -118,14 +119,16 @@ public class GameManager : MonoBehaviour
                 controlRight.SetActive(true);
                 break;
             case CONTROL_MODE.ARROW_RIGHT:
-                arrow.SetActive(true);
-                arrowBoostLeft.SetActive(true);
-                arrowBoostRight.SetActive(false);
-                break;
-            case CONTROL_MODE.ARROW_LEFT:
                 arrowBoostRight.SetActive(true);
                 arrowBoostLeft.SetActive(false);
                 arrow.SetActive(true);
+                break;
+            case CONTROL_MODE.ARROW_LEFT:
+
+
+                arrow.SetActive(true);
+                arrowBoostLeft.SetActive(true);
+                arrowBoostRight.SetActive(false);
                 break;
         }
 
@@ -186,14 +189,13 @@ public class GameManager : MonoBehaviour
         state = STATE.IN_MENU;
         tutorialMenu.SetActive(IsOnTutorial);
         gdprMenu.SetActive(GamePrefs.GetBool(GameUtils.GDPR_WINDOW, 1));
-        SetupNotifications();   
-
+        SetupNotifications();
+        AudioManager.instance.PlayBackground(GameUtils.BACKGROUND_MUSIC);
     }
 
     public void PlayDuel()
     {
         SnakeSpawner.Instance.DestroyAllSnakes();
-
 
         InGame = true;
         state = STATE.IN_DUEL;
@@ -247,7 +249,6 @@ public class GameManager : MonoBehaviour
 
     public void PlayWithAI()
     {
-        IsOnTutorial = false;
         if (SnakeEnvironment.Singleton.CounterSnake > GameConstants.TOTAL_SNAKES - 20)
         {
             SnakeSpawner.Instance.DestroyAllSnakes(SnakeEnvironment.Singleton.CounterSnake - 20);
@@ -260,7 +261,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        ShowAds();
+        StartCoroutine(ShowLoadingMenuWithVideo());
         Dictionary<string, object> vals = new Dictionary<string, object>
         {
             { "ad_type", "interstitial" },
@@ -274,24 +275,24 @@ public class GameManager : MonoBehaviour
             case STATE.TEAM2X2:
                 SnakeSpawner.Instance.DestroyAllSnakes();
                 state = STATE.IN_MENU;
-                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu, GameUtils.BACKGROUND_MUSIC));
                 break;
             case STATE.TEAM3X3:
                 SnakeSpawner.Instance.DestroyAllSnakes();
                 state = STATE.IN_MENU;
-                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu, GameUtils.BACKGROUND_MUSIC));
                 break;
             case STATE.IN_GAME:
                 state = STATE.IN_MENU;
                 mainCamera.GetComponent<CameraManager>().enabled = true;
-                StartCoroutine(ShowLoadingMenu(mainMenu));
+                StartCoroutine(ShowLoadingMenu(mainMenu, GameUtils.BACKGROUND_MUSIC));
                 break;
             case STATE.IN_DUEL:
                 SnakeSpawner.Instance.DestroyAllSnakes();
                 FoodSpawner.Instance.foodSpawnType = FoodSpawnType.Normal;
                 mainCamera.GetComponent<CameraManager>().enabled = true;
                 state = STATE.IN_MENU;
-                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu));
+                StartCoroutine(ShowLoadingMenu(Population.instance.Initialize, mainMenu, GameUtils.BACKGROUND_MUSIC));
                 break;
         }
     }
@@ -308,18 +309,20 @@ public class GameManager : MonoBehaviour
         };
         AppMetricaManager.instance.SendReportAppMetrica(AppMetricaManager.Reports.VIDEO_STARTED, vals);
         #endregion
-        ShowAds();
+        
+
         switch (state)
         {
             case STATE.IN_GAME:
-                PlayWithAI();
+                StartCoroutine(ShowLoadingMenuWithVideo(PlayWithAI));
+               
                 break;
 
             case STATE.TEAM2X2:
-                PlayWithTeam2x2();
+                StartCoroutine(ShowLoadingMenuWithVideo(PlayWithTeam2x2));
                 break;
             case STATE.TEAM3X3:
-                PlayWithTeam3x3 ();
+                StartCoroutine(ShowLoadingMenuWithVideo(PlayWithTeam3x3));
                 break;
 
             case STATE.IN_DUEL:
@@ -355,8 +358,9 @@ public class GameManager : MonoBehaviour
         FoodSpawner.Instance.isReset = true;
         FoodSpawner.Instance.isWiped = true;
         FoodSpawner.Instance.SwitchToNormalModeAndReset();
+        loadingUI.SetActive(true);
         mainCamera.GetComponent<CameraManager>().enabled = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         gameOverMenu.SetActive(false);
@@ -364,6 +368,8 @@ public class GameManager : MonoBehaviour
         InGame = true;
         state = STATE.IN_GAME;
         SnakeSpawner.Instance.StartGameWithAI();
+        yield return new WaitForSeconds(0.5f);
+        loadingUI.SetActive(false);
     }
 
     public void LooseWithAI()
@@ -414,6 +420,8 @@ public class GameManager : MonoBehaviour
 
     public void GoHomeFromGame()
     {
+        StartCoroutine(ShowLoadingMenuWithVideo1());
+
         if (state == STATE.IN_DUEL)
         {
             DuelManager.instance.FinishDuel();
@@ -422,9 +430,8 @@ public class GameManager : MonoBehaviour
         SnakeSpawner.Instance.snakes[SnakeSpawner.Instance.playerID].isPlayerSnake = false;*/
         state = STATE.GO_TO_HOME_FROM_GAMEPLAY;
         SnakeSpawner.Instance.DestroyAllSnakes();
-        gameplayMenu.SetActive(false);
-        gameOverMenu.SetActive(false);
-        StartCoroutine(ShowLoadingMenu (mainMenu, STATE.IN_MENU));
+
+        //StartCoroutine(ShowLoadingMenu (mainMenu, STATE.IN_MENU));
         //SetLoading();
     }
 
@@ -433,7 +440,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ShowLoadingMenu(additionalMenu));
     }
 
-    IEnumerator ShowLoadingMenu(GameObject additionalMenu = null)
+    IEnumerator ShowLoadingMenu(GameObject additionalMenu = null, string music = null)
     {
         loadingUI.SetActive(true);
         yield return new WaitForSeconds(GameConstants.loadingMenuDelay);
@@ -443,10 +450,13 @@ public class GameManager : MonoBehaviour
             additionalMenu.SetActive(true);
         }
 
-
+        if (!String.IsNullOrEmpty(music))
+        {
+            AudioManager.instance.PlayBackground(music);
+        }
     }
 
-    IEnumerator ShowLoadingMenu(Action action, GameObject additionalMenu = null)
+    IEnumerator ShowLoadingMenu(Action action, GameObject additionalMenu = null, string music = null)
     {
         loadingUI.SetActive(true);
         yield return new WaitForSeconds(GameConstants.loadingMenuDelay);
@@ -455,6 +465,11 @@ public class GameManager : MonoBehaviour
         {
             additionalMenu.SetActive(true);
         }
+        if (!String.IsNullOrEmpty(music))
+        {
+            AudioManager.instance.PlayBackground(music);
+        }
+
         action();
 
 
@@ -481,6 +496,45 @@ public class GameManager : MonoBehaviour
         Invoke("WatchRewardToDoubleEgg", 0.5f);
         loadingUI.SetActive(false);
 
+
+    }
+
+
+    IEnumerator ShowLoadingMenuWithVideo()
+    {
+        loadingUI.SetActive(true);
+        yield return new WaitForSeconds(1);
+        ShowAds();
+        yield return new WaitForSeconds(1);
+        loadingUI.SetActive(false);
+
+
+    }
+
+    IEnumerator ShowLoadingMenuWithVideo(Action action)
+    {
+        loadingUI.SetActive(true);
+        yield return new WaitForSeconds(1);
+        ShowAds();
+        yield return new WaitForSeconds(1);
+        loadingUI.SetActive(false);
+        action();
+
+
+    }
+
+    IEnumerator ShowLoadingMenuWithVideo1()
+    {
+        loadingUI.SetActive(true);
+        AudioManager.instance.StopAudio();
+        yield return new WaitForSeconds(1);
+        ShowAds();
+        yield return new WaitForSeconds(1);
+        loadingUI.SetActive(false);
+        gameplayMenu.SetActive(false);
+        gameOverMenu.SetActive(false);
+        mainMenu.SetActive(true);
+        AudioManager.instance.PlayBackground(GameUtils.BACKGROUND_MUSIC);
 
     }
 

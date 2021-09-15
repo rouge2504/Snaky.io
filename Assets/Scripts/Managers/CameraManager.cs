@@ -20,6 +20,11 @@ public class CameraManager : MonoBehaviour {
           Follow();
             Zoom();
         }
+
+        if (SnakeSpawner.Instance.playerStayDead)
+        {
+            this.transform.position = new Vector3(SnakeSpawner.Instance.temp_playerTracker.x, transform.position.y, SnakeSpawner.Instance.temp_playerTracker.z);
+        }
 	}
 
     void Zoom() {

@@ -567,7 +567,7 @@ public class SkinsManager : MonoBehaviour
         {
             while (skinMasks[rnd].type == 7)
             {
-                rnd = Random.Range(-1, skinMasks.Count);
+                rnd = Random.Range(0, skinMasks.Count);
             }
         }
         return (-1 == rnd) ? null : skinMasks[rnd].maskSprite;

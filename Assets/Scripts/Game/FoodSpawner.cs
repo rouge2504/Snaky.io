@@ -107,7 +107,7 @@ public class FoodSpawner : MonoBehaviour
             Entity food = manager.Instantiate(foodEntity);
             float x = Mathf.Sin(i) * UnityEngine.Random.Range(0, GameConstants.FIELD_SCALE);
             float z = Mathf.Cos(i) * UnityEngine.Random.Range(0, GameConstants.FIELD_SCALE);
-            float scale = UnityEngine.Random.Range(minFoodSize, maxFoodSize);
+            float scale = UnityEngine.Random.Range(minFoodSize, maxFoodSize );
             manager.SetComponentData(food, new Translation
             {
                 Value = new float3(x, 0, z)
@@ -148,7 +148,7 @@ public class FoodSpawner : MonoBehaviour
             Entity food = manager.Instantiate(foodEntity);
             var x = UnityEngine.Random.Range(-screen.x, screen.x);
             var z = UnityEngine.Random.Range(-screen.z, screen.z);
-            float scale = UnityEngine.Random.Range(minFoodSize, maxFoodSize);
+            float scale = UnityEngine.Random.Range(minFoodSize, maxFoodSize / 4);
             manager.SetComponentData(food, new Translation
             {
                 Value = new float3(x, 0, z)
@@ -164,7 +164,7 @@ public class FoodSpawner : MonoBehaviour
             });
             manager.SetComponentData(food, new FoodData
             {
-                foodValue = (int)(0.05  * scale),
+                foodValue = (int)(0.005  * scale),
                 shouldDestroy = false,
                 isNewSpawn = true,
                 absorbed = false,

@@ -18,15 +18,59 @@ public class SettingManager : MonoBehaviour
 
     public void Start()
     {
-        checkMarkHandLeft.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
-        checkMarkHandRight.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
-        checkMarkArrow.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
-        checkMarkJoystick.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
 
-        tutorial_checkMarkHandLeft.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
-        tutorial_checkMarkHandRight.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE);
-        tutorial_checkMarkArrow.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
-        tutorial_checkMarkJoystick.enabled = !GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND);
+
+        OpenControls();
+
+
+    }
+
+    public void OpenControls()
+    {
+
+        if (GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_MODE, 1))
+        {
+
+
+            tutorial_checkMarkHandLeft.enabled = false;
+            tutorial_checkMarkHandRight.enabled = true;
+
+            checkMarkHandLeft.enabled = false;
+            checkMarkHandRight.enabled = true;
+            ChangeModeJoystick(1);
+        }
+        else
+        {
+            tutorial_checkMarkHandLeft.enabled = true;
+            tutorial_checkMarkHandRight.enabled = false;
+
+            checkMarkHandLeft.enabled = true;
+            checkMarkHandRight.enabled = false;
+            ChangeModeJoystick(0);
+        }
+        if (GamePrefs.GetBool(GameUtils.PREFS_JOYSTICK_CONTROL_HAND, 1))
+        {
+
+
+            tutorial_checkMarkArrow.enabled = true;
+            tutorial_checkMarkJoystick.enabled = false;
+            checkMarkArrow.enabled = true;
+            checkMarkJoystick.enabled = false;
+
+
+            ChangeModeDirection(1);
+        }
+        else
+        {
+
+
+            tutorial_checkMarkArrow.enabled = false;
+            tutorial_checkMarkJoystick.enabled = true;
+            checkMarkArrow.enabled = false;
+            checkMarkJoystick.enabled = true;
+            ChangeModeDirection(0);
+
+        }
     }
     public bool JoystickMode
     {

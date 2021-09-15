@@ -16,6 +16,7 @@ public class SnakeSpawner : MonoBehaviour
     public ECSSnake[] snakes;
     public ECSSnake playerSnake;
     public GameObject playerTracker;
+    public Vector3 temp_playerTracker;
     public Transform SpawnPointAIContent;
     private SpawnPoint[] aiSpawnPoints;
     public UnityEngine.Material sprintMat;
@@ -46,6 +47,8 @@ public class SnakeSpawner : MonoBehaviour
 
     public ColorTemplate selectedColorTemplate;
 
+
+    public bool playerStayDead;
     
     // Start is called before the first frame update
     void Start()
@@ -55,6 +58,7 @@ public class SnakeSpawner : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        playerStayDead = false;
         stockMaterials = new List<UnityEngine.Material>();
         world = World.DefaultGameObjectInjectionWorld;
         manager = world.EntityManager;
@@ -216,6 +220,8 @@ public class SnakeSpawner : MonoBehaviour
 
         if (isPlayer)
         {
+            AudioManager.instance.PlayBackground(GameUtils.GAMEPLAY_MUSIC);
+            playerStayDead = false;
             playerSnake = newSnake;
             camerManager.playerSnake = playerSnake;
             GameManager.instance.SpawnTime = DateTime.Now;
@@ -226,13 +232,32 @@ public class SnakeSpawner : MonoBehaviour
     {
         if (id == playerID)
         {
-            AchievementManager.instance.KillerCounter(playerSnake.killerCounter);
-            PlayerStatsManager.instance.SaveKillsRed(playerSnake.killerCounter);
-            print("muerto player");
-            //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
-            playerSnake = null;
-            GameManager.instance.LooseWithAI();
+            StartCoroutine(DelayDeath());
         }
+    }
+
+    IEnumerator DelayDeath()
+    {
+        DuelManager.instance.isOnDuel = false;
+        camerManager.enabled = false;
+        camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
+        AchievementManager.instance.KillerCounter(playerSnake.killerCounter);
+        PlayerStatsManager.instance.SaveKillsRed(playerSnake.killerCounter);
+        yield return new WaitForSeconds(2f);
+        camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
+        camerManager.enabled = true;
+        print("muerto player");
+        //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
+        //playerSnake = null;
+        if (GameManager.instance.IsOnTutorial) {
+            GameManager.instance.rateMenu.SetActive(true);
+        }
+        else
+        {
+            GameManager.instance.LooseWithAI();
+
+        }
+
     }
 
     public int GetEmptySnakeArrayPos()
@@ -646,8 +671,19 @@ public class SnakeSpawner : MonoBehaviour
          });*/
     }
 
+    public void SetTempPlayerTracker(Vector3 pos)
+    {
+        playerStayDead = true;
+        temp_playerTracker = pos;
+    }
+
     public void RemoveSnake(ECSSnake snake)
     {
+        if (snake == playerSnake)
+        {
+            StartCoroutine(DelayDeath());
+
+        }
         SnakeEnvironment.Singleton.PopUpSnake(snake.snakeId, snakes[snake.snakeId].snakePieces);
         if (!snake.defaultMask)
         {

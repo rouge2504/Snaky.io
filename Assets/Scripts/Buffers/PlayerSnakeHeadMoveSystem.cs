@@ -89,7 +89,10 @@ public class PlayerSnakeHeadMoveSystem : JobComponentSystem
 
             }).Run();
         //Debug.Log(id);
-        SnakeSpawner.Instance.playerTracker.transform.position = new Vector3(trackerNewPos.x, trackerNewPos.y, trackerNewPos.z);
+        if (SnakeSpawner.Instance.playerSnake != null)
+        {
+            SnakeSpawner.Instance.playerTracker.transform.position = new Vector3(trackerNewPos.x, trackerNewPos.y, trackerNewPos.z);
+        }
         return inputDeps;
     }
 }

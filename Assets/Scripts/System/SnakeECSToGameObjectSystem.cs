@@ -32,7 +32,7 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
                        EntityManager.RemoveComponent<PhysicsVelocity>(entity);
                        EntityManager.RemoveComponent<PhysicsMass>(entity);
                     EntityManager.DestroyEntity(entity);
-                  //     EntityManager.RemoveComponent<SnakePartBuffer>(entity);
+                    //     EntityManager.RemoveComponent<SnakePartBuffer>(entity);
                     //  DynamicBuffer<SnakePartBuffer> buffer = EntityManager.GetBuffer<SnakePartBuffer>(entity);
                     //  buffer.
                     /*      AIData ai = EntityManager.GetComponentData<AIData>(targetData.ai);
@@ -63,10 +63,10 @@ public class SnakeECSToGameObjectSystem : JobComponentSystem
                if (headData.shouldDestroy && headData.isDead)
                {
                        headData.shouldDestroy = false;
+
                    SnakeSpawner.Instance.snakes[headData.snakeId].isDestroyed = true;
                    SnakeSpawner.Instance.snakes[headData.snakeId].sprinting = false;
                       SnakeSpawner.Instance.snakes[headData.snakeId].isDuelModeDestroyed = true;
-                   SnakeSpawner.Instance.GetPlayerDead(headData.snakeId);
                    EntityManager.RemoveComponent<PhysicsCollider>(entity);
                    EntityManager.RemoveComponent<PhysicsVelocity>(entity);
                    EntityManager.RemoveComponent<PhysicsMass>(entity);

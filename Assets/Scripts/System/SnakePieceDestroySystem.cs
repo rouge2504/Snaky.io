@@ -41,13 +41,22 @@ public class SnakePieceDestroySystem : JobComponentSystem
 
                                           if (!snake.dontSpawnFood)
                                           {
-                                              Entity foodEn = EntityManager.Instantiate(foodEnt);
+
+                                                 Entity foodEn = EntityManager.Instantiate(foodEnt);
                                               float3 randomCircle = UnityEngine.Random.insideUnitSphere * 5;
                                               float3 newPosition = position.Value;//new Vector3(positions[i].x, 0, positions[i].z);
                                               newPosition += randomCircle;
                                               int value = UnityEngine.Random.Range(Mathf.RoundToInt(snakePoints / 2 / snakeLength), Mathf.RoundToInt(snakePoints / 2 / snakeLength));
                                               value = Mathf.Clamp(value, 1, 40);
+                                          
                                               float scale = (float)value;
+
+                                                 if (value <= 10)
+                                                 {
+                                                     scale *= 30;
+                                                 }
+
+
                                               EntityManager.SetComponentData(foodEn, new Translation
                                               {
                                                   Value = new float3(newPosition.x, 0, newPosition.z)
@@ -69,7 +78,6 @@ public class SnakePieceDestroySystem : JobComponentSystem
                                           }
 
                                          }).Run();
-
                     SnakeSpawner.Instance.RemoveSnake(snake);
                     break;
 
