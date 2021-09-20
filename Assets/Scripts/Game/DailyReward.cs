@@ -132,7 +132,7 @@ public class DailyReward : MonoBehaviour
 
         PlayerPrefs.SetString("lastclaimtime", strDate);
         DateTime newTime = now1.AddHours(24);
-        GameManager.instance.SetNotification("Don't miss out yoir daily rewards", "Get a new mask now 🐍 !!!", newTime);
+        //GameManager.instance.SetNotification("Don't miss out yoir daily rewards", "Get a new mask now 🐍 !!!", newTime);
         StoreManager.instance.IncreaseEggs(gotEggs);
         DialogueManager.instance.PopUp("You got " + gotEggs.ToString() + " Eggs!");
 

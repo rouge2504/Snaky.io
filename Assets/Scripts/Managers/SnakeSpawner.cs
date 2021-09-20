@@ -240,11 +240,17 @@ public class SnakeSpawner : MonoBehaviour
     {
         DuelManager.instance.isOnDuel = false;
         camerManager.enabled = false;
-        camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
+
+        //camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
         AchievementManager.instance.KillerCounter(playerSnake.killerCounter);
         PlayerStatsManager.instance.SaveKillsRed(playerSnake.killerCounter);
+        if (GameManager.instance.state == GameManager.STATE.IN_DUEL)
+        {
+            yield return new WaitForSeconds(0.5f);
+            PauseAllSnakes();
+        }
         yield return new WaitForSeconds(2f);
-        camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
+        //camerManager.transform.position = new Vector3(temp_playerTracker.x, camerManager.transform.position.y, temp_playerTracker.z);
         camerManager.enabled = true;
         print("muerto player");
         //CreateNewSnake(50, "PlayerName", playerSpawnPoints[0].position, selectedColorTemplate, null, true, "");
@@ -692,6 +698,7 @@ public class SnakeSpawner : MonoBehaviour
         DestroyImmediate(snake.sprintMat[0], true);
         snakes[snake.snakeId] = null;
         Population.instance.realCount = 0;
+
         // snakes.Remove(snake);
     }
 

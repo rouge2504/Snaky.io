@@ -27,6 +27,10 @@ public class AppsLovinManager : MonoBehaviour
     public RewardType rewardType = RewardType.none;
     private string placement = "default";
 
+    public float timeToCoolDown = 120;
+    public float timinToCoolDown;
+    public bool activeCoolDown = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -38,6 +42,19 @@ public class AppsLovinManager : MonoBehaviour
         {
             Debug.LogError("AppsLovinManager add more then need");
             Destroy(gameObject);
+        }
+    }
+
+    public void Update()
+    {
+        if (activeCoolDown)
+        {
+            timinToCoolDown += Time.deltaTime;
+            if (timinToCoolDown > timeToCoolDown)
+            {
+                timinToCoolDown = 0;
+                activeCoolDown = false;
+            }
         }
     }
 
@@ -98,14 +115,16 @@ public class AppsLovinManager : MonoBehaviour
             return;
         }
 
-        placement = pl;
-        if (MaxSdk.IsInterstitialReady(InterstitialAdUnitId))
-        {
-            MaxSdk.ShowInterstitial(InterstitialAdUnitId);
-        }
-        else
-        {
-        }
+
+            placement = pl;
+            if (MaxSdk.IsInterstitialReady(InterstitialAdUnitId))
+            {
+                MaxSdk.ShowInterstitial(InterstitialAdUnitId);
+            }
+            else
+            {
+            }
+
     }
 
     public bool isVideoAvailable()
@@ -120,14 +139,16 @@ public class AppsLovinManager : MonoBehaviour
         onDoubleEggAction = onDoubleEgg;
         rewardType = type;
         placement = pl;
-        if (MaxSdk.IsRewardedAdReady(RewardedAdUnitId))
-        {
-            MaxSdk.ShowRewardedAd(RewardedAdUnitId);
-        }
-        else
-        {
-            Debug.LogError("ShowRewardVideo: IsRewardedAdReady -> False");
-        }
+
+            if (MaxSdk.IsRewardedAdReady(RewardedAdUnitId))
+            {
+                MaxSdk.ShowRewardedAd(RewardedAdUnitId);
+            }
+            else
+            {
+                Debug.LogError("ShowRewardVideo: IsRewardedAdReady -> False");
+            }
+
 
         //GameManager.instance.gameOverCanvas.SetActive(false);
         // AchievementManager._instance.PlaySessionCount();

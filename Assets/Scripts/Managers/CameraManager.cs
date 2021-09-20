@@ -21,7 +21,12 @@ public class CameraManager : MonoBehaviour {
             Zoom();
         }
 
-        if (SnakeSpawner.Instance.playerStayDead)
+        if (GameManager.STATE.IN_DUEL == GameManager.instance.state)
+        {
+            cam.orthographicSize = 80f;
+        }
+
+        if (SnakeSpawner.Instance.playerStayDead && GameManager.STATE.IN_DUEL != GameManager.instance.state)
         {
             this.transform.position = new Vector3(SnakeSpawner.Instance.temp_playerTracker.x, transform.position.y, SnakeSpawner.Instance.temp_playerTracker.z);
         }

@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [AlwaysSynchronizeSystem]
+
 public class SnakePartMoveSystem : JobComponentSystem
 {
     
@@ -48,6 +49,7 @@ public class SnakePartMoveSystem : JobComponentSystem
 
                     DynamicBuffer<SnakePartBuffer> snakeParts = EntityManager.GetBuffer<SnakePartBuffer>(snake.snakeHead);
                     SnakeEnvironment.Singleton.BufferTemp = new List<Vector3>();
+
                     NativeArray<float3> positions = new NativeArray<float3>(snakeParts.Length, Allocator.TempJob);
                     for (int x = 0; x < positions.Length; x++)
                     {
@@ -56,11 +58,15 @@ public class SnakePartMoveSystem : JobComponentSystem
                         SnakeEnvironment.Singleton.CheckBodyParts(snake.snakeId, SnakeEnvironment.Singleton.BufferTemp);
                     }
 
+
+
+                    int id = snake.snakeId;
                     var njobHandle = Entities
                         .WithSharedComponentFilter(new SnakeGroupData { group = snake.snakeId })
                         .ForEach((ref PieceData piece, ref Translation position) =>
                         {
                                 position.Value = positions[piece.pieceIndex];
+
 
 
                         }).Schedule(inputDeps);
@@ -80,9 +86,8 @@ struct Job : IJobParallelFor
 {
     [ReadOnly] public NativeArray<float3> positionsInput;
     [ReadOnly] public Translation position;
-    [WriteOnly] public NativeArray<float3> positionsOutput;
     public void Execute(int index)
     {
-        positionsOutput[index] = positionsInput[index];
+        position.Value = positionsInput[index];
     }
 }

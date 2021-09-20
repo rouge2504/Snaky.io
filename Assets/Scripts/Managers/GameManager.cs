@@ -378,7 +378,7 @@ public class GameManager : MonoBehaviour
         if (state == STATE.IN_DUEL)
         {
             AppMetricaManager.instance.LevelFinish(PlayerPrefs.GetInt("level_number"), STATE_STRING, PlayerPrefs.GetInt("level_count"), "normal", 1, false, "normal", "classic", "Lose", (int)DuelManager.instance.timingToDuel, 0, 0);
-
+            
             PlayerStatsManager.instance.SaveDuelLooses(1);
         }
         AppMetricaManager.instance.LevelFinish(PlayerPrefs.GetInt("level_number"), STATE_STRING, PlayerPrefs.GetInt("level_count"), "normal", 1, false, "normal", "classic", "Lose", (int)DuelManager.instance.timingToDuel, 0, 0);
@@ -504,7 +504,11 @@ public class GameManager : MonoBehaviour
     {
         loadingUI.SetActive(true);
         yield return new WaitForSeconds(1);
-        ShowAds();
+        if (!AppsLovinManager.instance.activeCoolDown)
+        {
+            ShowAds();
+            AppsLovinManager.instance.activeCoolDown = true;
+        }
         yield return new WaitForSeconds(1);
         loadingUI.SetActive(false);
 
@@ -515,7 +519,11 @@ public class GameManager : MonoBehaviour
     {
         loadingUI.SetActive(true);
         yield return new WaitForSeconds(1);
-        ShowAds();
+        if (!AppsLovinManager.instance.activeCoolDown)
+        {
+            ShowAds();
+            AppsLovinManager.instance.activeCoolDown = true;
+        }
         yield return new WaitForSeconds(1);
         loadingUI.SetActive(false);
         action();
@@ -675,7 +683,7 @@ public class GameManager : MonoBehaviour
         }*/
     }
 
-    public void SetNotification(string title, string desc, System.DateTime time)
+   /* public void SetNotification(string title, string desc, System.DateTime time)
     {
 #if UNITY_ANDROID
 
@@ -718,11 +726,11 @@ public class GameManager : MonoBehaviour
             iOSNotificationCenter.ScheduleNotification(notification);
 
 #endif
-    }
+    }*/
 
 
     public void SetupNotifications()
-    {
+    {/*
 #if UNITY_ANDROID
         for (int x = 1; x < 8; x++)
         {
@@ -769,14 +777,6 @@ public class GameManager : MonoBehaviour
             iOSNotificationCenter.ScheduleNotification(notification);
         }
 #endif
-        /*     Notifications.CancelAllPendingLocalNotifications();
-
-             var notif = new NotificationContent();
-             notif.title = "You friends are waiting in Duels!";
-             notif.body = "Don't miss out our new Snake Masks!";
-             // notif.categoryId = repeatCategoryId;
-           //  DateTime triggerDate = DateTime.Now + new TimeSpan(0, 2, 0);
-           //  Notifications.ScheduleLocalNotification(triggerDate, notif);
-             Notifications.ScheduleLocalNotification(new TimeSpan(24, 0, 0), notif, NotificationRepeat.EveryDay);*/
+*/
     }
 }
